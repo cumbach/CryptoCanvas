@@ -1,12 +1,12 @@
-# react-truffle-metacoin-boilerplate
+# CryptoCanvas
 Simple boilerplate with React, Truffle, Ganache, Webpack, and Babel
 
 
 ```
-git clone git@github.com:Eihcir0/react-truffle-metacoin-boilerplate.git
+git clone git@github.com:cumbach/CryptoCanvas.git
 ```
 ```
-cd react-truffle-metacoin-boilerplate/
+cd CryptoCanvas/
 ```
 ```
 npm install
