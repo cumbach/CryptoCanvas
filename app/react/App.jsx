@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Main from './Main.jsx'
 import SideBar from './SideBar.jsx'
-import MetaCoin from './MetaCoin.jsx'
+import CanvasCore from './CanvasCore.jsx'
 
 class App extends Component {
 
@@ -11,7 +11,7 @@ class App extends Component {
         <div>
           <Main/>
           <SideBar/>
-          <MetaCoin/>
+          <CanvasCore/>
         </div>
       )
     }

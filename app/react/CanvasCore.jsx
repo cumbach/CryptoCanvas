@@ -4,15 +4,17 @@ import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
-import metacoin_artifacts from './../../build/contracts/MetaCoin.json'
+import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
 
-export default class MetaCoin extends Component {
+export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
         this.startUp = this.startUp.bind(this)
-        this.refreshBalance = this.refreshBalance.bind(this)
-        this.sendCoin = this.sendCoin.bind(this)
+        this.testCode = this.testCode.bind(this)
+        this.getPrice = this.getPrice.bind(this)
+        // this.refreshBalance = this.refreshBalance.bind(this)
+        // this.sendCoin = this.sendCoin.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.state = {
             status: null,
@@ -37,9 +39,9 @@ export default class MetaCoin extends Component {
 
     startUp() {
         const self = this
-        this.MetaCoin = contract(metacoin_artifacts);
-        // Bootstrap the MetaCoin abstraction for Use.
-        this.MetaCoin.setProvider(web3.currentProvider);
+        this.CanvasCore = contract(canvas_artifacts);
+        // Bootstrap the CanvasCore abstraction for Use.
+        this.CanvasCore.setProvider(web3.currentProvider);
 
         // Get the initial account balance so it can be displayed.
         web3.eth.getAccounts(function (err, accs) {
@@ -57,7 +59,7 @@ export default class MetaCoin extends Component {
                 account: accs[0]
             })
 
-            self.refreshBalance();
+            // self.refreshBalance();
         })
     }
 
@@ -65,37 +67,52 @@ export default class MetaCoin extends Component {
         this.setState({ status })
     }
 
-    refreshBalance() {
-        const { account } = this.state
-        var meta
-        this.MetaCoin.deployed().then(instance => {
-            meta = instance
-            return meta.getBalance.call(account, { from: account });
-        }).then(value => {
-            this.setState({ balance: value.valueOf() })
-        }).catch(e => {
-            console.log(e);
-            this.setStatus("Error getting balance; see log.");
-        });
+    // refreshBalance() {
+    //     const { account } = this.state
+    //     var meta
+    //     this.CanvasCore.deployed().then(instance => {
+    //         meta = instance
+    //         return meta.getBalance.call(account, { from: account });
+    //     }).then(value => {
+    //         this.setState({ balance: value.valueOf() })
+    //     }).catch(e => {
+    //         console.log(e);
+    //         this.setStatus("Error getting balance; see log.");
+    //     });
+    // }
+    //
+    // sendCoin() {
+    //     const { account, amount, receiver } = this.state
+    //
+    //     this.setStatus("Initiating transaction... (please wait)");
+    //
+    //     var meta
+    //     var self = this
+    //     this.CanvasCore.deployed().then(instance => {
+    //         meta = instance
+    //         return meta.sendCoin(receiver, parseInt(amount), { from: account });
+    //     }).then(() => {
+    //         self.setStatus("Transaction complete!");
+    //         self.refreshBalance();
+    //     }).catch(e => {
+    //         console.log(e);
+    //         self.setStatus("Error sending coin; see log.");
+    //     })
+    // }
+    getPrice() {
+      console.log('getPrice');
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getPrice(5);
+      }).then(price => {
+        console.log(price);
+      });
+
     }
 
-    sendCoin() {
-        const { account, amount, receiver } = this.state
+    testCode() {
+      this.getPrice();
 
-        this.setStatus("Initiating transaction... (please wait)");
-
-        var meta
-        var self = this
-        this.MetaCoin.deployed().then(instance => {
-            meta = instance
-            return meta.sendCoin(receiver, parseInt(amount), { from: account });
-        }).then(() => {
-            self.setStatus("Transaction complete!");
-            self.refreshBalance();
-        }).catch(e => {
-            console.log(e);
-            self.setStatus("Error sending coin; see log.");
-        })
     }
 
     handleChange(e) {
@@ -112,13 +129,13 @@ export default class MetaCoin extends Component {
 
         return (
             <div>
-                <h1>MetaCoin</h1>
+                <h1>CryptoCanvasjsx</h1>
                 <h2>Example Truffle Dapp</h2>
                 <h3>
                     You have <span className="black"><span id="balance">{this.state.balance}</span> META</span></h3>
                 <br/>
-                <h1>Send MetaCoin</h1>
-                <form onSubmit={this.sendCoin}>
+                <h1>Test Code</h1>
+                <form>
                     <label>
                         Amount:
                     </label>
@@ -143,7 +160,7 @@ export default class MetaCoin extends Component {
                     />
                 </form>
                 <br/><br/>
-                <button id="send" onClick={this.sendCoin}>
+                <button id="send" onClick={this.testCode}>
                     Send MetaCoin
                 </button>
                 <br/><br/>
