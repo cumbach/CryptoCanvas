@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Main from './Main.jsx'
 import SideBar from './SideBar.jsx'
-import CanvasCore from './CanvasCore.jsx'
+import Canvas from './Canvas.jsx'
 
 class App extends Component {
 
@@ -11,7 +11,7 @@ class App extends Component {
         <div>
           <Main/>
           <SideBar/>
-          <CanvasCore/>
+          <Canvas/>
         </div>
       )
     }
