@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
+import App from './App.jsx'
+
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
@@ -128,46 +130,7 @@ export default class CanvasCore extends Component {
         } = this.state
 
         return (
-            <div>
-                <h1>CryptoCanvasjsx</h1>
-                <h2>Example Truffle Dapp</h2>
-                <h3>
-                    You have <span className="black"><span id="balance">{this.state.balance}</span> META</span></h3>
-                <br/>
-                <h1>Test Code</h1>
-                <form>
-                    <label>
-                        Amount:
-                    </label>
-                    <input
-                        value={this.state.amount}
-                        onChange={this.handleChange}
-                        type="text"
-                        id="amount"
-                        placeholder="e.g., 95"
-                    />
-                    <br/>
-                    <br/>
-                    <label>
-                        To Address:
-                    </label>
-                    <input
-                        value={this.state.receiver}
-                        onChange={this.handleChange}
-                        type="text"
-                        id="receiver"
-                        placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"
-                    />
-                </form>
-                <br/><br/>
-                <button id="send" onClick={this.testCode}>
-                    Send MetaCoin
-                </button>
-                <br/><br/>
-                <span id="status"></span>
-                <br/>
-                <span className="hint"><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</span>
-            </div>
+            <App/>
         )
     }
 
