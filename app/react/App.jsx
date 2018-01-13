@@ -7,14 +7,18 @@ import Canvas from './Canvas.jsx'
 class App extends Component {
 
   render() {
-      return (
-        <div>
-          <Main/>
-          <SideBar/>
-          <Canvas/>
-        </div>
-      )
-    }
+    const pixels = [
+      {color: 'green'}
+    ]
+
+    return (
+      <div>
+        <Main/>
+        <SideBar/>
+        <Canvas pixels={pixels} />
+      </div>
+    )
+  }
 
 }
 
