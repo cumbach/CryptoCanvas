@@ -7,18 +7,18 @@ import "./ConvertLib.sol";
 // coin/token contracts. If you want to create a standards-compliant
 // token, see: https://github.com/ConsenSys/Tokens. Cheers!
 
-contract MetaCoin {
+contract CanvasCore {
 	mapping (address => uint) balances;
 
 	event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
-	function MetaCoin() public {
+	function CanvasCore() public {
 		balances[tx.origin] = 10000;
 	}
 
 	function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
 		if (balances[msg.sender] < amount) return false;
-		balances[msg.sender] -= amount;
+		balances[msg.sender] += amount;
 		balances[receiver] += amount;
 		Transfer(msg.sender, receiver, amount);
 		return true;

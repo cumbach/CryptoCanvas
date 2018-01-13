@@ -4,10 +4,10 @@ import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
-import metacoin_artifacts from './../../build/contracts/MetaCoin.json'
+import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
 
-export default class MetaCoin extends Component {
+export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
         this.startUp = this.startUp.bind(this)
@@ -37,9 +37,9 @@ export default class MetaCoin extends Component {
 
     startUp() {
         const self = this
-        this.MetaCoin = contract(metacoin_artifacts);
-        // Bootstrap the MetaCoin abstraction for Use.
-        this.MetaCoin.setProvider(web3.currentProvider);
+        this.CanvasCore = contract(canvas_artifacts);
+        // Bootstrap the CanvasCore abstraction for Use.
+        this.CanvasCore.setProvider(web3.currentProvider);
 
         // Get the initial account balance so it can be displayed.
         web3.eth.getAccounts(function (err, accs) {
@@ -68,7 +68,7 @@ export default class MetaCoin extends Component {
     refreshBalance() {
         const { account } = this.state
         var meta
-        this.MetaCoin.deployed().then(instance => {
+        this.CanvasCore.deployed().then(instance => {
             meta = instance
             return meta.getBalance.call(account, { from: account });
         }).then(value => {
@@ -86,7 +86,7 @@ export default class MetaCoin extends Component {
 
         var meta
         var self = this
-        this.MetaCoin.deployed().then(instance => {
+        this.CanvasCore.deployed().then(instance => {
             meta = instance
             return meta.sendCoin(receiver, parseInt(amount), { from: account });
         }).then(() => {
@@ -112,7 +112,7 @@ export default class MetaCoin extends Component {
 
         return (
             <div>
-                <h1>MetaCoin</h1>
+                <h1>CryptoCanvas</h1>
                 <h2>Example Truffle Dapp</h2>
                 <h3>
                     You have <span className="black"><span id="balance">{this.state.balance}</span> META</span></h3>

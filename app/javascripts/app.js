@@ -2,10 +2,10 @@ import { default as Web3} from 'web3'
 import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
-import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
+import canvas_artifacts from '../../build/contracts/CanvasCore.json'
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
-var MetaCoin = contract(metacoin_artifacts);
+var CanvasCore = contract(canvas_artifacts);
 
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
@@ -13,12 +13,12 @@ var MetaCoin = contract(metacoin_artifacts);
 var accounts;
 var account;
 
-const MetaCoinApp = {
+const CanvasCoreApp = {
   start: function() {
     var self = this;
 
     // Bootstrap the MetaCoin abstraction for Use.
-    MetaCoin.setProvider(web3.currentProvider);
+    CanvasCore.setProvider(web3.currentProvider);
 
     // Get the initial account balance so it can be displayed.
     web3.eth.getAccounts(function(err, accs) {
@@ -48,7 +48,7 @@ const MetaCoinApp = {
     var self = this;
 
     var meta;
-    MetaCoin.deployed().then(function(instance) {
+    CanvasCore.deployed().then(function(instance) {
       meta = instance;
       return meta.getBalance.call(account, {from: account});
     }).then(function(value) {
@@ -69,10 +69,11 @@ const MetaCoinApp = {
     this.setStatus("Initiating transaction... (please wait)");
 
     var meta;
-    MetaCoin.deployed().then(function(instance) {
+    CanvasCore.deployed().then(function(instance) {
       meta = instance;
       return meta.sendCoin(receiver, amount, {from: account});
     }).then(function() {
+      console.log('Success');
       self.setStatus("Transaction complete!");
       self.refreshBalance();
     }).catch(function(e) {
@@ -89,9 +90,9 @@ window.addEventListener('load', function() {
     // Use Mist/MetaMask's provider
     window.web3 = new Web3(web3.currentProvider);
   } else {
-    console.warn("No web3 detected. Falling back to http://127.0.0.1:9545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
+    console.warn("No web3 detected. Falling back to http://127.0.0.1:8545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545"));
+    window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
   }
 
   App.start();
