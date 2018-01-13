@@ -40,8 +40,8 @@ contract CanvasCore {
 			public
 	{
 			totalPixels = _totalPixels;
-			defaultPrice = _defaultPrice;
-			defaultOwner = msg.sender;
+			defaultPrice = _defaultPrice; // in wei
+			defaultOwner = msg.sender; // pixels are owned by contract creator by default
 			defaultBuyable = _defaultBuyable;
 	}
 
@@ -86,7 +86,7 @@ contract CanvasCore {
 	/// Sets that user as the owner and current leaser for those pixelIds
 	/// Puts the remaining money in a withdrawAmount table which the user
 	/// can get back his excess cash.
-	function buy(uint[] pixelIds) public payable {
+	function buyPixels(uint[] pixelIds) public payable {
 			uint totalCost = 0;
 			uint i;
 			uint pixId;
