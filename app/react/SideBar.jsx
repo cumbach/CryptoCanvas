@@ -8,8 +8,15 @@ class SideBar extends Component {
   render() {
       return (
         <div>
+          SIDEBAR HERE!! :) I will have a bunch of subcomponents
+          - tabs
+          - price slider
+          - selected price
+          - cooldown
+          - transaction info
+          - BUY BUTTON
         </div>
-      );
+      )
     }
 
 }
