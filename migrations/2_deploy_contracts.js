@@ -1,8 +1,6 @@
-var ConvertLib = artifacts.require("./ConvertLib.sol");
 var CanvasCore = artifacts.require("./CanvasCore.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(ConvertLib);
-  deployer.link(ConvertLib, CanvasCore);
-  deployer.deploy(CanvasCore);
+  // deployer.link(CanvasCore);
+  deployer.deploy(CanvasCore, 100, true, 100);
 };
