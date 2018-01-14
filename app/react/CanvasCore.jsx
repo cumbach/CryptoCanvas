@@ -4,6 +4,7 @@ import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
 import App from './App.jsx'
+import colors from './colors.js'
 
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
@@ -110,8 +111,9 @@ export default class CanvasCore extends Component {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
                         id: i,
-                        color: '#a06a42'
-                        // color: Math.floor(Math.random() * 10)
+                        color: colors[Math.floor(Math.random()*16)],
+                        // color: Math.floor(Math.random() * 10),
+                        buyable: Math.random() < .2 ? true : false
                     })
             }
         }

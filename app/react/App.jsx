@@ -20,7 +20,8 @@ class App extends Component {
      * */
 
     this.state = {
-      currentColor: '#222222'
+      currentColor: '#222222',
+      displayOnlyBuyable: true
     }
   }
 
@@ -39,7 +40,8 @@ class App extends Component {
     } = this.props
 
     const {
-      currentColor
+      currentColor,
+      displayOnlyBuyable
     } = this.state
 
     // MAIN below is a placeholder for <Canvas/>
@@ -48,6 +50,7 @@ class App extends Component {
         <NavBarTop/>
 
         <Canvas
+          displayOnlyBuyable={displayOnlyBuyable}
           pixels={pixels}
           changes={changes}
           currentColor={currentColor}
