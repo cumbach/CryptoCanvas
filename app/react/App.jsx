@@ -50,7 +50,7 @@ class App extends Component {
           pixels={pixels}
           changes={changes}
           onChangePixel={this.onChangePixel}
-          onRemoveChange={this.handleRemoveChange}
+          onRemoveChange={this.props.onRemoveChange}
         />
         <Canvas
           pixels={pixels}
