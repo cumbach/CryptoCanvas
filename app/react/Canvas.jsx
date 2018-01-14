@@ -2,44 +2,58 @@ import React, {Component} from 'react'
 import Pixel from './Pixel.jsx';
 import { Stage, Layer, Rect, Text } from 'react-konva';
 
+const COLOR_MAP = {
+  0: 'red',
+  1: 'blue',
+  3: 'green',
+  4: 'yellow',
+  5: 'orange',
+  6: 'black',
+  7: 'white',
+  8: 'grey',
+  9: 'brown'
+}
+
 export default class Canvas extends Component {
   /**
-  / pixels: array
+  * pixels: array
+  * onChangePixel: func
+  * pixelSize: number
   **/
   constructor(props) {
     super(props)
     this.state = {
-      color: 'green'
+      pixels: props.pixels
     }
-
-    this.dimensions = Math.round(Math.sqrt(this.props.pixels.length))
-    this.pixelSize = 5;
   }
 
   render() {
-    console.log(this.props.pixels)
+    const { pixels, pixelSize } = this.props;
+    const dimensions = Math.round(Math.sqrt(pixels.length));
+
     return (
       <Stage width={700} height={700}>
         <Layer>
-          {this.props.pixels.map((pixel, i) => {
+          {pixels.map((pixel, id) => {
             return <Rect
-              x={this.pixelSize * (Math.floor(i / this.dimensions))}
-              y={this.pixelSize * (i % this.dimensions)}
+              x={pixelSize * (Math.floor(id / dimensions))}
+              y={pixelSize * (id % dimensions)}
               width={5}
               height={5}
-              key={i}
-              fill={pixel.color}
+              key={id}
+              fill={COLOR_MAP[pixel.color]}
               shadowBlur={5}
-              onClick={this.handleClick}
+              onClick={this.handleClick.bind(this, id)}
             />
-          })}
+          }, this)}
         </Layer>
       </Stage>
     );
   }
 
-  handleClick() {
-
+  handleClick(id) {
+    const { onChangePixel } = this.props;
+    onChangePixel(id, { color: 'blue' })
   }
 
 }
