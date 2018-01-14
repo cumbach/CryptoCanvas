@@ -432,3 +432,41 @@ export default class CanvasCore extends Component {
 
 
 // });
+
+    // drawPixels(fetchedPixels) {
+    //   const pixels = []
+
+    //   let fetchedPixelIndex = 0
+    //   for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
+    //     // var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
+    //     if (false) {
+    //       var fetchedPixelColor = fetchedPixels[1][fetchedPixelIndex];
+    //       var fetchedPixelPrice = fetchedPixels[2][fetchedPixelIndex];
+    //       var fetchedPixelBuyable = fetchedPixels[3][fetchedPixelIndex];
+    //       var fetchedPixelRentable = fetchedPixels[4][fetchedPixelIndex];
+    //       pixels.push({
+    //         link: 'link.com',
+    //         comment: 'comment',
+    //         id: i,
+    //         color: Colors[fetchedPixelColor],
+    //         price: fetchedPixelPrice,
+    //         buyable: fetchedPixelBuyable,
+    //         rentable: fetchedPixelRentable
+    //       });
+    //       fetchedPixelIndex++;
+    //     } else {
+    //       pixels.push({
+    //         link: 'https://www.google.com',
+    //         comment: 'BUY THIS PIXEL!!!',
+    //         id: i,
+    //         color: Colors[Math.floor(Math.random()*16)],
+    //         price: 0,
+    //         buyable: Math.random() < 0.2 ? true : false,
+    //         rentable: Math.random() < 0.2 ? true : false,
+    //       })
+    //     }
+    //   }
+    //   // this.givePixelsAttributes(fetchedPixels[0]);
+
+    //   this.setState({ pixels })
+    // }
