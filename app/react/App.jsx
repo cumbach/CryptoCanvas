@@ -6,12 +6,14 @@ import TestComponent from './TestComponent.jsx'
 import Canvas from './Canvas.jsx'
 import NavBarTop from './NavBarTop.jsx'
 import ColorPicker from './ColorPicker.jsx'
+import ToggleButton from 'react-toggle-button'
 
 class App extends Component {
   constructor() {
     super()
     this.handleChangePixel = this.handleChangePixel.bind(this)
     this.handleChangeCurrentColor = this.handleChangeCurrentColor.bind(this)
+    this.handleToggleBuyable = this.handleToggleBuyable.bind(this)
     /**
      * propTypes:
      * onChangePixel - fn
@@ -31,6 +33,10 @@ class App extends Component {
 
   handleChangeCurrentColor(color) {
     this.setState({ currentColor: color });
+  }
+
+  handleToggleBuyable() {
+    this.setState((prevState) => ({ displayOnlyBuyable: !prevState.displayOnlyBuyable }))
   }
 
   render() {
@@ -59,6 +65,10 @@ class App extends Component {
         <ColorPicker
           currentColor={currentColor}
           onClick={this.handleChangeCurrentColor}
+        />
+        <ToggleButton
+          value={ displayOnlyBuyable }
+          onToggle={this.handleToggleBuyable}
         />
       </div>
     )

@@ -9,6 +9,7 @@ export default class Pixel extends Component {
     * onClick: func
     * under: bool
     * over: bool
+    * selectable: bool
     **/
     super(props)
     this.state = {
@@ -20,14 +21,14 @@ export default class Pixel extends Component {
   }
 
   render() {
-    const { color, onClick, over, size, under } = this.props;
+    const { color, onClick, over, selectable, size, under } = this.props;
     const { hover } = this.state;
 
     return (
       <div
-        onClick={onClick}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
+        onClick={selectable ? onClick : () => {}}
+        onMouseEnter={selectable ? this.handleMouseEnter : () => {}}
+        onMouseLeave={selectable ? this.handleMouseLeave : () => {}}
         style={{
           'backgroundColor': color,
           'width': size + 'px',

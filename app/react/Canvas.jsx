@@ -39,6 +39,7 @@ export default class Canvas extends Component {
             onClick={this.handleClick.bind(this, id)}
             under={displayOnlyBuyable && !pixel.buyable}
             over={displayOnlyBuyable && pixel.buyable}
+            selectable={!displayOnlyBuyable || pixel.buyable}
           />
         }, this)}
       </div>
