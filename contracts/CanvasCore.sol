@@ -228,56 +228,6 @@ contract CanvasCore is Ownable {
         Rent();
     }
 
-
-    /// Takes in an array of pixelIds to rent. Also accepts payment.
-    /// Rents and charges user for all pixels buyable.
-    /// Sets that user as the current leaser for those pixelIds
-    /// Puts the remaining money in a amountToWithdraw table which the user
-    /// can get back his excess cash.
-    function rentPixels(
-        uint[] _pixelIds,
-        uint32[] _colors,
-        string _url,
-        string _comment)
-        public
-        payable
-    {
-        // This block checks if the sender provided enough capital for the purchase.
-        uint totalCost = 0;
-        uint i;
-        uint pixId;
-        for (i = 0; i < _pixelIds.length; i++) {
-            pixId = _pixelIds[i];
-            if (isRentable(pixId)) {
-                totalCost += getPrice(pixId);
-            }
-        }
-        uint amount = msg.value;
-        require(amount >= totalCost);
-
-        // Sets the excess funds in a withdrawAmount mapping.
-        amountToWithdraw[msg.sender] += (amount - totalCost);
-        // Sets the staleTime, which is the time when the pixel is up for renting
-        uint64 _rentedUntilTime = uint64(rentCooldownTime + now);
-
-        // Updates the owner and metadata.
-        for (i = 0; i < _pixelIds.length; i++) {
-            Pixel storage pixel = pixels[_pixelIds[i]];
-            if (isRentable(pixId)) {
-                // Splits the price 50-50 between the current owner and
-                // contract creator
-                amountToWithdraw[getOwner(pixId)] += getPrice(pixId) / 2;
-                amountToWithdraw[creator] += (getPrice(pixId) + 1) / 2;
-
-                pixel.leaser = msg.sender;
-                pixel.color = _colors[i];
-                pixel.staleTime = _rentedUntilTime;
-                pixel.url = _url;
-                pixel.comment = _comment;
-            }
-        }
-    }
-
     // Returns all the pixels that have been bought. These ignores the pixels that have
     // not undergone any transaction and are owned by the creator
     // Returns <= totalPixels elements in each element
