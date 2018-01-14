@@ -25,6 +25,7 @@ export default class CanvasCore extends Component {
         this.getLeaser = this.getLeaser.bind(this)
         this.buyPixels = this.buyPixels.bind(this)
         this.rentPixels = this.rentPixels.bind(this)
+        this.setUpCanvas = this.setUpCanvas.bind(this)
         this.getCanvas = this.getCanvas.bind(this)
         this.buySuccess = this.buySuccess.bind(this)
         this.rentSuccess = this.rentSuccess.bind(this)
@@ -377,6 +378,17 @@ export default class CanvasCore extends Component {
       })
     }
 
+    setUpCanvas() {
+      let pixelIds = [];
+      let colors = [];
+      const price = 0.1 // this is in ether
+      for (var i = 3; i < 8; i++) {
+        pixelIds.push(i);
+        colors.push(2);
+      }
+      this.buyPixels(pixelIds, colors, "url", "comment", price);
+    }
+
 
     render() {
         const {
@@ -393,6 +405,7 @@ export default class CanvasCore extends Component {
         return (
             <div>
                 <App
+                  setUpCanvas={this.setUpCanvas}
                   pixels={pixels}
                   onAddBuy={this.handleAddBuy}
                   onRemoveBuy={this.handleRemoveBuy}

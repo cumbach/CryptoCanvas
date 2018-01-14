@@ -7,7 +7,7 @@ export default class NavBarTop extends Component {
 
   render() {
       return (
-        <div className="nav-bar-top">
+        <div onClick={this.props.setUpCanvas} className="nav-bar-top">
             <div className="nav-bar-title">CryptoCanvas</div>
             <div className="nav-bar-user">Johnny Canvas</div>
         </div>

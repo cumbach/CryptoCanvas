@@ -15,6 +15,7 @@ class App extends Component {
     this.handleAddRent = this.handleAddRent.bind(this)
     this.handleChangeCurrentColor = this.handleChangeCurrentColor.bind(this)
     this.handleSetMode = this.handleSetMode.bind(this)
+    this.setUpCanvas = this.setUpCanvas.bind(this)
     /**
           pixels={pixels}
           onAddBuy={this.handleAddBuy}
@@ -37,6 +38,10 @@ class App extends Component {
 
   handleAddRent(id, rent) {
     this.props.onAddRent(id, rent)
+  }
+
+  setUpCanvas() {
+    this.props.setUpCanvas();
   }
 
   handleChangeCurrentColor(color) {
@@ -74,7 +79,9 @@ class App extends Component {
     // MAIN below is a placeholder for <Canvas/>
     return (
       <div>
-        <NavBarTop/>
+        <NavBarTop
+          setUpCanvas={this.setUpCanvas}
+        />
         <SideBar
           pixels={pixels}
           changes={relevantChanges}
