@@ -29,13 +29,7 @@ export default class CanvasCore extends Component {
         this.getLeaser = this.getLeaser.bind(this)
         this.buyPixels = this.buyPixels.bind(this)
         this.getCanvas = this.getCanvas.bind(this)
-        this.state = {
-            status: null,
-            amount: '',
-            receiver: '',
-            pixels: [], // array of <Pixels>
-            changes: {}, // eg: {pixelId: { color: <new color> }}
-        }
+
         this.startUp()
         // this.getAllPixels().then(pixels => {
         //     this.intializePixels(pixels)
@@ -199,30 +193,31 @@ export default class CanvasCore extends Component {
     }
 
     buyPixels(pixelIdsArray, colorsArray, url, comment, price, cooldownTime) {
-      console.log('a');
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, price, cooldownTime, {from: web3.eth.accounts[0], value: web3.toWei(1, 'ether')});
+        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, price, cooldownTime, {from: web3.eth.accounts[0], value: web3.toWei(price, 'ether')});
       }).then(transactionId => {
         console.log('buyPixels: successful');
-        this.getCanvas();
       });
     }
 
     getCanvas() {
-      console.log('b');
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.getCanvas();
-        // return canvas.getCanvas.sendTransaction({from: web3.eth.accounts[0], value: web3.toWei(0, 'ether')});
-
+        return canvas.getCanvas({gas: 300000});
       }).then(canvasStateArray => {
         console.log('Pixels Ids:')
-        console.log(canvasStateArray[0]);
+        console.log(canvasStateArray[0].map(function(bigNumId){
+          return parseInt(bigNumId);
+        }));
         console.log('Pixels Colors:')
-        console.log(canvasStateArray[1]);
+        console.log(canvasStateArray[1].map(function(bigNumColor){
+          return parseInt(bigNumColor);
+        }));
         console.log('Pixels Prices:')
-        console.log(canvasStateArray[2]);
+        console.log(canvasStateArray[2].map(function(bigNumPrice){
+          return parseInt(bigNumPrice);
+        }));
         console.log('Pixels Buyable:')
         console.log(canvasStateArray[3]);
         console.log('Pixels Rentable')
@@ -231,32 +226,30 @@ export default class CanvasCore extends Component {
     }
 
     testCode() {
-      this.getCanvas();
+      console.log('Test Code:');
+      // ASK ME FOR EXPLANATION HERE!!!
+      // this.getCanvas();
       // this.checkPublicVars();
       // this.getPrice(5);
       // this.isBuyable(5);
       // this.getOwner(5);
-      // this.getLeaser(5)
-      this.buyPixels([1], [1234], "url", "comment", 44, 10);
-      // this.buyPixels([2], [1234], "url", "comment", 44, 10);
-      // this.getCanvas();
-    }
+      // this.getLeaser(5);
 
-    handleChange(e) {
-        e.preventDefault()
-        this.setState({ [e.target.id]: e.target.value })
+      // let pixelIds = [];
+      // let colors = [];
+      // const price = 0.1
+      // const cooldownTime = 3600 // Seconds
+      // for (var i = 3; i < 50; i++) {
+      //   pixelIds.push(i);
+      //   colors.push(1234);
+      // }
+      // buyPixels price is in ether!
+      // this.buyPixels(pixelIds, colors, "url", "comment", price, cooldownTime);
+      // this.buyPixels([2], [1234], "url", "comment", 0.1, 10);
     }
 
     render() {
-        const {
-            pixels,
-
-            account,
-            amount,
-            receiver,
-        } = this.state
-
-        return <h1 onClick={this.testCode}>CLICK THIS TO RUN TEST CODE</h1>
+      return <h1 onClick={this.testCode}>CLICK THIS TO RUN TEST CODE</h1>
     }
 
 }
