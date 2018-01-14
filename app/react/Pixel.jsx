@@ -24,6 +24,7 @@ export default class Pixel extends Component {
     this.enterCell = this.enterCell.bind(this);
     this.highlight = this.highlight.bind(this);
     this.unhighlight = this.unhighlight.bind(this);
+    this.visitLink = this.visitLink.bind(this);
 
     this.emphasizedStyle = {
       'boxShadow': '0px 0px 2px black',
@@ -53,7 +54,10 @@ export default class Pixel extends Component {
     } else if (isSelectable) {
       this.unhighlight()
     }
+  }
 
+  visitLink() {
+    window.open(this.props.link, '_blank');
   }
 
   render() {
@@ -64,7 +68,7 @@ export default class Pixel extends Component {
 
     return (
       <div
-        onClick={isSelectable ? selectPixel : () => {}}
+        onClick={mode===0 ? this.visitLink : isSelectable ? seletPixel : () => {}}
         onMouseEnter={()=>this.enterCell(isSelectable, mode)}
         onMouseLeave={()=>this.exitCell(isSelectable, mode)}
         style={{
@@ -76,7 +80,7 @@ export default class Pixel extends Component {
           'opacity': isDisabled ? '0.1' : '1',
           'zIndex': isSelectable ? '1' : '0',
           'boxShadow': isSelectable ? '0px 0px 2px black' : 'none',
-          'cursor': 'pointer',
+          'cursor': 'pointer'
         }}
       />
     );
