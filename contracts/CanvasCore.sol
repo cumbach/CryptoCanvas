@@ -28,8 +28,8 @@ contract CanvasCore is Ownable {
 
     // Default set for  the cooldown times for buying and selling.
     // This can be modified in onlyOwner functions.
-    uint buyCooldownTime = 1 minutes;
-    uint rentCooldownTime = 30 seconds;
+    uint buyCooldownTime = 10 seconds;
+    uint rentCooldownTime = 10 seconds;
 
     /// Excess amount paid by the users is kept here and can be withdrawn.
     mapping (address => uint) amountToWithdraw;
@@ -74,6 +74,21 @@ contract CanvasCore is Ownable {
     function setRentCooldownTime(uint _rentCooldownTime) external onlyOwner {
         rentCooldownTime = _rentCooldownTime;
     }
+    
+    function getURL(uint _pixelId) public view isValidPixelId(_pixelId) returns (string) {
+        if (pixels[_pixelId].inMarket) {
+            return pixels[_pixelId].url;
+        }
+        return "";
+    }
+
+    function getComment(uint _pixelId) public view isValidPixelId(_pixelId) returns (string) {
+        if (pixels[_pixelId].inMarket) {
+            return pixels[_pixelId].comment;
+        }
+        return "";
+    }
+
 
     /// Returns true if the given pixelId is buyable
     // If it has a non-zero price, or it is owned by the creators of the
@@ -156,6 +171,7 @@ contract CanvasCore is Ownable {
 
         // Updates the owner and metadata.
         for (i = 0; i < _pixelIds.length; i++) {
+            pixId = _pixelIds[i];
             Pixel storage pixel = pixels[_pixelIds[i]];
             if (isBuyable(pixId)) {
                 amountToWithdraw[getOwner(pixId)] += getPrice(pixId);
@@ -188,11 +204,13 @@ contract CanvasCore is Ownable {
     {
         uint i;
         uint pixId;
+
         // Sets the staleTime, which is the time when the pixel is up for renting
         uint64 _rentedUntilTime = uint64(rentCooldownTime + now);
 
         // Updates the owner and metadata.
         for (i = 0; i < _pixelIds.length; i++) {
+            pixId = _pixelIds[i];
             Pixel storage pixel = pixels[_pixelIds[i]];
             if (isRentable(pixId)) {
                 pixel.leaser = msg.sender;
