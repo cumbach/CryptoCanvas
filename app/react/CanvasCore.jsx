@@ -3,22 +3,15 @@ import React, { Component } from 'react'
 import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
-import App from './App.jsx'
+import App from './app/react/App.jsx'
 
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-const TOTAL_PIXEL_COUNT = 10000
+const TOTAL_PIXEL_COUNT = 100
 const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
-const COMPANY_ADDRESS = 'company address'
-const COMPANY_OWNED_PIXEL_TEMPLATE = {
-    color: 4,
-    link: 'www.cryptocanvas.io',
-    comment: 'BUY THIS PIXEL!!!',
-    owner: COMPANY_ADDRESS,
-    price: 10,
-    coolDownTime: 9999,
-}
+
+
 export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
@@ -47,18 +40,6 @@ export default class CanvasCore extends Component {
         })
     }
 
-    componentDidMount() {
-        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-        if (typeof web3 !== 'undefined') {
-            console.warn("Using web3 detected from external source. If you find that your accounts don't appear or you have 0 MetaCoin, ensure you've configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask")
-            //  Use Mist/MetaMask's provider
-            this.web3 = new Web3(web3.currentProvider);
-        } else {
-            console.warn("No web3 detected. Falling back to http://127.0.0.1:9545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
-            // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-            this.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-        }
-    }
 
     startUp() {
         const self = this
@@ -170,6 +151,11 @@ export default class CanvasCore extends Component {
         })
     }
 
+    testCode() {
+        this.getPrice();
+    }
+
+
     //ALL CODE BELOW HERE RE: METACOIN
     setStatus(status) {
         this.setState({ status })
@@ -210,10 +196,7 @@ export default class CanvasCore extends Component {
 
         return (
             <div>
-                <App
-                    pixels={updatedPixels}
-                    onChangePixel={this.handleChangePixel}
-                />
+                <App/>
                 <br/>
                 <br/>
                 <br/>
