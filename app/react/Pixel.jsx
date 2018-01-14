@@ -37,8 +37,7 @@ export default class Pixel extends Component {
   }
 
   enterCell(isSelectable, mode) {
-    isSelectable
-    this.props.setSpecialHoverId(this.props.id)
+    // this.props.setSpecialHoverId(this.props.id)
     if (mode ==0) {
       this.setComment()
     } else if (isSelectable) {
@@ -47,8 +46,7 @@ export default class Pixel extends Component {
   }
 
   exitCell(isSelectable, mode) {
-    isSelectable
-    this.props.setSpecialHoverId(null)
+    // this.props.setSpecialHoverId(null)
     if (mode == 0) {
       this.hideComment()
     } else if (isSelectable) {
