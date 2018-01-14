@@ -326,12 +326,21 @@ export default class CanvasCore extends Component {
 
     render() {
         const {
+            changes,
             pixels,
 
             account,
             amount,
             receiver,
         } = this.state
+
+        const updatedPixels = [ ...pixels ];
+        Object.keys(changes).forEach((id) => {
+          updatedPixels[id] = {
+            ...updatedPixels[id],
+            ...changes[id]
+          }
+        });
 
         const showIsBuyable = this.state.isBuyable ? 'true' : 'false';
 
