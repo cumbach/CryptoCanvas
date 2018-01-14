@@ -24,7 +24,6 @@ export default class CanvasCore extends Component {
         super(props)
 
         this.startUp = this.startUp.bind(this)
-        this.testCode = this.testCode.bind(this)
         this.totalPixels = this.totalPixels.bind(this)
         this.defaultPrice = this.defaultPrice.bind(this)
         this.isBuyable = this.isBuyable.bind(this)
@@ -32,9 +31,14 @@ export default class CanvasCore extends Component {
         this.getOwner = this.getOwner.bind(this)
         this.getLeaser = this.getLeaser.bind(this)
         this.buyPixels = this.buyPixels.bind(this)
+        this.rentPixels = this.rentPixels.bind(this)
         this.getCanvas = this.getCanvas.bind(this)
         this.buySuccess = this.buySuccess.bind(this)
         this.rentSuccess = this.rentSuccess.bind(this)
+
+        this.testCode = this.testCode.bind(this)
+        this.testBuy = this.testBuy.bind(this)
+        this.testRent = this.testRent.bind(this)
 
         this.handleChange = this.handleChange.bind(this)
         this.handleChangePixel = this.handleChangePixel.bind(this)
@@ -213,9 +217,9 @@ export default class CanvasCore extends Component {
     rentPixels(pixelIdsArray, colorsArray, url, comment) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, {from: web3.eth.accounts[0], value: web3.toWei(priceEther, 'ether')});
+        return canvas.rentPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, {from: web3.eth.accounts[0], gas: 300000});
       }).then(transactionId => {
-        console.log('buyPixels transaction posted (may take time to verify transaction)');
+        console.log('rentPixels transaction posted (may take time to verify transaction)');
       });
     }
 
@@ -244,14 +248,15 @@ export default class CanvasCore extends Component {
 
     testCode() {
       console.log('Test Code:');
-
       // this.totalPixels();
       // this.defaultPrice();
       // this.getPrice(5);
       // this.isBuyable(5);
       // this.getOwner(5);
       // this.getLeaser(5);
+    }
 
+    testBuy() {
       // BUY LARGE PLOT:
       // let pixelIds = [];
       // let colors = [];
@@ -263,7 +268,12 @@ export default class CanvasCore extends Component {
       // this.buyPixels(pixelIds, colors, "url", "comment", price);
 
       // BUY SINGLE PIXEL:
-      this.buyPixels([2], [1234], "url", "comment", 0.002);
+      this.buyPixels([4], [1234], "one", "commentone", 0.002);
+    }
+
+    testRent() {
+      // RENT SINGLE PIXEL:
+      this.rentPixels([4], [1234], "two", "commenttwo");
     }
 
 
@@ -395,7 +405,8 @@ export default class CanvasCore extends Component {
                 <h1 onClick={this.getOwner.bind(this, 5)}>getOwner:{this.state.owner}</h1><br/>
                 <h1 onClick={this.getLeaser.bind(this, 5)}>getLeaser:{this.state.leaser}</h1><br/>
                 <h1 onClick={this.getCanvas}>getCanvas(console):{this.state.canvas}</h1><br/>
-                <h1 onClick={this.testCode}>Test:Fake Buy</h1><br/>
+                <h1 onClick={this.testBuy}>Test:Fake Buy</h1><br/>
+                <h1 onClick={this.testRent}>Test:Fake Rent</h1><br/>
 
 
 

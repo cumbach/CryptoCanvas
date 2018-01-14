@@ -28,8 +28,8 @@ contract CanvasCore is Ownable {
 
     // Default set for  the cooldown times for buying and selling.
     // This can be modified in onlyOwner functions.
-    uint buyCooldownTime = 1 weeks;
-    uint rentCooldownTime = 1 days;
+    uint buyCooldownTime = 1 minutes;
+    uint rentCooldownTime = 30 seconds;
 
     /// Excess amount paid by the users is kept here and can be withdrawn.
     mapping (address => uint) amountToWithdraw;
@@ -185,23 +185,9 @@ contract CanvasCore is Ownable {
         string _url,
         string _comment)
         public
-        payable
     {
-        // This block checks if the sender provided enough capital for the purchase.
-        uint totalCost = 0;
         uint i;
         uint pixId;
-        for (i = 0; i < _pixelIds.length; i++) {
-            pixId = _pixelIds[i];
-            if (isRentable(pixId)) {
-                totalCost += getPrice(pixId);
-            }
-        }
-        uint amount = msg.value;
-        require(amount >= totalCost);
-
-        // Sets the excess funds in a withdrawAmount mapping.
-        amountToWithdraw[msg.sender] += (amount - totalCost);
         // Sets the staleTime, which is the time when the pixel is up for renting
         uint64 _rentedUntilTime = uint64(rentCooldownTime + now);
 
@@ -209,11 +195,6 @@ contract CanvasCore is Ownable {
         for (i = 0; i < _pixelIds.length; i++) {
             Pixel storage pixel = pixels[_pixelIds[i]];
             if (isRentable(pixId)) {
-                // Splits the price 50-50 between the current owner and
-                // contract creator
-                amountToWithdraw[getOwner(pixId)] += getPrice(pixId) / 2;
-                amountToWithdraw[creator] += (getPrice(pixId) + 1) / 2;
-
                 pixel.leaser = msg.sender;
                 pixel.color = _colors[i];
                 pixel.staleTime = _rentedUntilTime;
