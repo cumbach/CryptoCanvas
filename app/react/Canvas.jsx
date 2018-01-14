@@ -33,15 +33,10 @@ export default class Canvas extends Component {
     return (
       <div style={{'height': '500px', 'width': '500px'}}>
         {pixels.map((pixel, id) => {
-          return <div
+          return <Pixel
             key={id}
-            style={{
-              'backgroundColor': COLOR_MAP[pixel.color],
-              'width': 500/dimensions + 'px',
-              'height': 500/dimensions + 'px',
-              'float': 'left'
-            }}
-            // onClick={this.handleClick.bind(this, id)}
+            color={COLOR_MAP[pixel.color]}
+            size={500/dimensions}
             onClick={this.handleClick.bind(this, id)}
           />
         }, this)}
