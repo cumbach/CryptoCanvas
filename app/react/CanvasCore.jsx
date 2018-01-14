@@ -35,6 +35,8 @@ export default class CanvasCore extends Component {
             status: null,
             amount: '',
             receiver: '',
+            /* ^^ metacoin*/
+
             pixels: [], // array of <Pixels>
             changes: {}, // eg: {pixelId: { color: <new color> }}
         }
