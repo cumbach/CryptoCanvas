@@ -4,7 +4,6 @@ import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
 import App from './App.jsx'
-
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
@@ -24,9 +23,12 @@ export default class CanvasCore extends Component {
         super(props)
         this.startUp = this.startUp.bind(this)
         this.testCode = this.testCode.bind(this)
+        this.checkPublicVars = this.checkPublicVars.bind(this)
+        this.isBuyable = this.isBuyable.bind(this)
         this.getPrice = this.getPrice.bind(this)
-        // this.refreshBalance = this.refreshBalance.bind(this)
-        // this.sendCoin = this.sendCoin.bind(this)
+        this.getOwner = this.getOwner.bind(this)
+        this.getLeaser = this.getLeaser.bind(this)
+        this.buyPixels = this.buyPixels.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.state = {
             status: null,
@@ -75,8 +77,6 @@ export default class CanvasCore extends Component {
                 accounts: accs,
                 account: accs[0]
             })
-
-            // self.refreshBalance();
         })
     }
 
@@ -163,15 +163,73 @@ export default class CanvasCore extends Component {
         this.setState({ status })
     }
 
-    getPrice() {
-      console.log('getPrice');
+    checkPublicVars() {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.getPrice(5);
+        return canvas.totalPixels;
+      }).then(totalPixels => {
+        console.log('checkPublicVars');
+        console.log(totalPixels);
+      });
+    }
+
+    isBuyable(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.isBuyable(pixelId);
+      }).then(buyable => {
+        console.log(pixelId + ' isBuyable:');
+        console.log(buyable);
+      });
+    }
+
+    getPrice(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getPrice(pixelId);
       }).then(price => {
+        console.log(pixelId + ' getPrice:');
         console.log(price);
       });
+    }
 
+    getOwner(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getOwner(pixelId);
+      }).then(owner => {
+        console.log(pixelId + ' getOwner:');
+        console.log(owner);
+      });
+    }
+
+    getLeaser(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getLeaser(pixelId);
+      }).then(leaser => {
+        console.log(pixelId + ' getLeaser:');
+        console.log(leaser);
+      });
+    }
+
+    buyPixels(pixelIdsArray, colorsArray, url, comment, price) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.buyPixels(pixelIdsArray, colorsArray, url, comment, price);
+      }).then(idk => {
+        console.log('buyPixels: ');
+        console.log(idk);
+      });
+    }
+
+    testCode() {
+      this.checkPublicVars();
+      // this.getPrice(5);
+      // this.isBuyable(5);
+      // this.getOwner(5);
+      // this.getLeaser(5)
+      // this.buyPixels([4,5,6], ['#ff0000', '#ff0000', '#ff0000'], 'www.x.com', 'comment', 100);
     }
 
     handleChange(e) {
@@ -188,6 +246,7 @@ export default class CanvasCore extends Component {
             receiver,
         } = this.state
 
+<<<<<<< Updated upstream
         return (
             <div>
                 <App
@@ -241,6 +300,9 @@ export default class CanvasCore extends Component {
                 <span className="hint"><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</span>
             </div>
         )
+=======
+        return <h1 onClick={this.testCode}>CLICK THIS TO RUN TEST CODE</h1>
+>>>>>>> Stashed changes
     }
 
 }
