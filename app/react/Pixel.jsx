@@ -6,11 +6,12 @@ export default class Pixel extends Component {
     * key: int
     * color: string
     * size: int
-    * onClick: func
+    * selectPixel: func
     * mode: int
     * buyable: bool
     * rentable: bool
     * setComment: func
+    * link: string
     **/
     super(props)
     this.state = {
@@ -32,14 +33,14 @@ export default class Pixel extends Component {
   }
 
   render() {
-    const { buyable, mode, color, rentable, selectPixel, size } = this.props;
+    const { buyable, mode, color, link, rentable, selectPixel, size } = this.props;
     const { hover } = this.state;
     const isSelectable = (mode===1 && buyable) || (mode===2 && rentable);
     const isDisabled = (mode===1 && !buyable) || (mode===2 && !rentable);
 
     return (
       <div
-        onClick={isSelectable ? selectPixel : () => {}}
+        onClick={isSelectable ? selectPixel : () => {window.open(link, '_blank')}}
         onMouseEnter={mode===0 ? this.setComment : isSelectable ? this.highlight : () => {}}
         onMouseLeave={mode===0 ? this.hideComment : isSelectable ? this.unhighlight : () => {}}
         style={{

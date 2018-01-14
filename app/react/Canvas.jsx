@@ -78,6 +78,7 @@ export default class Canvas extends Component {
             mode={mode}
             buyable={pixel.buyable}
             rentable={pixel.rentable}
+            link={pixel.link}
           />
         }, this)}
       </div>
