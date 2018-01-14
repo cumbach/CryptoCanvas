@@ -38,7 +38,7 @@ export default class Pixel extends Component {
 
   enterCell(isSelectable, mode) {
     isSelectable
-    this.props.setHoverId(this.props.id)
+    this.props.setSpecialHoverId(this.props.id)
     if (mode ==0) {
       this.setComment()
     } else if (isSelectable) {
@@ -48,7 +48,7 @@ export default class Pixel extends Component {
 
   exitCell(isSelectable, mode) {
     isSelectable
-    this.props.setHoverId(null)
+    this.props.setSpecialHoverId(null)
     if (mode == 0) {
       this.hideComment()
     } else if (isSelectable) {
@@ -65,10 +65,21 @@ export default class Pixel extends Component {
   }
 
   render() {
-    const { buyable, mode, color, rentable, selectPixel, size } = this.props;
+    const { buyable, mode, color, id, rentable, selectPixel, size, specialHoverId, setSpecialHoverId } = this.props;
     const { hover } = this.state;
     const isSelectable = (mode===1 && buyable) || (mode===2 && rentable);
     const isDisabled = (mode===1 && !buyable) || (mode===2 && !rentable);
+    const isSpecialHover = specialHoverId === id;
+    let boxShadow;
+    if (isSpecialHover) {
+      boxShadow = '0px 0px 3px red'
+    } else if (hover) {
+      boxShadow = '0px 0px 5px black'
+    } else if (isSelectable) {
+      boxShadow = '0px 0px 2px black'
+    } else {
+
+    }
 
     return (
       <div
@@ -82,7 +93,7 @@ export default class Pixel extends Component {
           'float': 'left',
           'opacity': isDisabled ? '0.1' : '1',
           'zIndex': isSelectable ? '1' : '0',
-          'boxShadow': `0px 0px ${hover ? 5 : isSelectable ? 2 : 0}px black`,
+          'boxShadow': boxShadow,
           'borderRadius': isSelectable ? '1px' : '0px',
           'outline': hover ? '1px black' : '0px black',
           'cursor': 'pointer'

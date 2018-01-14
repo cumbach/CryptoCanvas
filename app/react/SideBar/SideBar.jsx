@@ -51,7 +51,7 @@ class SideBar extends Component {
       pixels,
       buyPixels,
       rentPixels,
-      hoverId,
+      specialHoverId,
     } = this.props
 
     const actions = {
@@ -86,9 +86,9 @@ class SideBar extends Component {
           />
           <PriceSlider/>
           <SelectedPixels
-            setHoverId={this.props.setHoverId}
+            setSpecialHoverId={this.props.setSpecialHoverId}
             changes={changes}
-            hoverId={hoverId}
+            specialHoverId={specialHoverId}
             pixels={pixels}
             onRemoveTransaction={this.props.onRemoveTransaction}
           />
