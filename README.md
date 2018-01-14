@@ -25,6 +25,14 @@ totalPixels: total number of pixels
 
 ## Public Functions
 
+### getCanvas()
+Returns an array of length 5:
+array[0]: An array of initialized pixels' ids
+array[1]: An array of initialized pixels' colors
+array[2]: An array of initialized pixels' prices
+array[3]: An array of initialized pixels' availableToBuy (bool)
+array[4]: An array of initialized pixels' availableToRent (bool)
+
 ### isBuyable(pixelId)
 Returns true if the given pixelId is buyable
 
