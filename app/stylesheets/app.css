@@ -3,6 +3,7 @@ body {
   margin-right: 25%;
   margin-top: 10%;
   font-family: "Open Sans", sans-serif;
+  background-color: #dddddd;
 }
 
 label {
@@ -49,4 +50,44 @@ h3 {
 
 .hint {
   color: #666;
+}
+
+.side-bar {
+    height: 50rem; /* Full-height: remove this if you want "auto" height */
+    width: 23rem; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 6rem; /* Stay at the top */
+    right: 3rem;
+    background-color: white;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
+.nav-bar-top {
+    height: 4rem; /* Full-height: remove this if you want "auto" height */
+    width: 100%; /* Set the width of the sidebar */
+    position: fixed;
+    left: 0rem;
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    background-color: white;
+    overflow-x: hidden; /* Disable horizontal scroll */
+
+}
+
+.nav-bar-title {
+  display: flex;
+  font-size: larger;
+  padding-left: 2rem;
+  padding-top: 1rem;
+}
+
+.nav-bar-user {
+  position: fixed;
+  right: 2rem;
+  top: 0;
+  font-size: medium;
+  padding-left: 2rem;
+  padding-top: 1rem;
 }
