@@ -10,9 +10,11 @@ class SideBar extends Component {
   constructor(props) {
     super(props)
     this.handleTabChange = this.handleTabChange.bind(this)
+    this.toggleHidden = this.toggleHidden.bind(this)
 
     this.state = {
-      tab: 1
+      tab: 1,
+      hidden: true,
     }
 
     /**
@@ -28,6 +30,10 @@ class SideBar extends Component {
 
   handleTabChange(tab) {
     this.setState({ tab })
+  }
+
+  toggleHidden() {
+    this.setState(prevState => { hidden: !prevState.hidden })
   }
 
   render() {
