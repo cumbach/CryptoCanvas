@@ -114,23 +114,29 @@ h3 {
   display: block;
   overflow: hidden;
   overflow-y: scroll;
-  border-radius: 5px;
+  border-radius: 2px;
   margin-bottom: 1rem;
 }
 
 .selected-pixel-header {
-  margin-top: -0.5rem;
-  padding: 0.5rem;
+  padding: 0.1rem;
   width: 100%;
   height: 1.5rem;
   border-bottom: 1px solid black;
   display: flex;
 }
 
+.selected-pixel-header div {
+  margin-left: 5px;
+}
+
 .expand-button {
   border: none;
   outline: none;
   float: right;
+  margin-left: 20px;
+  border: 1px solid grey;
+  border-radius: 50%;
 }
 
 .selected-pixel-area {
@@ -190,6 +196,7 @@ h3 {
   background-color: #2baae1;
   box-shadow: black 0px 2px 4px;
   color: white;
+  margin-top: 100px;
 }
 
 .button-line {
