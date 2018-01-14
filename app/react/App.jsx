@@ -46,7 +46,6 @@ class App extends Component {
     return (
       <div>
         <NavBarTop/>
-
         <Canvas
           pixels={pixels}
           changes={changes}
