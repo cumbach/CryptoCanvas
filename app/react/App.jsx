@@ -46,6 +46,12 @@ class App extends Component {
     return (
       <div>
         <NavBarTop/>
+        <SideBar
+          pixels={pixels}
+          changes={changes}
+          onChangePixel={this.onChangePixel}
+          onRemoveChange={this.handleRemoveChange}
+        />
         <Canvas
           pixels={pixels}
           changes={changes}
