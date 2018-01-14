@@ -16,9 +16,68 @@ const COMPANY_OWNED_PIXEL_TEMPLATE = {
     link: 'www.cryptocanvas.io',
     comment: 'BUY THIS PIXEL!!!',
     owner: COMPANY_ADDRESS,
-    price: 10,
     coolDownTime: 9999,
 }
+const CHANGED_PIXELS = {
+    0: {
+        color: 2,
+    },
+    17: {
+        color: 1,
+    },
+    18: {
+        color: 2,
+    },
+    19: {
+        color: 2,
+    },
+    20: {
+        color: 4,
+    },
+    10: {
+        color: 2,
+    },
+    87: {
+        color: 3,
+    },
+    88: {
+        color: 2,
+    },
+    89: {
+        color: 2,
+    },
+    90: {
+        color: 2,
+    },
+    35: {
+        color: 2,
+    },
+    59: {
+        color: 2,
+    },
+    67: {
+        color: 2,
+    },
+    68: {
+        color: 2,
+    },
+    69: {
+        color: 2,
+    },
+    99: {
+        color: 2,
+    },
+    91: {
+        color: 2,
+    },
+    94: {
+        color: 2,
+    },
+    66: {
+        color: 2,
+    },
+}
+
 export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
@@ -29,8 +88,12 @@ export default class CanvasCore extends Component {
         // this.refreshBalance = this.refreshBalance.bind(this)
         // this.sendCoin = this.sendCoin.bind(this)
         this.handleChange = this.handleChange.bind(this)
+<<<<<<< Updated upstream
         this.handleChangePixel = this.handleChangePixel.bind(this)
 
+=======
+        this.handleRemoveChange = this.handleRemoveChange.bind(this)
+>>>>>>> Stashed changes
         this.state = {
             status: null,
             amount: '',
@@ -38,7 +101,7 @@ export default class CanvasCore extends Component {
             /* ^^ metacoin*/
 
             pixels: [], // array of <Pixels>
-            changes: {}, // eg: {pixelId: { color: <new color> }}
+            changes: CHANGED_PIXELS, // eg: {pixelId: { color: <new color> }}
         }
 
         this.startUp()
@@ -109,8 +172,13 @@ export default class CanvasCore extends Component {
             } else {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
+<<<<<<< Updated upstream
                         id: i,
                         color: Math.floor(Math.random() * 10)
+=======
+                    id: i,
+                    price: Math.floor(Math.random() * 200),
+>>>>>>> Stashed changes
                     })
             }
         }
@@ -190,9 +258,20 @@ export default class CanvasCore extends Component {
         this.setState({ [e.target.id]: e.target.value })
     }
 
+    handleRemoveChange(id) {
+        const { changes } = this.state
+
+        const newChanges = { ...changes }
+        delete newChanges[id]
+        this.setState({
+            changes: newChanges
+        })
+    }
+
     render() {
         const {
             pixels,
+            changes,
 
             account,
             amount,
@@ -204,6 +283,8 @@ export default class CanvasCore extends Component {
                 <App
                     pixels={pixels}
                     onChangePixel={this.handleChangePixel}
+                    onRemoveChange={this.handleRemoveChange}
+                    changes={changes}
                 />
                 <br/>
                 <br/>
