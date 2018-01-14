@@ -101,7 +101,7 @@ class App extends Component {
       }
     });
 
-    const containerHeight = documentWidth * 0.6;
+    const containerHeight = documentHeight * 0.8;
 
     // MAIN below is a placeholder for <Canvas/>
     return (
@@ -111,34 +111,44 @@ class App extends Component {
         />
         <div
           style={{
+            'display': 'flex',
             'position': 'absolute',
             'top': documentHeight * 0.1 + 'px',
             'height': containerHeight + 'px',
-            'width': containerHeight + 'px'
+            'width': containerHeight * 1.6 + 'px'
           }}
         >
-          <Canvas
-            mode={mode}
-            pixels={displayPixels}
-            changes={relevantChanges}
-            currentColor={currentColor}
-            onAddTransaction={relevantAddFunction}
-            size={this.state.sideBarOpen ? containerHeight * 0.6 : containerHeight * 0.8}
-          />
+          <div
+            style={{
+              'display': 'flex',
+              'flexDirection': 'column',
+              'height': containerHeight + 'px',
+              'position': 'relative'
+            }}
+          >
+            <Canvas
+              mode={mode}
+              pixels={displayPixels}
+              changes={relevantChanges}
+              currentColor={currentColor}
+              onAddTransaction={relevantAddFunction}
+              size={mode !==0 ? containerHeight * .85 : containerHeight}
+            />
+            {mode !== 0 ? <ColorPicker
+              currentColor={currentColor}
+              onClick={this.handleChangeCurrentColor}
+            /> : null}
+          </div>
           <SideBar
             pixels={pixels}
             changes={relevantChanges}
             onRemoveTransaction={relevantRemoveFunction}
             onSetMode={this.handleSetMode}
-            size={containerHeight * 0.3}
+            size={containerHeight * 1.6 * 0.3}
             closeMenu={() => this.setState({ sideBarOpen: false })}
             openMenu={() => this.setState({ sideBarOpen: true })}
             isOpen={this.state.sideBarOpen}
           />
-          {false && mode !== 0 ? <ColorPicker
-            currentColor={currentColor}
-            onClick={this.handleChangeCurrentColor}
-          /> : null}
         </div>
       </div>
     )
