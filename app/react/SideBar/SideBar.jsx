@@ -48,11 +48,13 @@ class SideBar extends Component {
     const {
       changes,
       pixels,
+      buyPixels,
+      rentPixels,
     } = this.props
 
     const actions = {
-      1: () => console.log('buy'),
-      2: () => console.log('rent'),
+      1: buyPixels,
+      2: rentPixels,
       3: () => console.log('update')
     }
 

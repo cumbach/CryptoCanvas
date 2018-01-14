@@ -56,8 +56,12 @@ class App extends Component {
     const {
       pixels,
       buys,
-      rents
+      rents,
+      buyPixels,
+      rentPixels,
     } = this.props
+
+
 
     const {
       currentColor,
@@ -83,6 +87,8 @@ class App extends Component {
           setUpCanvas={this.setUpCanvas}
         />
         <SideBar
+          buyPixels={buyPixels}
+          rentPixels={rentPixels}
           pixels={pixels}
           changes={relevantChanges}
           onRemoveTransaction={relevantRemoveFunction}
