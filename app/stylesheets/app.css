@@ -57,13 +57,14 @@ h3 {
 }
 
 .nav-bar-top {
-  height: 2.5rem; /* Full-height: remove this if you want "auto" height */
+
+  height: 2.8rem; /* Full-height: remove this if you want "auto" height */
   width: 100%; /* Set the width of the sidebar */
   position: fixed;
   left: 0rem;
   z-index: 1; /* Stay on top */
   top: 0; /* Stay at the top */
-  background-color: white;
+  background-color: #3c4955;;
   overflow-x: hidden; /* Disable horizontal scroll */
   box-shadow: 0px 0px 2px;
 }
@@ -73,15 +74,17 @@ h3 {
   font-size: larger;
   padding-left: 1.25rem;
   padding-top: .613rem;
+  color: white;
 }
 
 .nav-bar-about {
   position: fixed;
-  right: 1.25rem;
+  right: 2.25rem;
   top: 0;
   font-size: medium;
   padding-left: 1.25rem;
   padding-top: .613rem;
+  color: white;
 }
 
 .tab {
@@ -180,8 +183,10 @@ h3 {
 }
 
 .action-button {
-  padding: 0.2rem;
+  padding: 1.2rem;
   border-radius: 5px;
+  font-size: 40px;
+  width: 200px;
 }
 
 .button-line {
