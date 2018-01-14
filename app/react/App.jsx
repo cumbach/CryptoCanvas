@@ -28,7 +28,26 @@ class App extends Component {
 
     this.state = {
       currentColor: '#222222',
-      mode: 0
+      mode: 0,
+      documentWidth:  800,
+      documentHeight: 182,
+      test: '',
+      sideBarOpen: false
+    }
+  }
+
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  updateDimensions() {
+    if(window.innerWidth < 500) {
+      this.setState({ documentWidth: 450, documentHeight: 102 });
+    } else {
+      // let update_width  = window.innerWidth-100;
+      // let update_height = Math.round(update_width/4.4);
+      this.setState({ documentWidth: window.innerWidth, documentHeight: window.innerHeight });
     }
   }
 
@@ -61,7 +80,9 @@ class App extends Component {
 
     const {
       currentColor,
-      mode
+      mode,
+      documentHeight,
+      documentWidth
     } = this.state
 
     const relevantChanges = mode===1 ? buys : mode===2 ? rents : {};
@@ -76,29 +97,45 @@ class App extends Component {
       }
     });
 
+    const containerHeight = documentWidth * 0.6;
+
     // MAIN below is a placeholder for <Canvas/>
     return (
       <div>
         <NavBarTop
           setUpCanvas={this.setUpCanvas}
         />
-        <SideBar
-          pixels={pixels}
-          changes={relevantChanges}
-          onRemoveTransaction={relevantRemoveFunction}
-          onSetMode={this.handleSetMode}
-        />
-        <Canvas
-          mode={mode}
-          pixels={displayPixels}
-          changes={relevantChanges}
-          currentColor={currentColor}
-          onAddTransaction={relevantAddFunction}
-        />
-        {mode !== 0 ? <ColorPicker
-          currentColor={currentColor}
-          onClick={this.handleChangeCurrentColor}
-        /> : null}
+        <div
+          style={{
+            'position': 'absolute',
+            'top': documentHeight * 0.1 + 'px',
+            'height': containerHeight + 'px',
+            'width': containerHeight + 'px'
+          }}
+        >
+          <Canvas
+            mode={mode}
+            pixels={displayPixels}
+            changes={relevantChanges}
+            currentColor={currentColor}
+            onAddTransaction={relevantAddFunction}
+            size={this.state.sideBarOpen ? containerHeight * 0.6 : containerHeight * 0.8}
+          />
+          <SideBar
+            pixels={pixels}
+            changes={relevantChanges}
+            onRemoveTransaction={relevantRemoveFunction}
+            onSetMode={this.handleSetMode}
+            size={containerHeight * 0.3}
+            closeMenu={() => this.setState({ sideBarOpen: false })}
+            openMenu={() => this.setState({ sideBarOpen: true })}
+            isOpen={this.state.sideBarOpen}
+          />
+          {false && mode !== 0 ? <ColorPicker
+            currentColor={currentColor}
+            onClick={this.handleChangeCurrentColor}
+          /> : null}
+        </div>
       </div>
     )
   }

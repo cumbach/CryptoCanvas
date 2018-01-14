@@ -47,12 +47,6 @@ h3 {
 }
 
 .side-bar {
-    height: 50rem; /* Full-height: remove this if you want "auto" height */
-    width: 23rem; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 6rem; /* Stay at the top */
-    right: 2rem;
     background-color: white;
     overflow-x: hidden; /* Disable horizontal scroll */
     box-shadow: 1px;
@@ -61,15 +55,14 @@ h3 {
 }
 
 .nav-bar-top {
-    height: 2.5rem; /* Full-height: remove this if you want "auto" height */
-    width: 100%; /* Set the width of the sidebar */
-    position: fixed;
-    left: 0rem;
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    background-color: white;
-    overflow-x: hidden; /* Disable horizontal scroll */
-
+  height: 2.5rem; /* Full-height: remove this if you want "auto" height */
+  width: 100%; /* Set the width of the sidebar */
+  position: fixed;
+  left: 0rem;
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  background-color: white;
+  overflow-x: hidden; /* Disable horizontal scroll */
 }
 
 .nav-bar-title {
@@ -169,9 +162,10 @@ h3 {
 .arrow {
   height: 2rem;
   width: 2rem;
-  color: white;
+  color: black;
   position: fixed;
   right: 0;
+  top: 50px;
   margin-left: 10px;
   cursor: pointer;
 }
