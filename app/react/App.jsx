@@ -31,13 +31,13 @@ class App extends Component {
     return (
       <div>
         <NavBarTop/>
-        <Canvas
+        <SideBar
           pixels={pixels}
           pixelSize={5}
           changes={changes}
           onChangePixel={this.handleChangePixel}
         />
-        <SideBar
+        <Canvas
           pixels={pixels}
           changes={changes}
           onChangePixel={this.handleChangePixel}
