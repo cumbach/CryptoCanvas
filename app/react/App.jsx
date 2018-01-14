@@ -23,7 +23,7 @@ class App extends Component {
 
     this.state = {
       currentColor: '#222222',
-      displayOnlyBuyable: true
+      buyModeEnabled: false
     }
   }
 
@@ -36,7 +36,7 @@ class App extends Component {
   }
 
   handleToggleBuyable() {
-    this.setState((prevState) => ({ displayOnlyBuyable: !prevState.displayOnlyBuyable }))
+    this.setState((prevState) => ({ buyModeEnabled: !prevState.buyModeEnabled }))
   }
 
   render() {
@@ -47,7 +47,7 @@ class App extends Component {
 
     const {
       currentColor,
-      displayOnlyBuyable
+      buyModeEnabled
     } = this.state
 
     // MAIN below is a placeholder for <Canvas/>
@@ -56,7 +56,7 @@ class App extends Component {
         <NavBarTop/>
 
         <Canvas
-          displayOnlyBuyable={displayOnlyBuyable}
+          buyModeEnabled={buyModeEnabled}
           pixels={pixels}
           changes={changes}
           currentColor={currentColor}
@@ -67,7 +67,7 @@ class App extends Component {
           onClick={this.handleChangeCurrentColor}
         />
         <ToggleButton
-          value={ displayOnlyBuyable }
+          value={ buyModeEnabled }
           onToggle={this.handleToggleBuyable}
         />
       </div>
