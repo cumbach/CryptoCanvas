@@ -64,15 +64,17 @@ export default class TransactionInfo extends Component {
     })
     const pixelIds = []
     const colors = []
+    let sumPrices = 0
     updatedPixels.forEach(pixel => {
       pixelIds.push(pixel.id)
       const colorId = COLORS.findIndex(c => (c === pixel.color))
       colors.push(colorId == -1 ? 99 : colorId)
+      sumPrices += pixel.price
     })
-    console.log('submitting:', pixelIds, colors, link, comment, price, '***')
+    console.log('submitting:', pixelIds, colors, link, comment, price, sumPrices, '***')
 
     if (selectedTab === 1) {
-      return [pixelIds, colors, link, comment, price]
+      return [pixelIds, colors, link, comment, price, sumPrices]
     } else {
       return [pixelIds, colors, link, comment]
     }
