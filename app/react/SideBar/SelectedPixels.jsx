@@ -40,11 +40,12 @@ class SmallSelected extends Component {
    */
   render() {
     const {
+      expand,
       color,
     } = this.props
 
     return (
-      <div className="selected-pixel" style={{ backgroundColor: color }} />
+      <div onClick={expand} className="selected-pixel" style={{ backgroundColor: color }} />
     )
   }
 }
@@ -94,6 +95,7 @@ export default class SelectedPixels extends Component {
         pixel={p}
         color={this.getColor(p)}
         key={p.id}
+        expand={this.expand}
       />
     )
   }
@@ -116,7 +118,7 @@ export default class SelectedPixels extends Component {
     return (
       <div className="selected-pixel-section">
         <div className="selected-pixel-header">
-          <div onClick={this.expand}>
+          <div>
             <span>Selected Pixels</span>
             <button
               className="expand-button"
