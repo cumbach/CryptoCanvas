@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
-import App from './App.jsx'
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 

@@ -31,7 +31,6 @@ class App extends Component {
     // MAIN below is a placeholder for <Canvas/>
     return (
       <div>
-        <TestComponent/>
         <NavBarTop/>
         <Canvas
           pixels={pixels}
