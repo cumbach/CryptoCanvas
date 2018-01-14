@@ -186,6 +186,9 @@ h3 {
   border-radius: 5px;
   font-size: 40px;
   width: 200px;
+  background-color: #2baae1;
+  box-shadow: black 0px 2px 4px;
+  color: white;
 }
 
 .button-line {
