@@ -54,7 +54,12 @@ class App extends Component {
     return (
       <div>
         <NavBarTop/>
-
+        <SideBar
+          pixels={pixels}
+          changes={changes}
+          onChangePixel={this.onChangePixel}
+          onRemoveChange={this.props.onRemoveChange}
+        />
         <Canvas
           buyModeEnabled={buyModeEnabled}
           pixels={pixels}
