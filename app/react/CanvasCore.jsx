@@ -110,7 +110,7 @@ export default class CanvasCore extends Component {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
                         id: i,
-                        color: 4
+                        color: '#a06a42'
                         // color: Math.floor(Math.random() * 10)
                     })
             }
