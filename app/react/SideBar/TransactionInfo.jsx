@@ -90,6 +90,18 @@ export default class TransactionInfo extends Component {
   }
 
   render() {
+      const {
+        changes,
+        pixels,
+        selectedTab,
+      } = this.props
+      const changeIds = Object.keys(changes);
+      let price = 0;
+      const total = changeIds.length;
+      if (total > 0 && selectedTab == 1) {
+        price = pixels[changeIds[0]].price;
+      }
+
       return (
         <div className="transaction-info">
           <form>
@@ -123,6 +135,22 @@ export default class TransactionInfo extends Component {
                 className="transaction-input"
               />
             </div>
+            {
+              (this.props.pixels.length > 0 && selectedTab <= 2) ? 
+              <div className="form-line"> 
+                <p> 
+                 Rate ({price} ETH) x {total} ..... 
+                 {price * total} ETH
+                </p>
+                <p>
+                  Gas ..... {price * total * 0.0136} ETH
+                </p>
+                <p>
+                  Total ..... {price * total * 1.0136} ETH
+                </p>
+              </div> : null
+            }
+            
             <div className="button-line">
               <button onClick={this.handleClick} className="action-button">
                 {ACTIONS[this.props.selectedTab]}
