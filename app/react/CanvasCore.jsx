@@ -35,6 +35,8 @@ export default class CanvasCore extends Component {
             status: null,
             amount: '',
             receiver: '',
+            /* ^^ metacoin*/
+
             pixels: [], // array of <Pixels>
             changes: {}, // eg: {pixelId: { color: <new color> }}
         }
@@ -79,8 +81,6 @@ export default class CanvasCore extends Component {
                 accounts: accs,
                 account: accs[0]
             })
-
-            // self.refreshBalance();
         })
     }
 
