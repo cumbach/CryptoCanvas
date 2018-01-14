@@ -1,21 +1,9 @@
 import React, {Component} from 'react'
 import Pixel from './Pixel.jsx';
 
-const COLOR_MAP = {
-  0: 'red',
-  1: 'blue',
-  3: 'green',
-  4: 'yellow',
-  5: 'orange',
-  6: 'black',
-  7: 'white',
-  8: 'grey',
-  9: 'brown'
-}
-
 export default class Canvas extends Component {
   /**
-  * displayOnlyBuyable: bool
+  * buyModeEnabled: bool
   * pixels: array[ pixel: object ]
   * onChangePixel: func
   * pixelSize: number
@@ -23,32 +11,75 @@ export default class Canvas extends Component {
   **/
   constructor(props) {
     super(props)
+
+    this.state = {
+      commentPosition: null,
+      commentText: null
+    }
+
+    this.handleMouseMove = this.handleMouseMove.bind(this)
+    this.handleSetComment = this.handleSetComment.bind(this)
+    this.handleMouseLeave = this.handleMouseLeave.bind(this)
+  }
+
+  selectPixel(id) {
+    const { currentColor, onChangePixel } = this.props;
+    onChangePixel(id, { color: currentColor })
+  }
+
+  handleMouseMove(e) {
+    this.setState({ commentPosition: [e.clientX, e.clientY] })
+  }
+
+  handleSetComment(comment) {
+    this.setState({ commentText: comment })
+  }
+
+  handleMouseLeave() {
+    this.setState({ commentPosition: null })
   }
 
   render() {
-    const { displayOnlyBuyable, pixels, pixelSize } = this.props;
+    const { buyModeEnabled, pixels, pixelSize } = this.props;
+    const { commentPosition, commentText } = this.state;
     const dimensions = Math.round(Math.sqrt(pixels.length));
 
     return (
-      <div style={{'height': '500px', 'width': '500px'}}>
+      <div
+        onMouseLeave={this.handleMouseLeave}
+        onMouseMove={this.handleMouseMove}
+        style={{
+          'height': '500px', 'width': '500px'
+        }}
+      >
+        {!buyModeEnabled && commentPosition ?
+          <div
+            style={{
+              'position': 'fixed',
+              'zIndex': '2',
+              'left': commentPosition[0],
+              'top': commentPosition[1],
+              'backgroundColor': 'white',
+              'padding': '2px 6px',
+              'border': '1px solid black',
+              'borderRadius': '5px'
+            }}
+          >
+            {commentText}
+          </div>
+        : null}
         {pixels.map((pixel, id) => {
           return <Pixel
             key={id}
             color={pixel.color}
             size={500/dimensions}
-            onClick={this.handleClick.bind(this, id)}
-            under={displayOnlyBuyable && !pixel.buyable}
-            over={displayOnlyBuyable && pixel.buyable}
-            selectable={!displayOnlyBuyable || pixel.buyable}
+            selectPixel={this.selectPixel.bind(this, id)}
+            setComment={this.handleSetComment.bind(this, pixel.comment)}
+            buyModeEnabled={buyModeEnabled}
+            buyable={pixel.buyable}
           />
         }, this)}
       </div>
     );
   }
-
-  handleClick(id) {
-    const { currentColor, onChangePixel } = this.props;
-    onChangePixel(id, { color: currentColor })
-  }
-
 }
