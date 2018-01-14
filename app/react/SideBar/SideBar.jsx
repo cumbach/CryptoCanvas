@@ -36,20 +36,12 @@ class SideBar extends Component {
       pixels,
     } = this.props
 
-    if (this.state.tab !== 1) {
-      return (
-        <div className="side-bar">
-          <SideBarTabs
-            selectedTab={this.state.tab}
-            onTabChange={this.handleTabChange}
-          />
-          <br/>
-          <br/>
-          <span style={{paddingLeft: '2rem'}}>Coming soon!!!</span>
-        </div>
-      )
-
+    const actions = {
+      1: () => console.log('buy'),
+      2: () => console.log('rent'),
+      3: () => console.log('update')
     }
+
     return (
       <div className="side-bar">
         <SideBarTabs
@@ -63,7 +55,12 @@ class SideBar extends Component {
           onRemoveChange={this.props.onRemoveChange}
         />
         <CoolDown/>
-        <TransactionInfo/>
+        <TransactionInfo
+          selectedTab={this.state.tab}
+          pixels={pixels}
+          changes={changes}
+          actions={actions}
+        />
         <button/>
       </div>
     )
