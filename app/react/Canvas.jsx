@@ -70,7 +70,7 @@ export default class Canvas extends Component {
               'backgroundColor': 'white',
               'padding': '2px 6px',
               'border': '1px solid black',
-              'borderRadius': '5px',
+              'borderRadius': '3px',
             }}
           >
             {commentText}

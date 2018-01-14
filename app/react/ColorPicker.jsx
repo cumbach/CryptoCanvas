@@ -22,9 +22,12 @@ export default class ColorPicker extends Component {
     return (
       <div
         style={{
-          'border': '1px solid black',
-          'borderRadius': '5px',
-          'marginTop': '10px'
+          'boxShadow': '0px 0px 5px black',
+          'borderRadius': '3px',
+          'marginTop': '10px',
+          'position': 'absolute',
+          'bottom': '0',
+          'width': '100%'
         }}
       >
         <div
