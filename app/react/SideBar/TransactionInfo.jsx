@@ -138,16 +138,9 @@ export default class TransactionInfo extends Component {
             {
               (this.props.pixels.length > 0 && selectedTab <= 2) ?
               <div className="form-line">
-                <p>
-                 Rate ({price} ETH) x {total} .....
-                 {price * total} ETH
-                </p>
-                <p>
-                  Gas ..... {price * total * 0.0136} ETH
-                </p>
-                <p>
-                  Total ..... {price * total * 1.0136} ETH
-                </p>
+                <div className="total-amount">
+                  Total Cost: {Math.round(price * total * 1.013600 * 100000)/100000} ETH
+                </div>
               </div> : null
             }
 

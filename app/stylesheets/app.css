@@ -98,6 +98,10 @@ h3 {
   border: none;
 }
 
+.total-amount {
+  font-size: 22px;
+}
+
 .selected-pixel-section {
   margin-top: 2rem;
   width: 80%;
