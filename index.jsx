@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './app/react/App.jsx'
+import CanvasCore from './app/react/CanvasCore.jsx'
 
 document.addEventListener("DOMContentLoaded", () => {
-  ReactDOM.render(<App />, document.getElementById('app'))
+  ReactDOM.render(<CanvasCore />, document.getElementById('app'))
 })
