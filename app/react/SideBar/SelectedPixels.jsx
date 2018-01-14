@@ -13,10 +13,14 @@ class BigSelected extends Component {
       color,
       pixel,
       onRemoveTransaction,
+      setHoverId,
+      removeHoverId,
     } = this.props
     return (
       <div className="big-selected">
         <SmallSelected
+          setHoverId={setHoverId}
+          removeHoverId={removeHoverId}
           color={color}
         />
         <div className="price-label">{pixel.price} eth</div> {/* showing old price here */}
@@ -42,10 +46,18 @@ class SmallSelected extends Component {
     const {
       expand,
       color,
+      setHoverId,
+      removeHoverId,
     } = this.props
 
     return (
-      <div onClick={expand} className="selected-pixel" style={{ backgroundColor: color }} />
+      <div
+        onClick={expand}
+        className="selected-pixel"
+        style={{ backgroundColor: color }}
+        onMouseEnter={setHoverId}
+        onMouseLeave={removeHoverId}
+      />
     )
   }
 }
@@ -78,25 +90,35 @@ export default class SelectedPixels extends Component {
   }
 
   getCell(p) {
-
+    const { hoverId, setHoverId } = this.props
+    const highlighted = hoverId === p.id
+    const setHoverIdFn = setHoverId && setHoverId.bind(null, p.id)
+    const removeHoverId = setHoverId && setHoverId.bind(null, null)
+    const className = highlighted ? 'highlighted-pixel' : ''
     if (this.state.expanded) {
       return (
         <BigSelected
+          setHoverId={setHoverIdFn}
+          removeHoverId={removeHoverId}
           pixel={p}
           color={this.getColor(p)}
           key={p.id}
           onRemoveTransaction={this.props.onRemoveTransaction.bind(null, p.id)}
-        />
-      )
-    }
+          className={className}
+          />
+        )
+      }
 
-    return (
-      <SmallSelected
-        pixel={p}
-        color={this.getColor(p)}
-        key={p.id}
-        expand={this.expand}
-      />
+      return (
+        <SmallSelected
+          setHoverId={setHoverIdFn}
+          removeHoverId={removeHoverId}
+          pixel={p}
+          color={this.getColor(p)}
+          key={p.id}
+          expand={this.expand}
+          className={className}
+        />
     )
   }
 
@@ -110,8 +132,9 @@ export default class SelectedPixels extends Component {
     const {
       changes,
       pixels,
+      hoverId,
     } = this.props
-    // debugger
+
     const sorted = (changes && pixels && pixels.length) ? Object.keys(changes).sort((a, b) => pixels[a].sortIndex - pixels[b].sortIndex).map(p => pixels[p]) : []
 
 

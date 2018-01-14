@@ -23,7 +23,7 @@ export default class Canvas extends Component {
   }
 
   selectPixel(id) {
-    const { currentColor, onAddTransaction } = this.props;
+    const { currentColor, onAddTransaction } = this.props
     onAddTransaction(id, { color: currentColor })
   }
 
@@ -31,8 +31,11 @@ export default class Canvas extends Component {
     this.setState({ commentPosition: [e.clientX, e.clientY] })
   }
 
-  handleSetComment(comment) {
-    this.setState({ commentText: comment })
+  handleSetComment(pixel, off) {
+    if (off) {
+      this.setState({ commentText: null})
+    }
+    this.setState({ commentText: pixel.comment })
   }
 
   handleMouseLeave() {
@@ -40,7 +43,7 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const { mode, pixels, pixelSize } = this.props;
+    const { mode, pixels, pixelSize, setHoverId } = this.props;
     const { commentPosition, commentText } = this.state;
     const dimensions = Math.round(Math.sqrt(pixels.length));
 
@@ -74,10 +77,12 @@ export default class Canvas extends Component {
             color={pixel.color}
             size={500/dimensions}
             selectPixel={this.selectPixel.bind(this, id)}
-            setComment={this.handleSetComment.bind(this, pixel.comment)}
+            setComment={this.handleSetComment.bind(this, pixel)}
             mode={mode}
             buyable={pixel.buyable}
             rentable={pixel.rentable}
+            setHoverId={setHoverId}
+            id={id}
           />
         }, this)}
       </div>

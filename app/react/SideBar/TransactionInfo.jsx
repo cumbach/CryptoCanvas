@@ -88,6 +88,7 @@ export default class TransactionInfo extends Component {
   }
 
   render() {
+      const { selectedTab } = this.props
       return (
         <div className="transaction-info">
           <form>
@@ -114,17 +115,21 @@ export default class TransactionInfo extends Component {
               placeholder=""
               className="transaction-input"
             />
-            <label>
-              Price
-            </label>
-            <input
-              value={this.state.price}
-              onChange={this.handleChange}
-              type="text"
-              id="price"
-              placeholder=""
-              className="transaction-input"
-            />
+            {(selectedTab && selectedTab === 1) ? (
+              <div>
+                <label>
+                  Price
+                </label>
+                <input
+                  value={this.state.price}
+                  onChange={this.handleChange}
+                  type="text"
+                  id="price"
+                  placeholder=""
+                  className="transaction-input"
+                />
+              </div>
+            ) : null}
 
             <button onClick={this.handleClick} className="action-button">
               {ACTIONS[this.props.selectedTab]}

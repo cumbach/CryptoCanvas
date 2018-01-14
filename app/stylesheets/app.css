@@ -199,3 +199,8 @@ h3 {
   height: 1rem;
   margin: 0.5rem;
 }
+
+.highlighted-pixel {
+  border: 10px solid yellow;
+  color: white;
+}

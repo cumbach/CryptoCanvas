@@ -16,6 +16,7 @@ class App extends Component {
     this.handleChangeCurrentColor = this.handleChangeCurrentColor.bind(this)
     this.handleSetMode = this.handleSetMode.bind(this)
     this.setUpCanvas = this.setUpCanvas.bind(this)
+    this.setHoverId = this.setHoverId.bind(this)
     /**
           pixels={pixels}
           onAddBuy={this.handleAddBuy}
@@ -28,7 +29,8 @@ class App extends Component {
 
     this.state = {
       currentColor: '#222222',
-      mode: 0
+      mode: 0,
+      hoverId: null,
     }
   }
 
@@ -52,6 +54,14 @@ class App extends Component {
     this.setState({ mode })
   }
 
+  setHoverId(pixelId) {
+    if (!pixelId && pixelId !== 0) {
+      this.setState({hoverId: null})
+    } else {
+      this.setState({hoverId: pixelId})
+    }
+  }
+
   render() {
     const {
       pixels,
@@ -65,7 +75,8 @@ class App extends Component {
 
     const {
       currentColor,
-      mode
+      mode,
+      hoverId,
     } = this.state
 
     const relevantChanges = mode===1 ? buys : mode===2 ? rents : {};
@@ -93,6 +104,8 @@ class App extends Component {
           changes={relevantChanges}
           onRemoveTransaction={relevantRemoveFunction}
           onSetMode={this.handleSetMode}
+          hoverId={hoverId}
+          setHoverId={this.setHoverId}
         />
         <Canvas
           mode={mode}
@@ -100,6 +113,7 @@ class App extends Component {
           changes={relevantChanges}
           currentColor={currentColor}
           onAddTransaction={relevantAddFunction}
+          setHoverId={this.setHoverId}
         />
         <ColorPicker
           currentColor={currentColor}
