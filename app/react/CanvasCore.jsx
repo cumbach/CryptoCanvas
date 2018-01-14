@@ -8,17 +8,17 @@ import App from './App.jsx'
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-// const TOTAL_PIXEL_COUNT = 10000
-// const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
-// const COMPANY_ADDRESS = 'company address'
-// const COMPANY_OWNED_PIXEL_TEMPLATE = {
-//     color: 4,
-//     link: 'www.cryptocanvas.io',
-//     comment: 'BUY THIS PIXEL!!!',
-//     owner: COMPANY_ADDRESS,
-//     price: 10,
-//     coolDownTime: 9999,
-// }
+const TOTAL_PIXEL_COUNT = 10000
+const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
+const COMPANY_ADDRESS = 'company address'
+const COMPANY_OWNED_PIXEL_TEMPLATE = {
+    color: 4,
+    link: 'www.cryptocanvas.io',
+    comment: 'BUY THIS PIXEL!!!',
+    owner: COMPANY_ADDRESS,
+    price: 10,
+    coolDownTime: 9999,
+}
 export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
@@ -57,9 +57,9 @@ export default class CanvasCore extends Component {
         this.startUp()
 
         // FOR FAKE API
-        // this.getAllPixels().then(pixels => {
-        //     this.intializePixels(pixels)
-        // })
+        this.getAllPixels().then(pixels => {
+            this.intializePixels(pixels)
+        })
     }
 
     componentDidMount() {
@@ -232,74 +232,74 @@ export default class CanvasCore extends Component {
 
 
     // FAKED API DATA
-    // fakeInitializePixels(fetchedPixels) {
-    //     const pixels = []
-    //     let pixelMap
-    //     if (fetchedPixels && fetchedPixels.length) {
-    //         pixelMap = fetchedPixels.reduce((acc, pixel) => {
-    //             return ({
-    //                 ...acc,
-    //                 [pixel.id]: pixel,
-    //             })
-    //         }, {})
-    //     } else pixelMap = {}
-    //
-    //     //Can incorporate a redundant check with getTotalPixels() later
-    //
-    //     for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
-    //         if (pixelMap[i]) {
-    //             pixels.push(pixelMap[i])
-    //         } else {
-    //             pixels.push({
-    //                 ...COMPANY_OWNED_PIXEL_TEMPLATE,
-    //                     id: i,
-    //                     color: Math.floor(Math.random() * 10)
-    //                 })
-    //         }
-    //     }
-    //
-    //     this.setState({ pixels })
-    // }
+    intializePixels(fetchedPixels) {
+        const pixels = []
+        let pixelMap
+        if (fetchedPixels && fetchedPixels.length) {
+            pixelMap = fetchedPixels.reduce((acc, pixel) => {
+                return ({
+                    ...acc,
+                    [pixel.id]: pixel,
+                })
+            }, {})
+        } else pixelMap = {}
+
+        //Can incorporate a redundant check with getTotalPixels() later
+
+        for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
+            if (pixelMap[i]) {
+                pixels.push(pixelMap[i])
+            } else {
+                pixels.push({
+                    ...COMPANY_OWNED_PIXEL_TEMPLATE,
+                        id: i,
+                        color: Math.floor(Math.random() * 10)
+                    })
+            }
+        }
+
+        this.setState({ pixels })
+    }
 
 
 
     // FAKED API DATA
-    // fakeGetAllPixels() {
-    //     //Mocking the data received from the SmarContract for now
-    //     // SHOULD ALWAYS RETURN A PROMISE!
-    //     return new Promise(resolve => {
-    //         setTimeout(resolve, 500)
-    //         return [
-    //             {
-    //                 id: 27,
-    //                 color: 0,
-    //                 link: 'https://www.google.com',
-    //                 comment: 'hi mom',
-    //                 owner: 'addressowner1',
-    //                 price: 27, // ?Fraction of Ether?
-    //                 coolDownTime: 200, //hours
-    //             },
-    //             {
-    //                 id: 1,
-    //                 color: 2,
-    //                 link: 'https://www.yahoo.com',
-    //                 comment: 'crytpomania',
-    //                 owner: 'addressowner2',
-    //                 price: 100, // ?Fraction of Ether?
-    //                 coolDownTime: 300, //hours
-    //             },
-    //             {
-    //                 id: 27,
-    //                 color: 4,
-    //                 link: 'https://www.google.com',
-    //                 comment: 'hello world',
-    //                 owner: 'addressowner3',
-    //                 price: 50, // ?Fraction of Ether?
-    //                 coolDownTime: 100, //hours
-    //             },
-    //         ]
-    //     })
-    // }
+    getAllPixels() {
+        //Mocking the data received from the SmarContract for now
+        // SHOULD ALWAYS RETURN A PROMISE!
+        return new Promise(resolve => {
+            setTimeout(resolve, 500)
+            return [
+                {
+                    id: 27,
+                    color: 0,
+                    link: 'https://www.google.com',
+                    comment: 'hi mom',
+                    owner: 'addressowner1',
+                    price: 27, // ?Fraction of Ether?
+                    coolDownTime: 200, //hours
+                },
+                {
+                    id: 1,
+                    color: 2,
+                    link: 'https://www.yahoo.com',
+                    comment: 'crytpomania',
+                    owner: 'addressowner2',
+                    price: 100, // ?Fraction of Ether?
+                    coolDownTime: 300, //hours
+                },
+                {
+                    id: 27,
+                    color: 4,
+                    link: 'https://www.google.com',
+                    comment: 'hello world',
+                    owner: 'addressowner3',
+                    price: 50, // ?Fraction of Ether?
+                    coolDownTime: 100, //hours
+                },
+            ]
+        })
+    }
 
 
 
