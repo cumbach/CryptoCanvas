@@ -413,6 +413,8 @@ export default class CanvasCore extends Component {
                   onRemoveRent={this.handleRemoveRent}
                   buys={buys}
                   rents={rents}
+                  buyPixels={this.buyPixels}
+                  rentPixels={this.rentPixels}
                 />
                 <h1 onClick={this.totalPixels}>totalPixels:{this.state.totalPixels}</h1><br/>
                 <h1 onClick={this.defaultPrice}>defaultPrice:{this.state.defaultPrice}</h1><br/>
