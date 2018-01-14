@@ -24,12 +24,6 @@ class SideBar extends Component {
      * onRemoveChange fn ()  (deletes change)
      *
      */
-    pixels = { pixels }
-    changes = { changes }
-    onChangePixel = { this.handleChangePixel }
-    onRemoveChange = { this.props.onRemoveChange }
-
-
   }
 
   handleTabChange(tab) {

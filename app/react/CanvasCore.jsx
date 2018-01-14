@@ -234,14 +234,6 @@ export default class CanvasCore extends Component {
         this.getPrice();
     }
 
-    handleChangePixel({ id, field, newValue }) {
-        this.setState({
-            changes: {
-                [field]: value,
-            }
-        })
-    }
-
     //ALL CODE BELOW HERE RE: METACOIN
     setStatus(status) {
         this.setState({ status })
