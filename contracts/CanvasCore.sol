@@ -2,7 +2,7 @@ pragma solidity ^0.4.17;
 
 import "./Ownable.sol";
 
-contract CanvasCore {
+contract CanvasCore is Ownable {
 
     struct Pixel {
         address owner;
@@ -21,8 +21,15 @@ contract CanvasCore {
         bool inMarket;
     }
 
+    address creator;
+    
+    // Default set for  the cooldown times for buying and selling. 
+    // This can be modified in onlyOwner functions.
+    uint buyCooldownTime = 1 weeks;
+    uint rentCooldownTime = 1 days;
+
     /// Excess amount paid by the users is kept here and can be withdrawn.
-    mapping (address => uint) withdrawAmount;
+    mapping (address => uint) amountToWithdraw;
     /// Total number of pixels
     uint public totalPixels;
     /// Default values for all pixelIds initially created and owned by the creators
@@ -45,15 +52,24 @@ contract CanvasCore {
             uint _defaultPrice)
             public
     {
-            totalPixels = _totalPixels;
-            defaultPrice = _defaultPrice; // in wei
-            defaultOwner = msg.sender; // pixels are owned by contract creator by default
-            defaultBuyable = _defaultBuyable;
+        creator = msg.sender;
+        totalPixels = _totalPixels;
+        defaultPrice = _defaultPrice; // in wei
+        defaultOwner = msg.sender; // pixels are owned by contract creator by default
+        defaultBuyable = _defaultBuyable;
     }
 
     modifier isValidPixelId(uint _pixelId) {
         require(_pixelId >= 0 && _pixelId < totalPixels);
         _;
+    }
+
+    function setBuyCooldownTime(uint _buyCooldownTime) external onlyOwner {
+        buyCooldownTime = _buyCooldownTime;
+    }
+    
+    function setRentCooldownTime(uint _rentCooldownTime) external onlyOwner {
+        rentCooldownTime = _rentCooldownTime;
     }
 
     /// Returns true if the given pixelId is buyable
@@ -98,18 +114,21 @@ contract CanvasCore {
         return defaultOwner;
     }
 
+    function getStaleTime(uint _pixelId) public view returns (uint, uint) {
+        return (pixels[_pixelId].staleTime, now);
+    }
+
     /// Takes in an array of pixelIds to buy. Also accepts payment.
     /// Buys and charges user for all pixels buyable.
     /// Sets that user as the owner and current leaser for those pixelIds
-    /// Puts the remaining money in a withdrawAmount table which the user
+    /// Puts the remaining money in a amountToWithdraw table which the user
     /// can get back his excess cash.
     function buyPixels(
         uint[] _pixelIds,
         uint32[] _colors,
         string _url,
         string _comment,
-        uint128 _price,
-        uint64 _cooldownTime)
+        uint128 _price)
         public
         payable
     {
@@ -127,25 +146,75 @@ contract CanvasCore {
         require(amount >= totalCost);
 
         // Sets the excess funds in a withdrawAmount mapping.
-        withdrawAmount[msg.sender] += amount - totalCost;
+        amountToWithdraw[msg.sender] += (amount - totalCost);
 
         // Sets the staleTime, which is the time when the pixel is up for renting
-        uint64 _staleTime = _cooldownTime + uint64(now);
+        uint64 _staleTime = uint64(buyCooldownTime + now);
 
         // Updates the owner and metadata.
         for (i = 0; i < _pixelIds.length; i++) {
             Pixel storage pixel = pixels[_pixelIds[i]];
             if (isBuyable(pixId)) {
+                amountToWithdraw[getOwner(pixId)] += getPrice(pixId);
                 pixel.owner = msg.sender;
                 pixel.leaser = msg.sender;
                 pixel.color = _colors[i];
                 pixel.price = _price;
-                pixel.staleTime = _staleTime ;
+                pixel.staleTime = _staleTime;
                 pixel.url = _url;
                 pixel.comment = _comment;
                 if (pixel.inMarket == false)
                     setPixels++;
                 pixel.inMarket = true;
+            }
+        }
+    }
+
+    /// Takes in an array of pixelIds to rent. Also accepts payment.
+    /// Rents and charges user for all pixels buyable.
+    /// Sets that user as the current leaser for those pixelIds
+    /// Puts the remaining money in a amountToWithdraw table which the user
+    /// can get back his excess cash.
+    function rentPixels(
+        uint[] _pixelIds,
+        uint32[] _colors,
+        string _url,
+        string _comment)
+        public
+        payable
+    {
+        // This block checks if the sender provided enough capital for the purchase.
+        uint totalCost = 0;
+        uint i;
+        uint pixId;
+        for (i = 0; i < _pixelIds.length; i++) {
+            pixId = _pixelIds[i];
+            if (isRentable(pixId)) {
+                totalCost += getPrice(pixId);
+            }
+        }
+        uint amount = msg.value;
+        require(amount >= totalCost);
+
+        // Sets the excess funds in a withdrawAmount mapping.
+        amountToWithdraw[msg.sender] += (amount - totalCost);
+        // Sets the staleTime, which is the time when the pixel is up for renting
+        uint64 _rentedUntilTime = uint64(rentCooldownTime + now);
+
+        // Updates the owner and metadata.
+        for (i = 0; i < _pixelIds.length; i++) {
+            Pixel storage pixel = pixels[_pixelIds[i]];
+            if (isRentable(pixId)) {
+                // Splits the price 50-50 between the current owner and 
+                // contract creator
+                amountToWithdraw[getOwner(pixId)] += getPrice(pixId) / 2;
+                amountToWithdraw[creator] += (getPrice(pixId) + 1) / 2;
+                
+                pixel.leaser = msg.sender;
+                pixel.color = _colors[i];
+                pixel.staleTime = _rentedUntilTime;
+                pixel.url = _url;
+                pixel.comment = _comment;
             }
         }
     }
@@ -173,5 +242,13 @@ contract CanvasCore {
         }
 
         return (_pixelIds, _colors, _prices, _buyable, _rentable);
+    }
+    
+    function withdraw() public {
+        uint amount = amountToWithdraw[msg.sender];
+        amountToWithdraw[msg.sender] = 0;
+
+        if (!msg.sender.send(amount))
+            amountToWithdraw[msg.sender] = amount;
     }
 }
