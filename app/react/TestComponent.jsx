@@ -3,12 +3,10 @@ import React, { Component } from 'react'
 import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
-import App from './App.jsx'
-
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-const TOTAL_PIXEL_COUNT = 10000
+const TOTAL_PIXEL_COUNT = 100
 const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
 const COMPANY_ADDRESS = 'company address'
 const COMPANY_OWNED_PIXEL_TEMPLATE = {
@@ -22,25 +20,22 @@ const COMPANY_OWNED_PIXEL_TEMPLATE = {
 export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
-
         this.startUp = this.startUp.bind(this)
         this.testCode = this.testCode.bind(this)
+        this.checkPublicVars = this.checkPublicVars.bind(this)
+        this.isBuyable = this.isBuyable.bind(this)
         this.getPrice = this.getPrice.bind(this)
-        // this.refreshBalance = this.refreshBalance.bind(this)
-        // this.sendCoin = this.sendCoin.bind(this)
+        this.getOwner = this.getOwner.bind(this)
+        this.getLeaser = this.getLeaser.bind(this)
+        this.buyPixels = this.buyPixels.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleChangePixel = this.handleChangePixel.bind(this)
-
         this.state = {
             status: null,
             amount: '',
             receiver: '',
-            /* ^^ metacoin*/
-
             pixels: [], // array of <Pixels>
             changes: {}, // eg: {pixelId: { color: <new color> }}
         }
-
         this.startUp()
         this.getAllPixels().then(pixels => {
             this.intializePixels(pixels)
@@ -109,8 +104,7 @@ export default class CanvasCore extends Component {
             } else {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
-                        id: i,
-                        color: Math.floor(Math.random() * 10)
+                    id: i,
                     })
             }
         }
@@ -155,16 +149,10 @@ export default class CanvasCore extends Component {
         })
     }
 
-    handleChangePixel(id, changes) {
-        this.setState((prevState, props) => {
-            return {
-                changes: {
-                    ...prevState.changes,
-                    [id]: {
-                        ...prevState.changes[id],
-                        ...changes
-                    }
-                }
+    handleChangePixel({ id, field, newValue }) {
+        this.setState({
+            changes: {
+                [field]: value,
             }
         })
     }
@@ -174,15 +162,73 @@ export default class CanvasCore extends Component {
         this.setState({ status })
     }
 
-    getPrice() {
-      console.log('getPrice');
+    checkPublicVars() {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.getPrice(5);
+        return canvas.totalPixels;
+      }).then(totalPixels => {
+        console.log('checkPublicVars');
+        console.log(totalPixels);
+      });
+    }
+
+    isBuyable(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.isBuyable(pixelId);
+      }).then(buyable => {
+        console.log(pixelId + ' isBuyable:');
+        console.log(buyable);
+      });
+    }
+
+    getPrice(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getPrice(pixelId);
       }).then(price => {
+        console.log(pixelId + ' getPrice:');
         console.log(price);
       });
+    }
 
+    getOwner(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getOwner(pixelId);
+      }).then(owner => {
+        console.log(pixelId + ' getOwner:');
+        console.log(owner);
+      });
+    }
+
+    getLeaser(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getLeaser(pixelId);
+      }).then(leaser => {
+        console.log(pixelId + ' getLeaser:');
+        console.log(leaser);
+      });
+    }
+
+    buyPixels(pixelIdsArray, colorsArray, url, comment, price) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.buyPixels(pixelIdsArray, colorsArray, url, comment, price);
+      }).then(idk => {
+        console.log('buyPixels: ');
+        console.log(idk);
+      });
+    }
+
+    testCode() {
+      // this.checkPublicVars();
+      this.getPrice(5);
+      this.isBuyable(5);
+      this.getOwner(5);
+      this.getLeaser(5)
+      // this.buyPixels([4,5,6], ['#ff0000', '#ff0000', '#ff0000'], 'www.x.com', 'comment', 100);
     }
 
     handleChange(e) {
@@ -199,59 +245,7 @@ export default class CanvasCore extends Component {
             receiver,
         } = this.state
 
-        return (
-            <div>
-                <App
-                    pixels={pixels}
-                    onChangePixel={this.handleChangePixel}
-                />
-                <br/>
-                <br/>
-                <br/>
-                --------------------------------------------------------
-                ^^ Our app above
-                legacy Megacoin render below ~
-                --------------------------------------------------------
-                <h1>CryptoCanvasjsx</h1>
-                <h2>Example Truffle Dapp</h2>
-                <h3>
-                    You have <span className="black"><span id="balance">{this.state.balance}</span> META</span></h3>
-                <br/>
-                <h1>Test Code</h1>
-                <form>
-                    <label>
-                        Amount:
-                    </label>
-                    <input
-                        value={this.state.amount}
-                        onChange={this.handleChange}
-                        type="text"
-                        id="amount"
-                        placeholder="e.g., 95"
-                    />
-                    <br/>
-                    <br/>
-                    <label>
-                        To Address:
-                    </label>
-                    <input
-                        value={this.state.receiver}
-                        onChange={this.handleChange}
-                        type="text"
-                        id="receiver"
-                        placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"
-                    />
-                </form>
-                <br/><br/>
-                <button id="send" onClick={this.testCode}>
-                    Send MetaCoin
-                </button>
-                <br/><br/>
-                <span id="status"></span>
-                <br/>
-                <span className="hint"><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</span>
-            </div>
-        )
+        return <h1 onClick={this.testCode}>CLICK THIS TO RUN TEST CODE</h1>
     }
 
 }
