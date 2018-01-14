@@ -8,7 +8,7 @@ import App from './App.jsx'
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-const TOTAL_PIXEL_COUNT = 100
+const TOTAL_PIXEL_COUNT = 10000
 const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
 const COMPANY_ADDRESS = 'company address'
 const COMPANY_OWNED_PIXEL_TEMPLATE = {
