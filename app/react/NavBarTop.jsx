@@ -9,7 +9,7 @@ export default class NavBarTop extends Component {
       return (
         <div onClick={this.props.setUpCanvas} className="nav-bar-top">
             <div className="nav-bar-title">CryptoCanvas</div>
-            <div className="nav-bar-user">Johnny Canvas</div>
+            <div className="nav-bar-about">About</div>
         </div>
       )
     }

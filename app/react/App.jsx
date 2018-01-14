@@ -31,6 +31,25 @@ class App extends Component {
       currentColor: '#222222',
       mode: 0,
       hoverId: null,
+      documentWidth:  800,
+      documentHeight: 182,
+      test: '',
+      sideBarOpen: false
+    }
+  }
+
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  updateDimensions() {
+    if(window.innerWidth < 500) {
+      this.setState({ documentWidth: 450, documentHeight: 102 });
+    } else {
+      // let update_width  = window.innerWidth-100;
+      // let update_height = Math.round(update_width/4.4);
+      this.setState({ documentWidth: window.innerWidth, documentHeight: window.innerHeight });
     }
   }
 
@@ -77,6 +96,8 @@ class App extends Component {
       currentColor,
       mode,
       hoverId,
+      documentHeight,
+      documentWidth
     } = this.state
 
     const relevantChanges = mode===1 ? buys : mode===2 ? rents : {};
@@ -91,34 +112,60 @@ class App extends Component {
       }
     });
 
+    const containerHeight = documentHeight * 0.8;
+
     // MAIN below is a placeholder for <Canvas/>
     return (
       <div>
         <NavBarTop
           setUpCanvas={this.setUpCanvas}
         />
-        <SideBar
-          buyPixels={buyPixels}
-          rentPixels={rentPixels}
-          pixels={pixels}
-          changes={relevantChanges}
-          onRemoveTransaction={relevantRemoveFunction}
-          onSetMode={this.handleSetMode}
-          hoverId={hoverId}
-          setHoverId={this.setHoverId}
-        />
-        <Canvas
-          mode={mode}
-          pixels={displayPixels}
-          changes={relevantChanges}
-          currentColor={currentColor}
-          onAddTransaction={relevantAddFunction}
-          setHoverId={this.setHoverId}
-        />
-        <ColorPicker
-          currentColor={currentColor}
-          onClick={this.handleChangeCurrentColor}
-        />
+        <div
+          style={{
+            'display': 'flex',
+            'position': 'absolute',
+            'top': documentHeight * 0.1 + 'px',
+            'height': containerHeight + 'px',
+            'width': containerHeight * 1.6 + 'px'
+          }}
+        >
+          <div
+            style={{
+              'display': 'flex',
+              'flexDirection': 'column',
+              'height': containerHeight + 'px',
+              'position': 'relative'
+            }}
+          >
+            <Canvas
+              mode={mode}
+              pixels={displayPixels}
+              changes={relevantChanges}
+              currentColor={currentColor}
+              onAddTransaction={relevantAddFunction}
+              setHoverId={this.setHoverId}
+              size={mode !==0 ? containerHeight * .85 : containerHeight}
+            />
+            {mode !== 0 ? <ColorPicker
+              currentColor={currentColor}
+              onClick={this.handleChangeCurrentColor}
+            /> : null}
+          </div>
+          <SideBar
+            pixels={pixels}
+            buyPixels={buyPixels}
+            rentPixels={rentPixels}
+            changes={relevantChanges}
+            onRemoveTransaction={relevantRemoveFunction}
+            onSetMode={this.handleSetMode}
+            size={containerHeight * 1.6 * 0.3}
+            closeMenu={() => this.setState({ sideBarOpen: false })}
+            openMenu={() => this.setState({ sideBarOpen: true })}
+            isOpen={this.state.sideBarOpen}
+            hoverId={hoverId}
+            setHoverId={this.setHoverId}
+          />
+        </div>
       </div>
     )
   }

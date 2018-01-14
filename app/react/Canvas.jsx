@@ -7,7 +7,9 @@ export default class Canvas extends Component {
     changes={relevantChanges}
     currentColor={currentColor}
     onAddTransaction={relevantAddFunction}
-  * mode: int (may be a string in the future) 0:view, 1:buy, 2:rent, 3:manage
+    mode: int (may be a string in the future) 0:view, 1:buy, 2:rent, 3:manage
+    documentHeight
+    documentWidth
   **/
   constructor(props) {
     super(props)
@@ -43,16 +45,22 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const { mode, pixels, pixelSize, setHoverId } = this.props;
+    const { documentHeight, documentWidth, mode, pixels, pixelSize, setHoverId } = this.props;
     const { commentPosition, commentText } = this.state;
-    const dimensions = Math.round(Math.sqrt(pixels.length));
+    const pixelDimension = Math.round(Math.sqrt(pixels.length));
+
+    const canvasDimension = documentWidth * .4;
+
 
     return (
       <div
         onMouseLeave={this.handleMouseLeave}
         onMouseMove={this.handleMouseMove}
         style={{
-          'height': '500px', 'width': '500px'
+          'height': this.props.size + 'px',
+          'width': this.props.size + 'px',
+          'float': 'left',
+          'boxShadow': '0px 0px 3px black'
         }}
       >
         { mode===0 && commentPosition ?
@@ -65,17 +73,18 @@ export default class Canvas extends Component {
               'backgroundColor': 'white',
               'padding': '2px 6px',
               'border': '1px solid black',
-              'borderRadius': '5px'
+              'borderRadius': '3px',
             }}
           >
             {commentText}
           </div>
         : null}
         {pixels.map((pixel, id) => {
+          console.log(this.props.size, pixelDimension)
           return <Pixel
             key={id}
             color={pixel.color}
-            size={500/dimensions}
+            size={this.props.size/pixelDimension}
             selectPixel={this.selectPixel.bind(this, id)}
             setComment={this.handleSetComment.bind(this, pixel)}
             mode={mode}

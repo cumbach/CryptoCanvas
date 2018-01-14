@@ -42,9 +42,7 @@ contract CanvasCore is Ownable {
 
     /// A dynamic list of pixels.
     mapping(uint => Pixel) pixels;
-
-    /// The number of pixels which are in market
-    uint setPixels;
+    uint[] pixelsInMarket; 
 
     /// Sets up the canvas with the total pixels (side * side)
     /// the default state of all pixels (all buyable or all unbuyable)
@@ -182,8 +180,9 @@ contract CanvasCore is Ownable {
                 pixel.staleTime = _staleTime;
                 pixel.url = _url;
                 pixel.comment = _comment;
-                if (pixel.inMarket == false)
-                    setPixels++;
+                if (pixel.inMarket == false) {
+                    pixelsInMarket.push(pixId);
+                }
                 pixel.inMarket = true;
             }
         }
@@ -204,8 +203,6 @@ contract CanvasCore is Ownable {
     {
         uint i;
         uint pixId;
-
-        // Sets the staleTime, which is the time when the pixel is up for renting
         uint64 _rentedUntilTime = uint64(rentCooldownTime + now);
 
         // Updates the owner and metadata.
@@ -228,22 +225,21 @@ contract CanvasCore is Ownable {
     // not undergone any transaction and are owned by the creator
     // Returns <= totalPixels elements in each element
     function getCanvas() external view returns (uint[], uint[], uint[], bool[], bool[]) {
+        uint setPixels = pixelsInMarket.length;
         uint[] memory _pixelIds = new uint[](setPixels);
         uint[] memory _colors = new uint[](setPixels);
         uint[] memory _prices = new uint[](setPixels);
         bool[] memory _buyable = new bool[](setPixels);
         bool[] memory  _rentable = new bool[](setPixels);
 
-        uint counter = 0;
-        for (uint i = 1; i <= totalPixels; i++) {
-            if (pixels[i].owner > 0) {
-                _pixelIds[counter] = i;
-                _colors[counter] = pixels[i].color;
-                _prices[counter] = pixels[i].price;
-                _buyable[counter] = isBuyable(i);
-                _rentable[counter] = isRentable(i);
-                counter++;
-            }
+        uint pixId;
+        for (uint counter = 0; counter < setPixels; counter++) {
+            pixId = pixelsInMarket[counter];
+            _pixelIds[counter] = pixId;
+            _colors[counter] = pixels[pixId].color;
+            _prices[counter] = pixels[pixId].price;
+            _buyable[counter] = isBuyable(pixId);
+            _rentable[counter] = isRentable(pixId);
         }
 
         return (_pixelIds, _colors, _prices, _buyable, _rentable);

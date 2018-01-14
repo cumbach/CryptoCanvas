@@ -64,15 +64,17 @@ export default class TransactionInfo extends Component {
     })
     const pixelIds = []
     const colors = []
+    let sumPrices = 0
     updatedPixels.forEach(pixel => {
       pixelIds.push(pixel.id)
       const colorId = COLORS.findIndex(c => (c === pixel.color))
       colors.push(colorId == -1 ? 99 : colorId)
+      sumPrices += pixel.price
     })
-    console.log('submitting:', pixelIds, colors, link, comment, price, '***')
+    console.log('submitting:', pixelIds, colors, link, comment, price, sumPrices, '***')
 
     if (selectedTab === 1) {
-      return [pixelIds, colors, link, comment, price]
+      return [pixelIds, colors, link, comment, price, sumPrices]
     } else {
       return [pixelIds, colors, link, comment]
     }
@@ -92,48 +94,43 @@ export default class TransactionInfo extends Component {
       return (
         <div className="transaction-info">
           <form>
-            <label>
-              URL:
-            </label>
-            <input
-              value={this.state.link}
-              onChange={this.handleChange}
-              type="text"
-              id="link"
-              className="transaction-input"
-              placeholder=""
-            />
-            <br />
-            <label>
-              Comment
-            </label>
-            <input
-              value={this.state.comment}
-              onChange={this.handleChange}
-              type="text"
-              id="comment"
-              placeholder=""
-              className="transaction-input"
-            />
+            <div className="form-line">
+              <input
+                value={this.state.link}
+                onChange={this.handleChange}
+                type="text"
+                id="link"
+                className="transaction-input"
+                placeholder="Comment..."
+              />
+            </div>
+            <div className="form-line">
+              <input
+                value={this.state.comment}
+                onChange={this.handleChange}
+                type="text"
+                id="comment"
+                placeholder="Url..."
+                className="transaction-input"
+              />
+            </div>
             {(selectedTab && selectedTab === 1) ? (
-              <div>
-                <label>
-                  Price
-                </label>
+              <div className="form-line">
                 <input
                   value={this.state.price}
                   onChange={this.handleChange}
                   type="text"
                   id="price"
-                  placeholder=""
+                  placeholder="Price..."
                   className="transaction-input"
                 />
               </div>
             ) : null}
-
-            <button onClick={this.handleClick} className="action-button">
-              {ACTIONS[this.props.selectedTab]}
-            </button>
+            <div className="button-line">
+              <button onClick={this.handleClick} className="action-button">
+                {ACTIONS[this.props.selectedTab]}
+              </button>
+            </div>
           </form>
         </div>
       )

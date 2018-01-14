@@ -142,23 +142,23 @@ export default class SelectedPixels extends Component {
       <div className="selected-pixel-section">
         <div className="selected-pixel-header">
           <div>
-            <span>Selected Pixels</span>
-            <button
-              className="expand-button"
-              onClick={()=> this.setState(prevState => {
-              return {expanded: !prevState.expanded}
-            })}
-              >
-              {this.state.expanded ? '-' : '+'}
-            </button>
+            Selected Pixels
           </div>
-          <div className="selected-pixel-area">
-            {
-              sorted.map(p => {
-                return this.getCell(p)
-              })
-            }
-          </div>
+          <button
+            className="expand-button"
+            onClick={()=> this.setState(prevState => {
+            return {expanded: !prevState.expanded}
+          })}
+            >
+            {this.state.expanded ? '-' : '+'}
+          </button>
+        </div>
+        <div className="selected-pixel-area">
+          {
+            sorted.map(p => {
+              return this.getCell(p)
+            })
+          }
         </div>
       </div>
     )
