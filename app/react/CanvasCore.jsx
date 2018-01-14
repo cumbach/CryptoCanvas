@@ -75,8 +75,7 @@ export default class CanvasCore extends Component {
             this.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
         }
 
-        // this.getCanvas();
-        this.drawPixels();
+        this.getCanvas();
     }
 
     setStatus(status) {
@@ -272,8 +271,8 @@ export default class CanvasCore extends Component {
 
       let fetchedPixelIndex = 0
       for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
-        // var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
-        if (false && fetchedPixelId == i) {
+        var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
+        if (fetchedPixelId == i) {
           var fetchedPixelColor = fetchedPixels[1][fetchedPixelIndex];
           var fetchedPixelPrice = fetchedPixels[2][fetchedPixelIndex];
           var fetchedPixelBuyable = fetchedPixels[3][fetchedPixelIndex];
@@ -300,21 +299,21 @@ export default class CanvasCore extends Component {
           })
         }
       }
-      // const pixelIdsArray = fetchedPixels[0]
-      // for (var i = 0; i < pixelIdsArray.length; i++) {
-      //   this.getOwner(pixelIdsArray[i]);
-      //   this.getURL(pixelIdsArray[i]);
-      //   this.getComment(pixelIdsArray[i]);
-      //   if (this.state.owners[pixelIdsArray[i]]) {
-      //     pixels[pixelIdsArray[i]].owner = this.state.owners[pixelIdsArray[i]];
-      //   }
-      //   if (this.state.urls[pixelIdsArray[i]]) {
-      //     pixels[pixelIdsArray[i]].link = this.state.urls[pixelIdsArray[i]];
-      //   }
-      //   if (this.state.comments[pixelIdsArray[i]]) {
-      //     pixels[pixelIdsArray[i]].comment = this.state.comments[pixelIdsArray[i]];
-      //   }
-      // }
+      const pixelIdsArray = fetchedPixels[0]
+      for (var i = 0; i < pixelIdsArray.length; i++) {
+        this.getOwner(pixelIdsArray[i]);
+        this.getURL(pixelIdsArray[i]);
+        this.getComment(pixelIdsArray[i]);
+        if (this.state.owners[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].owner = this.state.owners[pixelIdsArray[i]];
+        }
+        if (this.state.urls[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].link = this.state.urls[pixelIdsArray[i]];
+        }
+        if (this.state.comments[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].comment = this.state.comments[pixelIdsArray[i]];
+        }
+      }
 
       this.setState({ pixels })
     }
