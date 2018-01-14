@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import TestComponent from './TestComponent.jsx'
 import SideBar from './SideBar.jsx'
 import Canvas from './Canvas.jsx'
 import NavBarTop from './NavBarTop.jsx'
