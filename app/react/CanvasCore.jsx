@@ -55,6 +55,7 @@ export default class CanvasCore extends Component {
             owners: [],
             leaser: '',
             canvas: [],
+            sortIndex: 0,
 
             pixels: [], // array of <Pixels>
             buys: {}, // eg: {pixelId: { color: <new color> }}
@@ -339,7 +340,8 @@ export default class CanvasCore extends Component {
                     ...prevState.buys,
                     [id]: {
                         ...prevState.buys[id],
-                        ...buy
+                        ...buy,
+                        sortIndex: prevState.sortIndex + 1,
                     }
                 }
             }
@@ -362,7 +364,8 @@ export default class CanvasCore extends Component {
                     ...prevState.rents,
                     [id]: {
                         ...prevState.rents[id],
-                        ...rent
+                        ...rent,
+                        sortIndex: prevState.sortIndex + 1,
                     }
                 }
             }
