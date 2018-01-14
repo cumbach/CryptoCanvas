@@ -382,7 +382,7 @@ export default class CanvasCore extends Component {
       for (var i = 0; i < pixelIds.length; i++) {
         totalCost += 0.001;
       }
-      this.buyPixels(pixelIds, colors, "www.wcef.co", "World Crypto Economic Forum!", overallPrice, totalCost);
+      this.buyPixels(pixelIds, colors, "http://wcef.co/", "World Crypto Economic Forum!", overallPrice, totalCost);
     }
 
 
