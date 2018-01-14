@@ -78,6 +78,7 @@ export default class Pixel extends Component {
           'opacity': isDisabled ? '0.1' : '1',
           'zIndex': isSelectable ? '1' : '0',
           'boxShadow': isSelectable ? '0px 0px 2px black' : 'none',
+          'cursor': 'pointer',
         }}
       />
     );

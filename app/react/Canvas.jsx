@@ -74,13 +74,13 @@ export default class Canvas extends Component {
               'padding': '2px 6px',
               'border': '1px solid black',
               'borderRadius': '3px',
+              'cursor': 'pointer',
             }}
           >
             {commentText}
           </div>
         : null}
         {pixels.map((pixel, id) => {
-          console.log(this.props.size, pixelDimension)
           return <Pixel
             key={id}
             color={pixel.color}

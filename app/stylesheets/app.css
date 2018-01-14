@@ -158,14 +158,17 @@ h3 {
 }
 
 .arrow {
-  height: 2rem;
-  width: 2rem;
-  color: black;
+  font-size: 120px;
+  color: rgba(0,0,0,0.7);
   position: fixed;
   right: 0;
-  top: 50px;
-  margin-left: 10px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 12px;
   cursor: pointer;
+  top: 16rem;
+  background: #eaeaea;
+  box-shadow: black 0px 0px 3px;
 }
 
 .action-button {

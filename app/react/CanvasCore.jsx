@@ -375,7 +375,7 @@ export default class CanvasCore extends Component {
 
     setUpCanvas() {
       let pixelIds = [3,4,5,6,18,19,20,21,22,23,24,25,34,35,36,37,38,49,50,51,51,53,54,65,66,67,68,69,70,71,81,82,83,84,85,86];
-      let colors = [9,9,9,9,9,9,9,9,9,9,9,9,2,2,2,3,3,2,11,2,3,3,3,2,3,2,3,3,3,2,2,3,3,3,3,9];
+      let colors = [9,9,9,9,9,9,9,9,9,9,9,9,2,2,2,3,3,2,11,2,3,3,3,2,3,2,3,3,3,3,2,3,3,3,3,9];
       let totalCost = 0;
 
       const overallPrice = 0.002 // this is in ether
