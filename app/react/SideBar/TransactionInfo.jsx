@@ -1,5 +1,23 @@
 import React, {Component} from 'react'
-import COLORS from './../colors.js'
+const COLORS = [
+  '#222222',
+  '#a06a42',
+  '#02be01',
+  '#e59500',
+  '#0083c7',
+  '#0000ea',
+  '#cf6ee4',
+  '#e4e4e4',
+  '#888888',
+  '#e50000',
+  '#94e044',
+  '#e5f900',
+  '#00d3dd',
+  '#ffa7d1',
+  '#820080',
+  '#ffffff',
+]
+
 
 const ACTIONS = {
   1: 'Buy',
@@ -8,6 +26,11 @@ const ACTIONS = {
 
 }
 
+const CLEAR_STATE = {
+  comment: '',
+  link: '',
+  price: '',
+}
 export default class TransactionInfo extends Component {
   constructor(props) {
     super(props)
@@ -15,11 +38,7 @@ export default class TransactionInfo extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.formatDataForSubmit = this.formatDataForSubmit.bind(this)
-    this.state = {
-      comment: '',
-      link: '',
-      price: '',
-    }
+    this.state = CLEAR_STATE
     /**
      * proptypes:
      * selectedTab int 1 = buy 2= rent 3=update
@@ -85,8 +104,9 @@ export default class TransactionInfo extends Component {
     const { actions, selectedTab } = this.props
     const formattedData = this.formatDataForSubmit()
     console.log('submitting: ', formattedData, '******')
-
+    this.setState(CLEAR_STATE)
     actions[selectedTab](...formattedData)
+    this.props.closeMenu()
   }
 
   render() {
@@ -126,14 +146,16 @@ export default class TransactionInfo extends Component {
               />
             </div>
             <div className="form-line">
-              <input
-                value={this.state.price}
-                onChange={this.handleChange}
-                type="text"
-                id="price"
-                placeholder="Price..."
-                className="transaction-input"
-              />
+              {selectedTab === 1 ? (
+                <input
+                  value={this.state.price}
+                  onChange={this.handleChange}
+                  type="text"
+                  id="price"
+                  placeholder="Price..."
+                  className="transaction-input"
+                />
+              ) : (null)}
             </div>
             {
               (this.props.pixels.length > 0 && selectedTab <= 2) ?
