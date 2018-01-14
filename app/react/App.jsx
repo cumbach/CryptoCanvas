@@ -75,8 +75,12 @@ class App extends Component {
     const {
       pixels,
       buys,
-      rents
+      rents,
+      buyPixels,
+      rentPixels,
     } = this.props
+
+
 
     const {
       currentColor,
