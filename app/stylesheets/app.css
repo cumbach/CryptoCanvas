@@ -61,7 +61,7 @@ h3 {
     right: 3rem;
     background-color: white;
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 20px;
+    padding-top: 5px;
 }
 
 .nav-bar-top {
@@ -90,4 +90,80 @@ h3 {
   font-size: medium;
   padding-left: 2rem;
   padding-top: 1rem;
+}
+
+.tab {
+    width: 33%;
+    height: 4rem;
+    background: white;
+    outline: none;
+}
+
+.tab.active {
+  background: lightgray;
+}
+
+.selected-pixel-section {
+  margin-top: 2rem;
+  width: 21rem;
+  margin-left: 1rem;
+  min-height: 5rem;
+  max-height: 25rem;
+  border: 1px solid black;
+  display: block;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.selected-pixel-header {
+  margin-top: -0.5rem;
+  padding: 0.5rem;
+  padding-left: 5rem;
+  width: 21rem;
+  height: 1.5rem;
+  border-bottom: 1px solid black;
+
+}
+
+.expand-button {
+  margin-left: 7rem;
+  border: none;
+  outline: none;
+}
+
+.selected-pixel-area {
+  display: flex;
+  flex-wrap: wrap;
+}
+.selected-pixel {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+
+  margin: 0.25rem;
+}
+
+.big-selected {
+  display: flex;
+  padding: 1rem;
+  width: 100%;
+  border: solid 1px black;
+}
+
+.price-label {
+  display: inline-block;
+  padding-left: 2rem;
+  margin-top: 1rem;
+}
+
+.remove-button {
+  margin-top: 1rem;
+  font-size: smaller;
+  border: 1px solid black;
+  background: white;
+  margin-left: 4rem;
+  height: 2rem;
+  border-radius: 5px;
+  outline: none;
 }

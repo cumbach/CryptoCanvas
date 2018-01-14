@@ -12,13 +12,72 @@ const TOTAL_PIXEL_COUNT = 10000
 const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
 const COMPANY_ADDRESS = 'company address'
 const COMPANY_OWNED_PIXEL_TEMPLATE = {
-    color: 4,
+    color: '#bbbbbb',
     link: 'www.cryptocanvas.io',
     comment: 'BUY THIS PIXEL!!!',
     owner: COMPANY_ADDRESS,
-    price: 10,
     coolDownTime: 9999,
 }
+const CHANGED_PIXELS = {
+    0: {
+        color: '#a06a42',
+    },
+    17: {
+        color: '#a06a42',
+    },
+    18: {
+        color: '#a06a42',
+    },
+    19: {
+        color: '#a06a42',
+    },
+    20: {
+        color: '#a06a42',
+    },
+    10: {
+        color: '#a06a42',
+    },
+    87: {
+        color: '#a06a42',
+    },
+    88: {
+        color: '#a06a42',
+    },
+    89: {
+        color: '#a06a42',
+    },
+    90: {
+        color: '#a06a42',
+    },
+    35: {
+        color: '#a06a42',
+    },
+    59: {
+        color: '#a06a42',
+    },
+    67: {
+        color: '#a06a42',
+    },
+    68: {
+        color: '#a06a42',
+    },
+    69: {
+        color: '#a06a42',
+    },
+    99: {
+        color: '#a06a42',
+    },
+    91: {
+        color: '#a06a42',
+    },
+    94: {
+        color: '#a06a42',
+    },
+    66: {
+        color: '#a06a42',
+    },
+}
+
 export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
@@ -37,6 +96,7 @@ export default class CanvasCore extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleChangePixel = this.handleChangePixel.bind(this)
 
+        this.handleRemoveChange = this.handleRemoveChange.bind(this)
         this.state = {
             status: null,
             amount: '',
@@ -51,7 +111,7 @@ export default class CanvasCore extends Component {
             canvas: [],
 
             pixels: [], // array of <Pixels>
-            changes: {}, // eg: {pixelId: { color: <new color> }}
+            changes: CHANGED_PIXELS, // eg: {pixelId: { color: <new color> }}
         }
 
         this.startUp()
@@ -252,10 +312,10 @@ export default class CanvasCore extends Component {
             } else {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
-                        id: i,
-                        color: '#a06a42'
-                        // color: Math.floor(Math.random() * 10)
-                    })
+                    id: i,
+                    color: Math.floor(Math.random() * 300) > 150 ? '#ffffff' : '#eeeeee',
+                    price: Math.floor(Math.random() * 200),
+                })
             }
         }
 
@@ -320,9 +380,39 @@ export default class CanvasCore extends Component {
         })
     }
 
+    testCode() {
+        this.getPrice();
+    }
+
+    //ALL CODE BELOW HERE RE: METACOIN
+    setStatus(status) {
+        this.setState({ status })
+    }
+
+    getPrice() {
+      console.log('getPrice');
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getPrice(5);
+      }).then(price => {
+        console.log(price);
+      });
+
+    }
+
     handleChange(e) {
         e.preventDefault()
         this.setState({ [e.target.id]: e.target.value })
+    }
+
+    handleRemoveChange(id) {
+        const { changes } = this.state
+
+        const newChanges = { ...changes }
+        delete newChanges[id]
+        this.setState({
+            changes: newChanges
+        })
     }
 
     render() {
@@ -348,8 +438,10 @@ export default class CanvasCore extends Component {
         return (
             <div>
                 <App
-                  pixels={updatedPixels}
-                  onChangePixel={this.handleChangePixel}
+                    pixels={updatedPixels}
+                    onChangePixel={this.handleChangePixel}
+                    onRemoveChange={this.handleRemoveChange}
+                    changes={changes}
                 />
                 <h1 onClick={this.totalPixels}>totalPixels:{this.state.totalPixels}</h1><br/>
                 <h1 onClick={this.defaultPrice}>defaultPrice:{this.state.defaultPrice}</h1><br/>

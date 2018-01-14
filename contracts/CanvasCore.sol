@@ -26,8 +26,8 @@ contract CanvasCore is Ownable {
     }
 
     address creator;
-    
-    // Default set for  the cooldown times for buying and selling. 
+
+    // Default set for  the cooldown times for buying and selling.
     // This can be modified in onlyOwner functions.
     uint buyCooldownTime = 1 weeks;
     uint rentCooldownTime = 1 days;
@@ -71,7 +71,7 @@ contract CanvasCore is Ownable {
     function setBuyCooldownTime(uint _buyCooldownTime) external onlyOwner {
         buyCooldownTime = _buyCooldownTime;
     }
-    
+
     function setRentCooldownTime(uint _rentCooldownTime) external onlyOwner {
         rentCooldownTime = _rentCooldownTime;
     }
@@ -91,8 +91,8 @@ contract CanvasCore is Ownable {
     // If it has an owner, its in the market and it became stale before the
     // current time, then it is marked as rentable.
     function isRentable(uint _pixelId) public view isValidPixelId(_pixelId) returns (bool) {
-        return (pixels[_pixelId].owner > 0 && 
-                pixels[_pixelId].staleTime <= now && 
+        return (pixels[_pixelId].owner > 0 &&
+                pixels[_pixelId].staleTime <= now &&
                 pixels[_pixelId].rentedTime <= now);
     }
 
@@ -213,11 +213,11 @@ contract CanvasCore is Ownable {
         for (i = 0; i < _pixelIds.length; i++) {
             Pixel storage pixel = pixels[_pixelIds[i]];
             if (isRentable(pixId)) {
-                // Splits the price 50-50 between the current owner and 
+                // Splits the price 50-50 between the current owner and
                 // contract creator
                 amountToWithdraw[getOwner(pixId)] += getPrice(pixId) / 2;
                 amountToWithdraw[creator] += (getPrice(pixId) + 1) / 2;
-                
+
                 pixel.leaser = msg.sender;
                 pixel.color = _colors[i];
                 pixel.rentedTime = _rentedTime;
@@ -227,7 +227,6 @@ contract CanvasCore is Ownable {
         }
         Rent();
     }
-    
 
     // Returns all the pixels that have been bought. These ignores the pixels that have
     // not undergone any transaction and are owned by the creator
@@ -253,7 +252,7 @@ contract CanvasCore is Ownable {
 
         return (_pixelIds, _colors, _prices, _buyable, _rentable);
     }
-    
+
     function withdraw() public {
         uint amount = amountToWithdraw[msg.sender];
         amountToWithdraw[msg.sender] = 0;
