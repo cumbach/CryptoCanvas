@@ -162,11 +162,10 @@ contract CanvasCore {
 
         uint counter = 0;
         for (uint i = 1; i <= totalPixels; i++) {
-            Pixel storage pixel = pixels[i];
-            if (pixel.owner > 0) {
+            if (pixels[i].owner > 0) {
                 _pixelIds[counter] = i;
-                _colors[counter] = pixel.color;
-                _prices[counter] = pixel.price;
+                _colors[counter] = pixels[i].color;
+                _prices[counter] = pixels[i].price;
                 _buyable[counter] = isBuyable(i);
                 _rentable[counter] = isRentable(i);
                 counter++;
