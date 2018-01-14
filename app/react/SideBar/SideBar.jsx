@@ -14,8 +14,7 @@ class SideBar extends Component {
     this.handleCloseMenu = this.handleCloseMenu.bind(this)
 
     this.state = {
-      tab: 1,
-      hidden: true,
+      tab: 1
     }
 
     /**
@@ -36,11 +35,13 @@ class SideBar extends Component {
 
   handleOpenMenu() {
     const { onSetMode } = this.props;
+    this.props.openMenu();
     this.setState({ hidden: false }, onSetMode(1))
   }
 
   handleCloseMenu() {
     const { onSetMode } = this.props;
+    this.props.closeMenu();
     this.setState({ hidden: true }, onSetMode(0))
   }
 
@@ -58,7 +59,7 @@ class SideBar extends Component {
       3: () => console.log('update')
     }
 
-    if (this.state.hidden) {
+    if (!this.props.isOpen) {
       return (
         <div className="arrow" onClick={this.handleOpenMenu}>
           {`<`}
@@ -71,7 +72,13 @@ class SideBar extends Component {
         <div className="arrow" onClick={this.handleCloseMenu}>
           {`>`}
         </div>
-        <div className="side-bar">
+        <div
+          className="side-bar"
+          style={{
+            'width': this.props.size,
+            'float': 'right'
+          }}
+        >
           <SideBarTabs
             selectedTab={this.state.tab}
             onTabChange={this.handleTabChange}
