@@ -110,7 +110,7 @@ export default class SelectedPixels extends Component {
       pixels,
     } = this.props
     // debugger
-    const sorted = (changes && pixels && pixels.length) ? Object.keys(changes).sort((a, b) => pixels[b].price - pixels[a].price).map(p => pixels[p]) : []
+    const sorted = (changes && pixels && pixels.length) ? Object.keys(changes).sort((a, b) => pixels[a].sortIndex - pixels[b].sortIndex).map(p => pixels[p]) : []
 
 
     return (
