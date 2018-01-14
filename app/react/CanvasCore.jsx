@@ -44,7 +44,7 @@ export default class CanvasCore extends Component {
         this.handleAddBuy = this.handleAddBuy.bind(this)
         this.handleRemoveBuy = this.handleRemoveBuy.bind(this)
         this.handleAddRent = this.handleAddRent.bind(this)
-        this.handleRemoveRent = this.handleRemoveBuy.bind(this)
+        this.handleRemoveRent = this.handleRemoveRent.bind(this)
 
         this.state = {
             status: null,
