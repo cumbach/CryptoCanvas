@@ -95,10 +95,10 @@ class App extends Component {
           currentColor={currentColor}
           onAddTransaction={relevantAddFunction}
         />
-        <ColorPicker
+        {mode !== 0 ? <ColorPicker
           currentColor={currentColor}
           onClick={this.handleChangeCurrentColor}
-        />
+        /> : null}
       </div>
     )
   }

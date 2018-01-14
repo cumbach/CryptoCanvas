@@ -82,7 +82,8 @@ export default class CanvasCore extends Component {
             this.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
         }
 
-        this.getCanvas();
+        // this.getCanvas();
+        this.drawPixels();
     }
 
     setStatus(status) {
@@ -283,12 +284,12 @@ export default class CanvasCore extends Component {
     }
 
     drawPixels(fetchedPixels) {
-      const pixels = []
+     const pixels = []
 
       let fetchedPixelIndex = 0
       for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
-        var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
-        if (fetchedPixelId == i) {
+        // var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
+        if (false) {
           var fetchedPixelColor = fetchedPixels[1][fetchedPixelIndex];
           var fetchedPixelPrice = fetchedPixels[2][fetchedPixelIndex];
           var fetchedPixelBuyable = fetchedPixels[3][fetchedPixelIndex];
@@ -305,17 +306,17 @@ export default class CanvasCore extends Component {
           fetchedPixelIndex++;
         } else {
           pixels.push({
-            link: 'www.cryptocanvas.io',
+            link: 'https://www.google.com',
             comment: 'BUY THIS PIXEL!!!',
             id: i,
-            color: "#eaeaea",
+            color: Colors[Math.floor(Math.random()*16)],
             price: 0,
-            buyable: true,
-            rentable: false,
+            buyable: Math.random() < 0.2 ? true : false,
+            rentable: Math.random() < 0.2 ? true : false,
           })
         }
       }
-      this.givePixelsAttributes(fetchedPixels[0]);
+      // this.givePixelsAttributes(fetchedPixels[0]);
 
       this.setState({ pixels })
     }

@@ -61,7 +61,7 @@ h3 {
 }
 
 .nav-bar-top {
-    height: 4rem; /* Full-height: remove this if you want "auto" height */
+    height: 2.5rem; /* Full-height: remove this if you want "auto" height */
     width: 100%; /* Set the width of the sidebar */
     position: fixed;
     left: 0rem;
@@ -75,17 +75,17 @@ h3 {
 .nav-bar-title {
   display: flex;
   font-size: larger;
-  padding-left: 2rem;
-  padding-top: 1rem;
+  padding-left: 1.25rem;
+  padding-top: .613rem;
 }
 
 .nav-bar-user {
   position: fixed;
-  right: 2rem;
+  right: 1.25rem;
   top: 0;
   font-size: medium;
-  padding-left: 2rem;
-  padding-top: 1rem;
+  padding-left: 1.25rem;
+  padding-top: .613rem;
 }
 
 .tab {
