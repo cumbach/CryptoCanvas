@@ -85,15 +85,11 @@ export default class SelectedPixels extends Component {
     const { changes, pixels } = this.props
 
     if (changes && changes[p.id] && changes[p.id].color) return changes[p.id].color
-    console.log('p.color')
 
     return p.color
   }
 
   getCell(p) {
-    console.log(this.props)
-
-    console.log(this.props.onRemoveChange)
 
     if (this.state.expanded) {
       return (
