@@ -72,7 +72,7 @@ h3 {
   padding-top: .613rem;
 }
 
-.nav-bar-user {
+.nav-bar-about {
   position: fixed;
   right: 1.25rem;
   top: 0;
@@ -198,4 +198,3 @@ h3 {
   display: flex;
   margin-bottom: 1rem;
 }
-
