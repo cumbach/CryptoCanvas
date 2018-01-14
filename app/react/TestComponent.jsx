@@ -31,9 +31,6 @@ export default class CanvasCore extends Component {
         this.getCanvas = this.getCanvas.bind(this)
 
         this.startUp()
-        // this.getAllPixels().then(pixels => {
-        //     this.intializePixels(pixels)
-        // })
     }
 
     componentDidMount() {
@@ -71,76 +68,9 @@ export default class CanvasCore extends Component {
         })
     }
 
-    intializePixels(fetchedPixels) {
-        const pixels = []
-        let pixelMap
-        if (fetchedPixels && fetchedPixels.length) {
-            pixelMap = fetchedPixels.reduce((acc, pixel) => {
-                return ({
-                    ...acc,
-                    [pixel.id]: pixel,
-                })
-            }, {})
-        } else pixelMap = {}
-
-        //Can incorporate a redundant check with getTotalPixels() later
-
-
-        for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
-            if (pixelMap[i]) {
-                pixels.push(pixelMap[i])
-            } else {
-                pixels.push({
-                    ...COMPANY_OWNED_PIXEL_TEMPLATE,
-                    id: i,
-                    })
-            }
-        }
-
-        this.setState({ pixels })
-    }
-
-    getAllPixels() {
-        //Mocking the data received from the SmarContract for now
-        // SHOULD ALWAYS RETURN A PROMISE!
-        return new Promise(resolve => {
-            setTimeout(resolve, 500)
-            return [
-                {
-                    id: 27,
-                    color: 0,
-                    link: 'https://www.google.com',
-                    comment: 'hi mom',
-                    owner: 'addressowner1',
-                    price: 27, // ?Fraction of Ether?
-                    coolDownTime: 200, //hours
-                },
-                {
-                    id: 1,
-                    color: 2,
-                    link: 'https://www.yahoo.com',
-                    comment: 'crytpomania',
-                    owner: 'addressowner2',
-                    price: 100, // ?Fraction of Ether?
-                    coolDownTime: 300, //hours
-                },
-                {
-                    id: 27,
-                    color: 4,
-                    link: 'https://www.google.com',
-                    comment: 'hello world',
-                    owner: 'addressowner3',
-                    price: 50, // ?Fraction of Ether?
-                    coolDownTime: 100, //hours
-                },
-            ]
-        })
-    }
-
-    //ALL CODE BELOW HERE RE: METACOIN
-    setStatus(status) {
-        this.setState({ status })
-    }
+    // setStatus(status) {
+    //     this.setState({ status })
+    // }
 
     checkPublicVars() {
       this.CanvasCore.deployed().then(instance => {
