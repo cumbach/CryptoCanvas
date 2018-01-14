@@ -95,6 +95,8 @@ class SideBar extends Component {
           <CoolDown/>
           <TransactionInfo
             selectedTab={this.state.tab}
+            closeMenu={this.handleCloseMenu}
+            openMenu={this.handleOpenMenu}
             pixels={pixels}
             changes={changes}
             actions={actions}

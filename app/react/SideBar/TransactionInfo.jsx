@@ -8,6 +8,11 @@ const ACTIONS = {
 
 }
 
+const CLEAR_STATE = {
+  comment: '',
+  link: '',
+  price: '',
+}
 export default class TransactionInfo extends Component {
   constructor(props) {
     super(props)
@@ -15,11 +20,7 @@ export default class TransactionInfo extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.formatDataForSubmit = this.formatDataForSubmit.bind(this)
-    this.state = {
-      comment: '',
-      link: '',
-      price: '',
-    }
+    this.state = CLEAR_STATE
     /**
      * proptypes:
      * selectedTab int 1 = buy 2= rent 3=update
@@ -85,8 +86,9 @@ export default class TransactionInfo extends Component {
     const { actions, selectedTab } = this.props
     const formattedData = this.formatDataForSubmit()
     console.log('submitting: ', formattedData, '******')
-
+    this.setState(CLEAR_STATE)
     actions[selectedTab](...formattedData)
+    this.props.closeMenu()
   }
 
   render() {
