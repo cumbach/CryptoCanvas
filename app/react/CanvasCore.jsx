@@ -307,7 +307,7 @@ export default class CanvasCore extends Component {
                         color: colors[Math.floor(Math.random()*16)],
                         // color: Math.floor(Math.random() * 10),
                         buyable: Math.random() < .2 ? true : false,
-                        rentable: Math.random() < .2 ? true : false
+                        rentable: Math.random() < .2 ? true : false,
                         price: Math.floor(300 * Math.random()),
                     })
             }
@@ -407,7 +407,7 @@ export default class CanvasCore extends Component {
       const newRents = { ...rents }
       delete newRents[id]
       this.setState({
-        buys: newRents
+        rents: newRents
       })
     }
 
@@ -423,7 +423,6 @@ export default class CanvasCore extends Component {
         } = this.state
 
         const showIsBuyable = this.state.isBuyable ? 'true' : 'false';
-        console.log(buys)
 
         return (
             <div>

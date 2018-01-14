@@ -71,7 +71,7 @@ class SideBar extends Component {
           <SelectedPixels
             changes={changes}
             pixels={pixels}
-            onRemoveChange={this.props.onRemoveChange}
+            onRemoveTransaction={this.props.onRemoveTransaction}
           />
           <CoolDown/>
           <TransactionInfo
@@ -81,24 +81,6 @@ class SideBar extends Component {
             actions={actions}
           />
         </div>
-      )
-
-    }
-    return (
-      <div className="side-bar">
-        <SideBarTabs
-          selectedTab={this.state.tab}
-          onTabChange={this.handleTabChange}
-        />
-        <PriceSlider/>
-        <SelectedPixels
-          changes={changes}
-          pixels={pixels}
-          onRemoveTransaction={this.props.onRemoveTransaction}
-        />
-        <CoolDown/>
-        <TransactionInfo/>
-        <button/>
       </div>
     )
   }
