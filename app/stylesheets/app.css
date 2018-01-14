@@ -11,15 +11,9 @@ label {
   width: 100px;
 }
 
-input {
-  width: 500px;
-  padding: 5px;
-  font-size: 16px;
-}
 
 button {
   font-size: 16px;
-  padding: 5px;
 }
 
 h1, h2 {
@@ -58,10 +52,12 @@ h3 {
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 6rem; /* Stay at the top */
-    right: 3rem;
+    right: 2rem;
     background-color: white;
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 5px;
+    box-shadow: 1px;
+
+
 }
 
 .nav-bar-top {
@@ -93,7 +89,7 @@ h3 {
 }
 
 .tab {
-    width: 33%;
+    width: 33.33333%;
     height: 4rem;
     background: white;
     outline: none;
@@ -113,6 +109,8 @@ h3 {
   display: block;
   overflow: hidden;
   overflow-y: scroll;
+  border-radius: 5px;
+  margin-bottom: 1rem;
 }
 
 .selected-pixel-header {
@@ -166,4 +164,38 @@ h3 {
   height: 2rem;
   border-radius: 5px;
   outline: none;
+}
+
+.arrow {
+  height: 2rem;
+  width: 2rem;
+  color: white;
+  position: fixed;
+  right: 0;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.action-button {
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.transaction-info {
+  padding: 2rem;
+  overflow: hidden;
+  display: block;
+}
+
+
+.transaction-input {
+  width: 50%;
+  height: 1rem;
+  margin: 0.5rem;
+}
+
+.price-input {
+  width: 70%;
+  height: 1rem;
+  margin: 0.5rem;
 }

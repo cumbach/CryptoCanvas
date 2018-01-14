@@ -300,9 +300,9 @@ export default class CanvasCore extends Component {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
                         id: i,
-                        color: colors[Math.floor(Math.random()*16)],
-                        // color: Math.floor(Math.random() * 10),
-                        buyable: Math.random() < .2 ? true : false
+                        buyable: Math.random() < .2 ? true : false,
+                        color: Math.random() > 0.5 ? '#9300FF' : '#DDF0EA',
+                        price: Math.floor(300 * Math.random()),
                     })
             }
         }
