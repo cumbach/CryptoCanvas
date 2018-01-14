@@ -4,7 +4,7 @@ import COLORS from './../colors.js'
 const ACTIONS = {
   1: 'Buy',
   2: 'Rent',
-  3: 'Manage',
+  3: 'Update',
 
 }
 
