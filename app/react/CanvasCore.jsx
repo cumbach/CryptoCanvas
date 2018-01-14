@@ -22,6 +22,8 @@ export default class CanvasCore extends Component {
         this.isBuyable = this.isBuyable.bind(this)
         this.getPrice = this.getPrice.bind(this)
         this.getOwner = this.getOwner.bind(this)
+        this.getURL = this.getURL.bind(this)
+        this.getComment = this.getComment.bind(this)
         this.getLeaser = this.getLeaser.bind(this)
         this.buyPixels = this.buyPixels.bind(this)
         this.rentPixels = this.rentPixels.bind(this)
@@ -51,7 +53,9 @@ export default class CanvasCore extends Component {
             defaultPrice: 0,
             isBuyable: false,
             price: 0,
-            owners: [],
+            owners: Array(TOTAL_PIXEL_COUNT),
+            links: Array(TOTAL_PIXEL_COUNT),
+            comments: Array(TOTAL_PIXEL_COUNT),
             leaser: '',
             canvas: [],
 
@@ -185,13 +189,35 @@ export default class CanvasCore extends Component {
       });
     }
 
+    getComment(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getComment(pixelId);
+      }).then(comment => {
+        const comments = this.state.comments;
+        comments[pixelId] = comment;
+        this.setState({'comments': comments});
+      });
+    }
+
+    getURL(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getURL(pixelId);
+      }).then(url => {
+        const urls = this.state.urls;
+        urls[pixelId] = url;
+        this.setState({'urls': urls});
+      });
+    }
+
     getOwner(pixelId) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
         return canvas.getOwner(pixelId);
       }).then(owner => {
         const owners = this.state.owners;
-        owners.push(owner);
+        owners[pixelId] = owner;
         this.setState({'owners': owners});
       });
     }
@@ -321,6 +347,8 @@ export default class CanvasCore extends Component {
     givePixelsAttributes(pixelIdsArray) {
       for (var i = 0; i < pixelIdsArray.length; i++) {
         this.getOwner(pixelIdsArray[i]);
+        this.getURL(pixelIdsArray[i]);
+        this.getComment(pixelIdsArray[i]);
       }
     }
 
@@ -406,6 +434,8 @@ export default class CanvasCore extends Component {
                 <h1 onClick={this.isBuyable.bind(this, 5)}>isBuyable:{showIsBuyable}</h1><br/>
                 <h1 onClick={this.getPrice.bind(this, 5)}>getPrice:{this.state.price}</h1><br/>
                 <h1 onClick={this.getOwner.bind(this, 5)}>getOwner:{this.state.owner}</h1><br/>
+                <h1 onClick={this.getURL.bind(this, 5)}>getURL:{this.state.url}</h1><br/>
+                <h1 onClick={this.getComment.bind(this, 5)}>getComment:{this.state.comment}</h1><br/>
                 <h1 onClick={this.getLeaser.bind(this, 5)}>getLeaser:{this.state.leaser}</h1><br/>
                 <h1 onClick={this.getCanvas}>getCanvas(console):{this.state.canvas}</h1><br/>
                 <h1 onClick={this.testBuy}>Test:Fake Buy</h1><br/>
