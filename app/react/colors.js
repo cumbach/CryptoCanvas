@@ -14,5 +14,5 @@ export default [
   '#00d3dd',
   '#ffa7d1',
   '#820080',
-  '#ffffff'
+  '#ffffff',
 ]

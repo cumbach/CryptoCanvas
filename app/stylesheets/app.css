@@ -162,14 +162,17 @@ h3 {
 }
 
 .arrow {
-  height: 2rem;
-  width: 2rem;
-  color: black;
+  font-size: 120px;
+  color: rgba(0,0,0,0.7);
   position: fixed;
   right: 0;
-  top: 50px;
-  margin-left: 10px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 12px;
   cursor: pointer;
+  top: 16rem;
+  background: #eaeaea;
+  box-shadow: black 0px 0px 3px;
 }
 
 .action-button {
@@ -208,4 +211,40 @@ h3 {
 .form-line {
   display: flex;
   margin-bottom: 1rem;
+}
+
+.plus-sign {
+  width: 2.5rem;
+    height: 1.5rem;
+    background-color: lightgray;
+    position: fixed;
+    top: 18rem;
+    left: 13rem;
+    text-align: center;
+    padding-top: -10px;
+    font-size: xx-large;
+    color: grey;
+    padding-bottom: 20px;
+    border: 1px solid lightgray;
+    border-radius: 7px grey solid;
+    box-shadow: 1px 1px 1px 1px;
+  }
+
+  .minus-sign {
+    width: 2.5rem;
+    height: 1.5rem;
+    background-color: lightgray;
+    position: fixed;
+    top: 23rem;
+    left: 13rem;
+    text-align: center;
+    padding-top: -10px;
+    font-size: xx-large;
+    color: grey;
+    padding-bottom: 22px;
+    border-radius: 7px grey solid;
+    border: 1px solid lightgray;
+    border-radius: 5px grey solid;
+    box-shadow: 1px 1px 1px 1px;
+
 }
