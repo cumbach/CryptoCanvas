@@ -80,7 +80,6 @@ export default class Canvas extends Component {
           </div>
         : null}
         {pixels.map((pixel, id) => {
-          console.log(this.props.size, pixelDimension)
           return <Pixel
             key={id}
             color={pixel.color}

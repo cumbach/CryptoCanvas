@@ -37,7 +37,6 @@ export default class Pixel extends Component {
 
   enterCell(isSelectable, mode) {
     isSelectable
-    console.log('setting hoverId', this.props.id)
     this.props.setHoverId(this.props.id)
     if (mode ==0) {
       this.setComment()
@@ -48,7 +47,6 @@ export default class Pixel extends Component {
 
   exitCell(isSelectable, mode) {
     isSelectable
-    console.log('deleting hoverId', )
     this.props.setHoverId(null)
     if (mode == 0) {
       this.hideComment()

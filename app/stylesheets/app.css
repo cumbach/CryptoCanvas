@@ -65,6 +65,7 @@ h3 {
   top: 0; /* Stay at the top */
   background-color: white;
   overflow-x: hidden; /* Disable horizontal scroll */
+  box-shadow: 0px 0px 2px;
 }
 
 .nav-bar-title {
@@ -85,13 +86,16 @@ h3 {
 
 .tab {
     width: 33.33333%;
-    height: 4rem;
-    background: white;
+    height: 2rem;
+    background: #f7f7f7;
     outline: none;
+    border-radius: 2px;
+    box-shadow: 1px -3px 0px;
 }
 
 .tab.active {
-  background: lightgray;
+  background: white;
+  border: none;
 }
 
 .selected-pixel-section {
