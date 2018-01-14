@@ -4,20 +4,14 @@ import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
 import App from './App.jsx'
-import colors from './colors.js'
+import Colors from './colors.js'
 
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
 const TOTAL_PIXEL_COUNT = 100
-const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
 const COMPANY_ADDRESS = 'company address'
-const COMPANY_OWNED_PIXEL_TEMPLATE = {
-    link: 'www.cryptocanvas.io',
-    comment: 'BUY THIS PIXEL!!!',
-    owner: COMPANY_ADDRESS,
-    coolDownTime: 9999,
-}
+
 export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
@@ -34,6 +28,8 @@ export default class CanvasCore extends Component {
         this.getCanvas = this.getCanvas.bind(this)
         this.buySuccess = this.buySuccess.bind(this)
         this.rentSuccess = this.rentSuccess.bind(this)
+        this.drawPixels = this.drawPixels.bind(this)
+        this.givePixelsAttributes = this.givePixelsAttributes.bind(this)
 
         this.testCode = this.testCode.bind(this)
         this.testBuy = this.testBuy.bind(this)
@@ -55,7 +51,7 @@ export default class CanvasCore extends Component {
             defaultPrice: 0,
             isBuyable: false,
             price: 0,
-            owner: '',
+            owners: [],
             leaser: '',
             canvas: [],
 
@@ -67,9 +63,9 @@ export default class CanvasCore extends Component {
         this.startUp()
 
         // FOR FAKE API
-        this.getAllPixels().then(pixels => {
-            this.intializePixels(pixels)
-        })
+        // this.getAllPixels().then(pixels => {
+        //     this.intializePixels(pixels)
+        // })
     }
 
     componentDidMount() {
@@ -83,6 +79,8 @@ export default class CanvasCore extends Component {
             // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
             this.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
         }
+
+        this.getCanvas();
     }
 
     setStatus(status) {
@@ -132,12 +130,12 @@ export default class CanvasCore extends Component {
 
     buySuccess() {
       console.log('buy complete');
-      // this.getCanvas()?
+      this.getCanvas();
     }
 
     rentSuccess() {
       console.log('rent complete');
-      // this.getCanvas()?
+      this.getCanvas();
     }
 
 
@@ -192,9 +190,9 @@ export default class CanvasCore extends Component {
         const canvas = instance;
         return canvas.getOwner(pixelId);
       }).then(owner => {
-        console.log(pixelId + ' getOwner:');
-        console.log(owner);
-        this.setState({'owner': owner});
+        const owners = this.state.owners;
+        owners.push(owner);
+        this.setState({'owners': owners});
       });
     }
 
@@ -228,6 +226,7 @@ export default class CanvasCore extends Component {
     }
 
     getCanvas() {
+      console.log('getCanvas');
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
         return canvas.getCanvas({gas: 300000});
@@ -246,6 +245,7 @@ export default class CanvasCore extends Component {
         console.log('canvas:');
         console.log([idsArray, colorsArray, priceArray, buyableArray, rentableArray]);
         this.setState({'canvas': [idsArray, colorsArray, priceArray, buyableArray, rentableArray]})
+        this.drawPixels([idsArray, colorsArray, priceArray, buyableArray, rentableArray]);
         return [idsArray, colorsArray, priceArray, buyableArray, rentableArray];
       });
     }
@@ -262,106 +262,72 @@ export default class CanvasCore extends Component {
 
     testBuy() {
       // BUY LARGE PLOT:
-      // let pixelIds = [];
-      // let colors = [];
-      // const price = 0.1 // this is in ether
-      // for (var i = 3; i < 50; i++) {
-      //   pixelIds.push(i);
-      //   colors.push(1234);
-      // }
-      // this.buyPixels(pixelIds, colors, "url", "comment", price);
+      let pixelIds = [];
+      let colors = [];
+      const price = 0.1 // this is in ether
+      for (var i = 3; i < 8; i++) {
+        pixelIds.push(i);
+        colors.push(2);
+      }
+      this.buyPixels(pixelIds, colors, "url", "comment", price);
 
       // BUY SINGLE PIXEL:
-      this.buyPixels([4], [1234], "one", "commentone", 0.002);
+      // this.buyPixels([4], [2], "one", "commentone", 0.002);
     }
 
     testRent() {
       // RENT SINGLE PIXEL:
-      this.rentPixels([4], [1234], "two", "commenttwo");
+      this.rentPixels([4], [3], "two", "commenttwo");
     }
 
+    drawPixels(fetchedPixels) {
+      const pixels = []
 
-
-    // FAKED API DATA
-    intializePixels(fetchedPixels) {
-        const pixels = []
-        let pixelMap
-        if (fetchedPixels && fetchedPixels.length) {
-            pixelMap = fetchedPixels.reduce((acc, pixel) => {
-                return ({
-                    ...acc,
-                    [pixel.id]: pixel,
-                })
-            }, {})
-        } else pixelMap = {}
-
-        //Can incorporate a redundant check with getTotalPixels() later
-
-        for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
-            if (pixelMap[i]) {
-                pixels.push(pixelMap[i])
-            } else {
-                pixels.push({
-                    ...COMPANY_OWNED_PIXEL_TEMPLATE,
-                        id: i,
-                        color: colors[Math.floor(Math.random()*16)],
-                        // color: Math.floor(Math.random() * 10),
-                        buyable: Math.random() < .2 ? true : false,
-                        rentable: Math.random() < .2 ? true : false,
-                        price: Math.floor(300 * Math.random()),
-                    })
-            }
+      let fetchedPixelIndex = 0
+      for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
+        var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
+        if (fetchedPixelId == i) {
+          var fetchedPixelColor = fetchedPixels[1][fetchedPixelIndex];
+          var fetchedPixelPrice = fetchedPixels[2][fetchedPixelIndex];
+          var fetchedPixelBuyable = fetchedPixels[3][fetchedPixelIndex];
+          var fetchedPixelRentable = fetchedPixels[4][fetchedPixelIndex];
+          pixels.push({
+            link: 'link.com',
+            comment: 'comment',
+            id: i,
+            color: Colors[fetchedPixelColor],
+            price: fetchedPixelPrice,
+            buyable: fetchedPixelBuyable,
+            rentable: fetchedPixelRentable
+          });
+          fetchedPixelIndex++;
+        } else {
+          pixels.push({
+            link: 'www.cryptocanvas.io',
+            comment: 'BUY THIS PIXEL!!!',
+            id: i,
+            color: "#eaeaea",
+            price: 0,
+            buyable: true,
+            rentable: false,
+          })
         }
+      }
+      this.givePixelsAttributes(fetchedPixels[0]);
 
-        this.setState({ pixels })
+      this.setState({ pixels })
     }
 
-
-
-    // FAKED API DATA
-    getAllPixels() {
-        //Mocking the data received from the SmarContract for now
-        // SHOULD ALWAYS RETURN A PROMISE!
-        return new Promise(resolve => {
-            setTimeout(resolve, 500)
-            return [
-                {
-                    id: 27,
-                    color: 0,
-                    link: 'https://www.google.com',
-                    comment: 'hi mom',
-                    owner: 'addressowner1',
-                    price: 27, // ?Fraction of Ether?
-                    coolDownTime: 200, //hours
-                },
-                {
-                    id: 1,
-                    color: 2,
-                    link: 'https://www.yahoo.com',
-                    comment: 'crytpomania',
-                    owner: 'addressowner2',
-                    price: 100, // ?Fraction of Ether?
-                    coolDownTime: 300, //hours
-                },
-                {
-                    id: 27,
-                    color: 4,
-                    link: 'https://www.google.com',
-                    comment: 'hello world',
-                    owner: 'addressowner3',
-                    price: 50, // ?Fraction of Ether?
-                    coolDownTime: 100, //hours
-                },
-            ]
-        })
+    givePixelsAttributes(pixelIdsArray) {
+      for (var i = 0; i < pixelIdsArray.length; i++) {
+        this.getOwner(pixelIdsArray[i]);
+      }
     }
 
     handleChange(e) {
         e.preventDefault()
         this.setState({ [e.target.id]: e.target.value })
     }
-
-
 
 
 
@@ -444,55 +410,6 @@ export default class CanvasCore extends Component {
                 <h1 onClick={this.getCanvas}>getCanvas(console):{this.state.canvas}</h1><br/>
                 <h1 onClick={this.testBuy}>Test:Fake Buy</h1><br/>
                 <h1 onClick={this.testRent}>Test:Fake Rent</h1><br/>
-
-
-
-                <br/>
-
-                <br/>
-                <br/>
-                --------------------------------------------------------
-                ^^ Our app above
-                legacy Megacoin render below ~
-                --------------------------------------------------------
-                <h1>CryptoCanvasjsx</h1>
-                <h2>Example Truffle Dapp</h2>
-                <h3>
-                    You have <span className="black"><span id="balance">{this.state.balance}</span> META</span></h3>
-                <br/>
-                <h1>Test Code</h1>
-                <form>
-                    <label>
-                        Amount:
-                    </label>
-                    <input
-                        value={this.state.amount}
-                        onChange={this.handleChange}
-                        type="text"
-                        id="amount"
-                        placeholder="e.g., 95"
-                    />
-                    <br/>
-                    <br/>
-                    <label>
-                        To Address:
-                    </label>
-                    <input
-                        value={this.state.receiver}
-                        onChange={this.handleChange}
-                        type="text"
-                        id="receiver"
-                        placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"
-                    />
-                </form>
-                <br/><br/>
-                <button id="send" onClick={this.testCode}>
-                    Send MetaCoin
-                </button>
-                <br/><br/>
-                <span id="status"></span>
-                <br/>
-                <span className="hint"><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</span>
             </div>
         )
     }
