@@ -9,27 +9,23 @@ class App extends Component {
   constructor() {
     super()
     this.handleChangePixel = this.handleChangePixel.bind(this)
-    this.state = {
-      pixels: [
-        {color: 'green'}
-      ],  // array of <Pixels>
-      changes: {},  // eg: {pixelId: { color: <new color> }}
-    }
+    /**
+     * propTypes:
+     * onChangePixel - fn
+     * pixels - []
+     * changes - {}
+     * */
   }
 
   handleChangePixel({ id, field, newValue }) {
-    this.setState({
-      changes: {
-        [field]: value,
-       }
-    })
+    this.props.onChangePixel({ id, field, newValue })
   }
 
   render() {
     const {
       pixels,
       changes,
-    } = this.state
+    } = this.props
 
     // MAIN below is a placeholder for <Canvas/>
     return (
