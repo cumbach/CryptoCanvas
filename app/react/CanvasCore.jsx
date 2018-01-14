@@ -9,8 +9,8 @@ import Colors from './colors.js'
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-const TOTAL_PIXEL_COUNT = 100
-const COMPANY_ADDRESS = 'company address'
+const TOTAL_PIXEL_COUNT = 256;
+const COMPANY_ADDRESS = 'company address';
 
 export default class CanvasCore extends Component {
     constructor(props) {
@@ -22,6 +22,8 @@ export default class CanvasCore extends Component {
         this.isBuyable = this.isBuyable.bind(this)
         this.getPrice = this.getPrice.bind(this)
         this.getOwner = this.getOwner.bind(this)
+        this.getURL = this.getURL.bind(this)
+        this.getComment = this.getComment.bind(this)
         this.getLeaser = this.getLeaser.bind(this)
         this.buyPixels = this.buyPixels.bind(this)
         this.rentPixels = this.rentPixels.bind(this)
@@ -30,14 +32,8 @@ export default class CanvasCore extends Component {
         this.buySuccess = this.buySuccess.bind(this)
         this.rentSuccess = this.rentSuccess.bind(this)
         this.drawPixels = this.drawPixels.bind(this)
-        this.givePixelsAttributes = this.givePixelsAttributes.bind(this)
-
-        this.testCode = this.testCode.bind(this)
-        this.testBuy = this.testBuy.bind(this)
-        this.testRent = this.testRent.bind(this)
 
         this.handleChange = this.handleChange.bind(this)
-
         this.handleAddBuy = this.handleAddBuy.bind(this)
         this.handleRemoveBuy = this.handleRemoveBuy.bind(this)
         this.handleAddRent = this.handleAddRent.bind(this)
@@ -52,7 +48,9 @@ export default class CanvasCore extends Component {
             defaultPrice: 0,
             isBuyable: false,
             price: 0,
-            owners: [],
+            owners: Array(TOTAL_PIXEL_COUNT),
+            urls: Array(TOTAL_PIXEL_COUNT),
+            comments: Array(TOTAL_PIXEL_COUNT),
             leaser: '',
             canvas: [],
             sortIndex: 0,
@@ -63,11 +61,6 @@ export default class CanvasCore extends Component {
         }
 
         this.startUp()
-
-        // FOR FAKE API
-        // this.getAllPixels().then(pixels => {
-        //     this.intializePixels(pixels)
-        // })
     }
 
     componentDidMount() {
@@ -82,8 +75,7 @@ export default class CanvasCore extends Component {
             this.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
         }
 
-        // this.getCanvas();
-        this.drawPixels();
+        this.getCanvas();
     }
 
     setStatus(status) {
@@ -188,13 +180,35 @@ export default class CanvasCore extends Component {
       });
     }
 
+    getComment(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getComment(pixelId);
+      }).then(comment => {
+        const comments = this.state.comments;
+        comments[pixelId] = comment;
+        this.setState({'comments': comments});
+      });
+    }
+
+    getURL(pixelId) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.getURL(pixelId);
+      }).then(url => {
+        const urls = this.state.urls;
+        urls[pixelId] = url;
+        this.setState({'urls': urls});
+      });
+    }
+
     getOwner(pixelId) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
         return canvas.getOwner(pixelId);
       }).then(owner => {
         const owners = this.state.owners;
-        owners.push(owner);
+        owners[pixelId] = owner;
         this.setState({'owners': owners});
       });
     }
@@ -210,10 +224,11 @@ export default class CanvasCore extends Component {
       });
     }
 
-    buyPixels(pixelIdsArray, colorsArray, url, comment, priceEther) {
+    buyPixels(pixelIdsArray, colorsArray, url, comment, priceEther, totalCost) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(priceEther, 'ether')});
+        console.log(pixelIdsArray, colorsArray, url, comment);
+        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(totalCost, 'ether'), gas: 6385876});
       }).then(transactionId => {
         console.log('buyPixels transaction posted (may take time to verify transaction)');
       });
@@ -222,17 +237,16 @@ export default class CanvasCore extends Component {
     rentPixels(pixelIdsArray, colorsArray, url, comment) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.rentPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, {from: web3.eth.accounts[0], gas: 300000});
+        return canvas.rentPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, {from: web3.eth.accounts[0], gas: 6385876});
       }).then(transactionId => {
         console.log('rentPixels transaction posted (may take time to verify transaction)');
       });
     }
 
     getCanvas() {
-      console.log('getCanvas');
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.getCanvas({gas: 300000});
+        return canvas.getCanvas({gas: 6385876});
       }).then(canvasStateArray => {
         const idsArray = canvasStateArray[0].map(function(bigNumId){
           return parseInt(bigNumId);
@@ -245,58 +259,27 @@ export default class CanvasCore extends Component {
         });
         const buyableArray = canvasStateArray[3];
         const rentableArray = canvasStateArray[4];
-        console.log('canvas:');
-        console.log([idsArray, colorsArray, priceArray, buyableArray, rentableArray]);
         this.setState({'canvas': [idsArray, colorsArray, priceArray, buyableArray, rentableArray]})
         this.drawPixels([idsArray, colorsArray, priceArray, buyableArray, rentableArray]);
         return [idsArray, colorsArray, priceArray, buyableArray, rentableArray];
       });
     }
 
-    testCode() {
-      console.log('Test Code:');
-      // this.totalPixels();
-      // this.defaultPrice();
-      // this.getPrice(5);
-      // this.isBuyable(5);
-      // this.getOwner(5);
-      // this.getLeaser(5);
-    }
-
-    testBuy() {
-      // BUY LARGE PLOT:
-      let pixelIds = [];
-      let colors = [];
-      const price = 0.1 // this is in ether
-      for (var i = 3; i < 8; i++) {
-        pixelIds.push(i);
-        colors.push(2);
-      }
-      this.buyPixels(pixelIds, colors, "url", "comment", price);
-
-      // BUY SINGLE PIXEL:
-      // this.buyPixels([4], [2], "one", "commentone", 0.002);
-    }
-
-    testRent() {
-      // RENT SINGLE PIXEL:
-      this.rentPixels([4], [3], "two", "commenttwo");
-    }
-
     drawPixels(fetchedPixels) {
-     const pixels = []
+      console.log(fetchedPixels)
+      const pixels = []
 
       let fetchedPixelIndex = 0
       for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
-        // var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
-        if (false) {
+        var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
+        if (fetchedPixelId == i) {
           var fetchedPixelColor = fetchedPixels[1][fetchedPixelIndex];
           var fetchedPixelPrice = fetchedPixels[2][fetchedPixelIndex];
           var fetchedPixelBuyable = fetchedPixels[3][fetchedPixelIndex];
           var fetchedPixelRentable = fetchedPixels[4][fetchedPixelIndex];
           pixels.push({
-            link: 'link.com',
-            comment: 'comment',
+            link: 'https://github.com/cumbach/CryptoCanvas',
+            comment: 'Block currently being processed',
             id: i,
             color: Colors[fetchedPixelColor],
             price: fetchedPixelPrice,
@@ -306,25 +289,33 @@ export default class CanvasCore extends Component {
           fetchedPixelIndex++;
         } else {
           pixels.push({
-            link: 'https://www.google.com',
+            link: 'https://github.com/cumbach/CryptoCanvas',
             comment: 'BUY THIS PIXEL!!!',
             id: i,
-            color: Colors[Math.floor(Math.random()*16)],
-            price: 0,
-            buyable: Math.random() < 0.2 ? true : false,
-            rentable: Math.random() < 0.2 ? true : false,
+            color: "#eaeaea",
+            price: 0.001,
+            buyable: true,
+            rentable: false,
           })
         }
       }
-      // this.givePixelsAttributes(fetchedPixels[0]);
-
-      this.setState({ pixels })
-    }
-
-    givePixelsAttributes(pixelIdsArray) {
+      const pixelIdsArray = fetchedPixels[0]
       for (var i = 0; i < pixelIdsArray.length; i++) {
         this.getOwner(pixelIdsArray[i]);
+        this.getURL(pixelIdsArray[i]);
+        this.getComment(pixelIdsArray[i]);
+        if (this.state.owners[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].owner = this.state.owners[pixelIdsArray[i]];
+        }
+        if (this.state.urls[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].link = this.state.urls[pixelIdsArray[i]];
+        }
+        if (this.state.comments[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].comment = this.state.comments[pixelIdsArray[i]];
+        }
       }
+
+      this.setState({ pixels })
     }
 
     handleChange(e) {
@@ -383,14 +374,15 @@ export default class CanvasCore extends Component {
     }
 
     setUpCanvas() {
-      let pixelIds = [];
-      let colors = [];
-      const price = 0.1 // this is in ether
-      for (var i = 3; i < 8; i++) {
-        pixelIds.push(i);
-        colors.push(2);
+      let pixelIds = [3,4,5,6,18,19,20,21,22,23,24,25,34,35,36,37,38,49,50,51,51,53,54,65,66,67,68,69,70,71,81,82,83,84,85,86];
+      let colors = [9,9,9,9,9,9,9,9,9,9,9,9,2,2,2,3,3,2,11,2,3,3,3,2,3,2,3,3,3,2,2,3,3,3,3,9];
+      let totalCost = 0;
+
+      const overallPrice = 0.002 // this is in ether
+      for (var i = 0; i < pixelIds.length; i++) {
+        totalCost += 0.001;
       }
-      this.buyPixels(pixelIds, colors, "url", "comment", price);
+      this.buyPixels(pixelIds, colors, "www.wcef.co", "World Crypto Economic Forum!", overallPrice, totalCost);
     }
 
 
@@ -417,16 +409,9 @@ export default class CanvasCore extends Component {
                   onRemoveRent={this.handleRemoveRent}
                   buys={buys}
                   rents={rents}
+                  buyPixels={this.buyPixels}
+                  rentPixels={this.rentPixels}
                 />
-                <h1 onClick={this.totalPixels}>totalPixels:{this.state.totalPixels}</h1><br/>
-                <h1 onClick={this.defaultPrice}>defaultPrice:{this.state.defaultPrice}</h1><br/>
-                <h1 onClick={this.isBuyable.bind(this, 5)}>isBuyable:{showIsBuyable}</h1><br/>
-                <h1 onClick={this.getPrice.bind(this, 5)}>getPrice:{this.state.price}</h1><br/>
-                <h1 onClick={this.getOwner.bind(this, 5)}>getOwner:{this.state.owner}</h1><br/>
-                <h1 onClick={this.getLeaser.bind(this, 5)}>getLeaser:{this.state.leaser}</h1><br/>
-                <h1 onClick={this.getCanvas}>getCanvas(console):{this.state.canvas}</h1><br/>
-                <h1 onClick={this.testBuy}>Test:Fake Buy</h1><br/>
-                <h1 onClick={this.testRent}>Test:Fake Rent</h1><br/>
             </div>
         )
     }
