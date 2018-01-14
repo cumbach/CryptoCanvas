@@ -38,7 +38,7 @@ export default class SideBarTabs extends Component {
             className={rightTab}
             onClick={this.handleTabChange.bind(null, 3)}
           >
-            Manage
+            Update
           </button>
         </div>
       );
