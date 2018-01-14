@@ -35,7 +35,7 @@ export default class TransactionInfo extends Component {
 
   render() {
       return (
-        <div>
+        <div className="transaction-info">
           <form>
             <label>
               URL:
@@ -45,6 +45,7 @@ export default class TransactionInfo extends Component {
               onChange={this.handleChange}
               type="text"
               id="link"
+              className="transaction-input"
               placeholder=""
             />
             <br />
@@ -57,6 +58,7 @@ export default class TransactionInfo extends Component {
               type="text"
               id="comment"
               placeholder=""
+              className="transaction-input"
             />
             <label>
               Price
@@ -65,17 +67,17 @@ export default class TransactionInfo extends Component {
               value={this.state.price}
               onChange={this.handleChange}
               type="text"
-              id="update"
+              id="price"
               placeholder=""
+              className="transaction-input"
             />
 
-            <button onClick={this.handleClick}>
+            <button onClick={this.handleClick} className="action-button">
               {ACTIONS[this.props.selectedTab]}
             </button>
           </form>
-
         </div>
-      );
+      )
     }
 
 }

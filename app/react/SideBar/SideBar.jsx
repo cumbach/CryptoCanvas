@@ -48,26 +48,38 @@ class SideBar extends Component {
       3: () => console.log('update')
     }
 
+    if (this.state.hidden) {
+      return (
+        <div className="arrow" onClick={()=>this.setState({hidden: false})}>
+          {`<`}
+        </div>
+      )
+    }
+
     return (
-      <div className="side-bar">
-        <SideBarTabs
-          selectedTab={this.state.tab}
-          onTabChange={this.handleTabChange}
-        />
-        <PriceSlider/>
-        <SelectedPixels
-          changes={changes}
-          pixels={pixels}
-          onRemoveChange={this.props.onRemoveChange}
-        />
-        <CoolDown/>
-        <TransactionInfo
-          selectedTab={this.state.tab}
-          pixels={pixels}
-          changes={changes}
-          actions={actions}
-        />
-        <button/>
+      <div>
+        <div className="arrow" onClick={() => this.setState({ hidden: true })}>
+          {`>`}
+        </div>
+        <div className="side-bar">
+          <SideBarTabs
+            selectedTab={this.state.tab}
+            onTabChange={this.handleTabChange}
+          />
+          <PriceSlider/>
+          <SelectedPixels
+            changes={changes}
+            pixels={pixels}
+            onRemoveChange={this.props.onRemoveChange}
+          />
+          <CoolDown/>
+          <TransactionInfo
+            selectedTab={this.state.tab}
+            pixels={pixels}
+            changes={changes}
+            actions={actions}
+          />
+        </div>
       </div>
     )
   }
