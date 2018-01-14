@@ -1,17 +1,5 @@
 import React, {Component} from 'react'
 
-const COLOR_MAP = {
-  0: 'red',
-  1: 'blue',
-  2: 'green',
-  3: 'yellow',
-  4: 'orange',
-  5: 'black',
-  6: 'white',
-  7: 'grey',
-  8: 'brown'
-}
-
 class BigSelected extends Component {
   /**
    * proptypes
@@ -48,7 +36,7 @@ class SmallSelected extends Component {
   /**
    * proptypes
    * pixel - object
-   * color - int? i think
+   * color - str representing hex
    */
   render() {
     const {
@@ -56,7 +44,7 @@ class SmallSelected extends Component {
     } = this.props
 
     return (
-      <div className="selected-pixel" style={{ backgroundColor: COLOR_MAP[parseInt(color)] }} />
+      <div className="selected-pixel" style={{ backgroundColor: color }} />
     )
   }
 }
@@ -83,9 +71,7 @@ export default class SelectedPixels extends Component {
 
   getColor(p) {
     const { changes, pixels } = this.props
-
     if (changes && changes[p.id] && changes[p.id].color) return changes[p.id].color
-
     return p.color
   }
 

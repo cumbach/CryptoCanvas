@@ -12,7 +12,7 @@ const TOTAL_PIXEL_COUNT = 10000
 const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
 const COMPANY_ADDRESS = 'company address'
 const COMPANY_OWNED_PIXEL_TEMPLATE = {
-    color: 4,
+    color: '#bbbbbb',
     link: 'www.cryptocanvas.io',
     comment: 'BUY THIS PIXEL!!!',
     owner: COMPANY_ADDRESS,
@@ -20,61 +20,61 @@ const COMPANY_OWNED_PIXEL_TEMPLATE = {
 }
 const CHANGED_PIXELS = {
     0: {
-        color: 2,
+        color: '#a06a42',
     },
     17: {
-        color: 1,
+        color: '#a06a42',
     },
     18: {
-        color: 2,
+        color: '#a06a42',
     },
     19: {
-        color: 2,
+        color: '#a06a42',
     },
     20: {
-        color: 4,
+        color: '#a06a42',
     },
     10: {
-        color: 2,
+        color: '#a06a42',
     },
     87: {
-        color: 3,
+        color: '#a06a42',
     },
     88: {
-        color: 2,
+        color: '#a06a42',
     },
     89: {
-        color: 2,
+        color: '#a06a42',
     },
     90: {
-        color: 2,
+        color: '#a06a42',
     },
     35: {
-        color: 2,
+        color: '#a06a42',
     },
     59: {
-        color: 2,
+        color: '#a06a42',
     },
     67: {
-        color: 2,
+        color: '#a06a42',
     },
     68: {
-        color: 2,
+        color: '#a06a42',
     },
     69: {
-        color: 2,
+        color: '#a06a42',
     },
     99: {
-        color: 2,
+        color: '#a06a42',
     },
     91: {
-        color: 2,
+        color: '#a06a42',
     },
     94: {
-        color: 2,
+        color: '#a06a42',
     },
     66: {
-        color: 2,
+        color: '#a06a42',
     },
 }
 
@@ -170,7 +170,7 @@ export default class CanvasCore extends Component {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
                     id: i,
-                    color: Math.floor(Math.random() * 10),
+                    color: Math.floor(Math.random() * 300) > 150 ? '#ffffff' : '#eeeeee',
                     price: Math.floor(Math.random() * 200),
                 })
             }
