@@ -68,17 +68,17 @@ export default class Canvas extends Component {
           >
           { mode===0 && commentPosition ?
             <div
-            style={{
-              'position': 'fixed',
-              'zIndex': '2',
-              'left': commentPosition[0],
-              'top': commentPosition[1],
-              'backgroundColor': 'white',
-              'padding': '2px 6px',
-              'border': '1px solid black',
-              'borderRadius': '3px',
-              'cursor': 'pointer',
-            }}
+              style={{
+                'position': 'fixed',
+                'zIndex': '2',
+                'left': commentPosition[0],
+                'top': commentPosition[1],
+                'backgroundColor': 'white',
+                'padding': '2px 6px',
+                'border': '1px solid black',
+                'borderRadius': '3px',
+                'cursor': 'pointer',
+              }}
             >
               {commentText}
             </div>
