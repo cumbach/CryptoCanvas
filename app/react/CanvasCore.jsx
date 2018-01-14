@@ -224,10 +224,10 @@ export default class CanvasCore extends Component {
       });
     }
 
-    buyPixels(pixelIdsArray, colorsArray, url, comment, priceEther) {
+    buyPixels(pixelIdsArray, colorsArray, url, comment, priceEther, totalCost) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(priceEther, 'ether'), gas: 300000});
+        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(totalCost, 'ether'), gas: 300000});
       }).then(transactionId => {
         console.log('buyPixels transaction posted (may take time to verify transaction)');
       });
@@ -375,12 +375,14 @@ export default class CanvasCore extends Component {
     setUpCanvas() {
       let pixelIds = [];
       let colors = [];
-      const price = 0.1 // this is in ether
-      for (var i = 13; i < 18; i++) {
+      const overallPrice = 0.1 // this is in ether
+      let totalCost = 0;
+      for (var i = 33; i < 38; i++) {
         pixelIds.push(i);
         colors.push(7);
+        totalCost += 0.1;
       }
-      this.buyPixels(pixelIds, colors, "urlfromsetupcanvas", "commentfromsetupcanvas", price);
+      this.buyPixels(pixelIds, colors, "urlfromsetupcanvas", "commentfromsetupcanvas", overallPrice, totalCost);
     }
 
 
