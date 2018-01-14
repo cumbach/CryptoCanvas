@@ -293,7 +293,7 @@ export default class CanvasCore extends Component {
         return (
             <div>
                 <App
-                    pixels={pixels}
+                    pixels={updatedPixels}
                     onChangePixel={this.handleChangePixel}
                     onRemoveChange={this.handleRemoveChange}
                     changes={changes}
