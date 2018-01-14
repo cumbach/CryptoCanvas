@@ -37,7 +37,7 @@ Gets the current leaser of the provided pixelId (defaults to contractOwner)
 ### getOwner(pixelId)
 Returns the current owner of the provided pixelId (defaults to contractOwner)
 
-### buyPixels([pixelIds])
+### buyPixels([pixelIds], [colors], url, comment, price) // (colors: hex string, price in wei)
 Takes in an array of pixelIds to buy. Also accepts payment.
 Buys and charges user for all pixels buyable.
 Sets that user as the owner and current leaser for those pixelIds
