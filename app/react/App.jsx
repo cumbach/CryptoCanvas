@@ -93,8 +93,6 @@ class App extends Component {
           changes={relevantChanges}
           onRemoveTransaction={relevantRemoveFunction}
           onSetMode={this.handleSetMode}
-          rentPixels={rentPixels}
-          buyPixels={buyPixels}
         />
         <Canvas
           mode={mode}
