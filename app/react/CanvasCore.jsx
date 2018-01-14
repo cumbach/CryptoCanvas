@@ -418,6 +418,15 @@ export default class CanvasCore extends Component {
                   buys={buys}
                   rents={rents}
                 />
+                <h1 onClick={this.totalPixels}>totalPixels:{this.state.totalPixels}</h1><br/>
+                <h1 onClick={this.defaultPrice}>defaultPrice:{this.state.defaultPrice}</h1><br/>
+                <h1 onClick={this.isBuyable.bind(this, 5)}>isBuyable:{showIsBuyable}</h1><br/>
+                <h1 onClick={this.getPrice.bind(this, 5)}>getPrice:{this.state.price}</h1><br/>
+                <h1 onClick={this.getOwner.bind(this, 5)}>getOwner:{this.state.owner}</h1><br/>
+                <h1 onClick={this.getLeaser.bind(this, 5)}>getLeaser:{this.state.leaser}</h1><br/>
+                <h1 onClick={this.getCanvas}>getCanvas(console):{this.state.canvas}</h1><br/>
+                <h1 onClick={this.testBuy}>Test:Fake Buy</h1><br/>
+                <h1 onClick={this.testRent}>Test:Fake Rent</h1><br/>
             </div>
         )
     }
