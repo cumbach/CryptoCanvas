@@ -1,28 +1,12 @@
 pragma solidity ^0.4.17;
 
 import "./Ownable.sol";
+import "./PixelStore.sol";
 
-contract CanvasCore is Ownable {
+contract CanvasCore is PixelStore, Ownable {
 
     event BuyEvent();
     event RentEvent();
-
-    struct Pixel {
-        address owner;
-        // Leaser for each pixelId. If the pixel is not stale, the leaser
-        // is the owner. If it is stale and rented, the leaser is the user who has
-        // rented the pixel
-        address leaser;
-        string url;
-        string comment;
-        uint128 price;
-        uint32 color;
-        // Time at which the pixel becomes available for renting
-        uint64 staleTime;
-        // True if the pixel has been bought by someone else and is not owned
-        // by the default contract owner anymore.
-        bool inMarket;
-    }
 
     address creator;
 
@@ -33,15 +17,11 @@ contract CanvasCore is Ownable {
 
     /// Excess amount paid by the users is kept here and can be withdrawn.
     mapping (address => uint) amountToWithdraw;
-    /// Total number of pixels
-    uint public totalPixels;
     /// Default values for all pixelIds initially created and owned by the creators
     bool public defaultBuyable;
-    address public defaultOwner;
     uint public defaultPrice;
 
     /// A dynamic list of pixels.
-    mapping(uint => Pixel) pixels;
     uint[] pixelsInMarket; 
 
     /// Sets up the canvas with the total pixels (side * side)
@@ -51,18 +31,11 @@ contract CanvasCore is Ownable {
             uint _totalPixels,
             bool _defaultBuyable,
             uint _defaultPrice)
-            public
+            public PixelStore(_totalPixels, msg.sender)
     {
         creator = msg.sender;
-        totalPixels = _totalPixels;
         defaultPrice = _defaultPrice; // in wei
-        defaultOwner = msg.sender; // pixels are owned by contract creator by default
         defaultBuyable = _defaultBuyable;
-    }
-
-    modifier isValidPixelId(uint _pixelId) {
-        require(_pixelId >= 0 && _pixelId < totalPixels);
-        _;
     }
 
     function setBuyCooldownTime(uint _buyCooldownTime) external onlyOwner {
@@ -74,14 +47,14 @@ contract CanvasCore is Ownable {
     }
     
     function getURL(uint _pixelId) public view isValidPixelId(_pixelId) returns (string) {
-        if (pixels[_pixelId].inMarket) {
+        if (pixels[_pixelId].owner != 0) {
             return pixels[_pixelId].url;
         }
         return "";
     }
 
     function getComment(uint _pixelId) public view isValidPixelId(_pixelId) returns (string) {
-        if (pixels[_pixelId].inMarket) {
+        if (pixels[_pixelId].owner != 0) {
             return pixels[_pixelId].comment;
         }
         return "";
@@ -94,7 +67,7 @@ contract CanvasCore is Ownable {
     function isBuyable(uint _pixelId) public view isValidPixelId(_pixelId) returns (bool) {
         if (pixels[_pixelId].price > 0)
             return true;
-        if (!pixels[_pixelId].inMarket)
+        if (pixels[_pixelId].owner == 0)
             return defaultBuyable;
         return false;
     }
@@ -108,7 +81,7 @@ contract CanvasCore is Ownable {
 
     /// Returns the price of any pixelId
     function getPrice(uint _pixelId) public view isValidPixelId(_pixelId) returns (uint) {
-        if (!pixels[_pixelId].inMarket && defaultBuyable)
+        if (pixels[_pixelId].owner == 0 && defaultBuyable)
             return defaultPrice;
 
         return pixels[_pixelId].price;
@@ -118,14 +91,6 @@ contract CanvasCore is Ownable {
     function getLeaser(uint _pixelId) public view isValidPixelId(_pixelId) returns (address) {
         if (pixels[_pixelId].owner != 0) {
             return pixels[_pixelId].leaser;
-        }
-        return defaultOwner;
-    }
-
-    /// Gets the current owner of the provided pixelId
-    function getOwner(uint _pixelId) public view isValidPixelId(_pixelId) returns (address) {
-        if (pixels[_pixelId].owner != 0) {
-            return pixels[_pixelId].owner;
         }
         return defaultOwner;
     }
@@ -172,7 +137,10 @@ contract CanvasCore is Ownable {
             pixId = _pixelIds[i];
             Pixel storage pixel = pixels[_pixelIds[i]];
             if (isBuyable(pixId)) {
-                amountToWithdraw[getOwner(pixId)] += getPrice(pixId);
+                amountToWithdraw[ownerOf(pixId)] += getPrice(pixId);
+                if (pixel.owner == 0) {
+                    pixelsInMarket.push(pixId);
+                }
                 pixel.owner = msg.sender;
                 pixel.leaser = msg.sender;
                 pixel.color = _colors[i];
@@ -180,10 +148,6 @@ contract CanvasCore is Ownable {
                 pixel.staleTime = _staleTime;
                 pixel.url = _url;
                 pixel.comment = _comment;
-                if (pixel.inMarket == false) {
-                    pixelsInMarket.push(pixId);
-                }
-                pixel.inMarket = true;
             }
         }
         BuyEvent();
