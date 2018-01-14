@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import Pixel from './Pixel.jsx';
-import { Stage, Layer, Rect, Text } from 'react-konva';
 
 const COLOR_MAP = {
   0: 'red',
@@ -32,28 +31,27 @@ export default class Canvas extends Component {
     const dimensions = Math.round(Math.sqrt(pixels.length));
 
     return (
-      <Stage width={700} height={700}>
-        <Layer>
-          {pixels.map((pixel, id) => {
-            return <Rect
-              x={pixelSize * (Math.floor(id / dimensions))}
-              y={pixelSize * (id % dimensions)}
-              width={5}
-              height={5}
-              key={id}
-              fill={COLOR_MAP[pixel.color]}
-              shadowBlur={5}
-              onClick={this.handleClick.bind(this, id)}
-            />
-          }, this)}
-        </Layer>
-      </Stage>
+      <div style={{'height': '500px', 'width': '500px'}}>
+        {pixels.map((pixel, id) => {
+          return <div
+            key={id}
+            style={{
+              'backgroundColor': COLOR_MAP[pixel.color],
+              'width': 500/dimensions + 'px',
+              'height': 500/dimensions + 'px',
+              'float': 'left'
+            }}
+            // onClick={this.handleClick.bind(this, id)}
+            onClick={this.handleClick.bind(this, id)}
+          />
+        }, this)}
+      </div>
     );
   }
 
   handleClick(id) {
     const { onChangePixel } = this.props;
-    onChangePixel(id, { color: 'blue' })
+    onChangePixel(id, { color: 1 })
   }
 
 }

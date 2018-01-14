@@ -110,7 +110,8 @@ export default class CanvasCore extends Component {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
                         id: i,
-                        color: Math.floor(Math.random() * 10)
+                        color: 4
+                        // color: Math.floor(Math.random() * 10)
                     })
             }
         }
@@ -192,17 +193,25 @@ export default class CanvasCore extends Component {
 
     render() {
         const {
+            changes,
             pixels,
-
             account,
             amount,
             receiver,
         } = this.state
 
+        const updatedPixels = [ ...pixels ];
+        Object.keys(changes).forEach((id) => {
+            updatedPixels[id] = {
+                ...updatedPixels[id],
+                ...changes[id]
+            }
+        })
+
         return (
             <div>
                 <App
-                    pixels={pixels}
+                    pixels={updatedPixels}
                     onChangePixel={this.handleChangePixel}
                 />
                 <br/>
