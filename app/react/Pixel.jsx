@@ -68,7 +68,7 @@ export default class Pixel extends Component {
 
     return (
       <div
-        onClick={mode===0 ? this.visitLink : isSelectable ? seletPixel : () => {}}
+        onClick={mode===0 ? this.visitLink : isSelectable ? selectPixel : () => {}}
         onMouseEnter={()=>this.enterCell(isSelectable, mode)}
         onMouseLeave={()=>this.exitCell(isSelectable, mode)}
         style={{
