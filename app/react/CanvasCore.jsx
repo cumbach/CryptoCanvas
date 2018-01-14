@@ -33,12 +33,7 @@ export default class CanvasCore extends Component {
         this.rentSuccess = this.rentSuccess.bind(this)
         this.drawPixels = this.drawPixels.bind(this)
 
-        this.testCode = this.testCode.bind(this)
-        this.testBuy = this.testBuy.bind(this)
-        this.testRent = this.testRent.bind(this)
-
         this.handleChange = this.handleChange.bind(this)
-
         this.handleAddBuy = this.handleAddBuy.bind(this)
         this.handleRemoveBuy = this.handleRemoveBuy.bind(this)
         this.handleAddRent = this.handleAddRent.bind(this)
@@ -66,11 +61,6 @@ export default class CanvasCore extends Component {
         }
 
         this.startUp()
-
-        // FOR FAKE API
-        // this.getAllPixels().then(pixels => {
-        //     this.intializePixels(pixels)
-        // })
     }
 
     componentDidMount() {
@@ -237,7 +227,7 @@ export default class CanvasCore extends Component {
     buyPixels(pixelIdsArray, colorsArray, url, comment, priceEther) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(priceEther, 'ether')});
+        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(priceEther, 'ether'), gas: 300000});
       }).then(transactionId => {
         console.log('buyPixels transaction posted (may take time to verify transaction)');
       });
@@ -253,7 +243,6 @@ export default class CanvasCore extends Component {
     }
 
     getCanvas() {
-      console.log('getCanvas');
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
         return canvas.getCanvas({gas: 300000});
@@ -269,45 +258,14 @@ export default class CanvasCore extends Component {
         });
         const buyableArray = canvasStateArray[3];
         const rentableArray = canvasStateArray[4];
-        console.log('canvas:');
-        console.log([idsArray, colorsArray, priceArray, buyableArray, rentableArray]);
         this.setState({'canvas': [idsArray, colorsArray, priceArray, buyableArray, rentableArray]})
         this.drawPixels([idsArray, colorsArray, priceArray, buyableArray, rentableArray]);
         return [idsArray, colorsArray, priceArray, buyableArray, rentableArray];
       });
     }
 
-    testCode() {
-      console.log('Test Code:');
-      // this.totalPixels();
-      // this.defaultPrice();
-      // this.getPrice(5);
-      // this.isBuyable(5);
-      // this.getOwner(5);
-      // this.getLeaser(5);
-    }
-
-    testBuy() {
-      // BUY LARGE PLOT:
-      let pixelIds = [];
-      let colors = [];
-      const price = 0.1 // this is in ether
-      for (var i = 3; i < 8; i++) {
-        pixelIds.push(i);
-        colors.push(2);
-      }
-      this.buyPixels(pixelIds, colors, "url2", "comment2", price);
-
-      // BUY SINGLE PIXEL:
-      // this.buyPixels([4], [2], "one", "commentone", 0.002);
-    }
-
-    testRent() {
-      // RENT SINGLE PIXEL:
-      this.rentPixels([4], [3], "two", "commenttwo");
-    }
-
     drawPixels(fetchedPixels) {
+      console.log(fetchedPixels)
       const pixels = []
 
       let fetchedPixelIndex = 0
@@ -418,11 +376,11 @@ export default class CanvasCore extends Component {
       let pixelIds = [];
       let colors = [];
       const price = 0.1 // this is in ether
-      for (var i = 3; i < 8; i++) {
+      for (var i = 13; i < 18; i++) {
         pixelIds.push(i);
-        colors.push(2);
+        colors.push(7);
       }
-      this.buyPixels(pixelIds, colors, "url", "comment", price);
+      this.buyPixels(pixelIds, colors, "urlfromsetupcanvas", "commentfromsetupcanvas", price);
     }
 
 
@@ -450,17 +408,6 @@ export default class CanvasCore extends Component {
                   buys={buys}
                   rents={rents}
                 />
-                <h1 onClick={this.totalPixels}>totalPixels:{this.state.totalPixels}</h1><br/>
-                <h1 onClick={this.defaultPrice}>defaultPrice:{this.state.defaultPrice}</h1><br/>
-                <h1 onClick={this.isBuyable.bind(this, 5)}>isBuyable:{showIsBuyable}</h1><br/>
-                <h1 onClick={this.getPrice.bind(this, 5)}>getPrice:{this.state.price}</h1><br/>
-                <h1 onClick={this.getOwner.bind(this, 5)}>getOwner:{this.state.owner}</h1><br/>
-                <h1 onClick={this.getURL.bind(this, 5)}>getURL:{this.state.url}</h1><br/>
-                <h1 onClick={this.getComment.bind(this, 5)}>getComment:{this.state.comment}</h1><br/>
-                <h1 onClick={this.getLeaser.bind(this, 5)}>getLeaser:{this.state.leaser}</h1><br/>
-                <h1 onClick={this.getCanvas}>getCanvas(console):{this.state.canvas}</h1><br/>
-                <h1 onClick={this.testBuy}>Test:Fake Buy</h1><br/>
-                <h1 onClick={this.testRent}>Test:Fake Rent</h1><br/>
             </div>
         )
     }
