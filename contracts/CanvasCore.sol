@@ -4,6 +4,9 @@ import "./Ownable.sol";
 
 contract CanvasCore is Ownable {
 
+    event BuyEvent();
+    event RentEvent();
+
     struct Pixel {
         address owner;
         // Leaser for each pixelId. If the pixel is not stale, the leaser
@@ -87,7 +90,7 @@ contract CanvasCore is Ownable {
     // If it has an owner, its in the market and it became stale before the
     // current time, then it is marked as rentable.
     function isRentable(uint _pixelId) public view isValidPixelId(_pixelId) returns (bool) {
-        return (pixels[_pixelId].owner > 0 && pixels[_pixelId].staleTime <= now);
+      return (pixels[_pixelId].owner > 0 && pixels[_pixelId].staleTime <= now);
     }
 
     /// Returns the price of any pixelId
@@ -168,6 +171,7 @@ contract CanvasCore is Ownable {
                 pixel.inMarket = true;
             }
         }
+        BuyEvent();
     }
 
     /// Takes in an array of pixelIds to rent. Also accepts payment.
@@ -217,7 +221,9 @@ contract CanvasCore is Ownable {
                 pixel.comment = _comment;
             }
         }
+        RentEvent();
     }
+
 
     // Returns all the pixels that have been bought. These ignores the pixels that have
     // not undergone any transaction and are owned by the creator
