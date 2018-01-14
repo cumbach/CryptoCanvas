@@ -134,12 +134,12 @@ export default class CanvasCore extends Component {
       });
     }
 
-    buyPixels(pixelIdsArray, colorsArray, url, comment, price, cooldownTime) {
+    buyPixels(pixelIdsArray, colorsArray, url, comment, priceWei, cooldownTime) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, price, cooldownTime, {from: web3.eth.accounts[0], value: web3.toWei(price, 'ether')});
+        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceWei, 'ether'), cooldownTime, {from: web3.eth.accounts[0], value: web3.toWei(priceWei, 'ether')});
       }).then(transactionId => {
-        console.log('buyPixels: successful');
+        console.log('buyPixels transaction posted (may take time to verify transaction)');
       });
     }
 
@@ -178,17 +178,19 @@ export default class CanvasCore extends Component {
       // this.getOwner(5);
       // this.getLeaser(5);
 
+      // BUY LARGE PLOT:
       // let pixelIds = [];
       // let colors = [];
-      // const price = 0.1
-      // const cooldownTime = 3600 // Seconds
+      // const price = 0.1 // this is in ether
+      // const cooldownTime = 3600 // this is in seconds
       // for (var i = 3; i < 50; i++) {
       //   pixelIds.push(i);
       //   colors.push(1234);
       // }
-      // buyPixels price is in ether!
       // this.buyPixels(pixelIds, colors, "url", "comment", price, cooldownTime);
-      // this.buyPixels([2], [1234], "url", "comment", 0.1, 10);
+
+      // BUY SINGLE PIXEL:
+      // this.buyPixels([1], [1234], "url", "comment", 0.1, 1);
     }
 
     render() {

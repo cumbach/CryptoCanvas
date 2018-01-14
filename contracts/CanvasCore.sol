@@ -108,7 +108,7 @@ contract CanvasCore {
         uint32[] _colors,
         string _url,
         string _comment,
-        uint32 _price,
+        uint128 _price,
         uint64 _cooldownTime)
         public
         payable
