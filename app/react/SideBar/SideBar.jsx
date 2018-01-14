@@ -10,7 +10,8 @@ class SideBar extends Component {
   constructor(props) {
     super(props)
     this.handleTabChange = this.handleTabChange.bind(this)
-    this.toggleHidden = this.toggleHidden.bind(this)
+    this.handleOpenMenu = this.handleOpenMenu.bind(this)
+    this.handleCloseMenu = this.handleCloseMenu.bind(this)
 
     this.state = {
       tab: 1,
@@ -33,8 +34,14 @@ class SideBar extends Component {
     this.setState({ tab }, onSetMode(tab))
   }
 
-  toggleHidden() {
-    this.setState(prevState => { hidden: !prevState.hidden })
+  handleOpenMenu() {
+    const { onSetMode } = this.props;
+    this.setState({ hidden: false }, onSetMode(1))
+  }
+
+  handleCloseMenu() {
+    const { onSetMode } = this.props;
+    this.setState({ hidden: true }, onSetMode(0))
   }
 
   render() {
@@ -51,7 +58,7 @@ class SideBar extends Component {
 
     if (this.state.hidden) {
       return (
-        <div className="arrow" onClick={()=>this.setState({hidden: false})}>
+        <div className="arrow" onClick={this.handleOpenMenu}>
           {`<`}
         </div>
       )
@@ -59,7 +66,7 @@ class SideBar extends Component {
 
     return (
       <div>
-        <div className="arrow" onClick={() => this.setState({ hidden: true })}>
+        <div className="arrow" onClick={this.handleCloseMenu}>
           {`>`}
         </div>
         <div className="side-bar">

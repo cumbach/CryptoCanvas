@@ -392,7 +392,7 @@ export default class CanvasCore extends Component {
         this.setState((prevState, props) => {
             return {
                 rents: {
-                    ...prevState.rent,
+                    ...prevState.rents,
                     [id]: {
                         ...prevState.rents[id],
                         ...rent
