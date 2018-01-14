@@ -22,7 +22,8 @@ export default class CanvasCore extends Component {
         super(props)
         this.startUp = this.startUp.bind(this)
         this.testCode = this.testCode.bind(this)
-        this.checkPublicVars = this.checkPublicVars.bind(this)
+        this.totalPixels = this.totalPixels.bind(this)
+        this.defaultPrice = this.defaultPrice.bind(this)
         this.isBuyable = this.isBuyable.bind(this)
         this.getPrice = this.getPrice.bind(this)
         this.getOwner = this.getOwner.bind(this)
@@ -72,13 +73,24 @@ export default class CanvasCore extends Component {
     //     this.setState({ status })
     // }
 
-    checkPublicVars() {
+    totalPixels() {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.totalPixels;
+        return canvas.totalPixels();
       }).then(totalPixels => {
-        console.log('checkPublicVars');
-        console.log(totalPixels);
+        console.log('totalPixels: ');
+        console.log(parseInt(totalPixels, 10));
+      });
+    }
+
+    // This is the price of all uninitialized pixels
+    defaultPrice() {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.defaultPrice();
+      }).then(defaultPrice => {
+        console.log('defaultPrice: ');
+        console.log(web3.fromWei(parseInt(defaultPrice, 10), 'ether'));
       });
     }
 
@@ -159,7 +171,8 @@ export default class CanvasCore extends Component {
       console.log('Test Code:');
       // ASK ME FOR EXPLANATION HERE!!!
       // this.getCanvas();
-      // this.checkPublicVars();
+      // this.totalPixels();
+      // this.defaultPrice();
       // this.getPrice(5);
       // this.isBuyable(5);
       // this.getOwner(5);
