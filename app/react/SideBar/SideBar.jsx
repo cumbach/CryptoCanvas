@@ -20,16 +20,17 @@ class SideBar extends Component {
     /**
      * propTypes
      * ---------
-     * pixels - array of Pixel objects
-     * changes object
-     * onChangePixel fn
-     * onRemoveChange fn ()  (deletes change)
+          pixels={pixels}
+          changes={relevantChanges}
+          onRemoveTransaction={relevantRemoveFunction}
+          onSetMode={this.handleSetMode}
      *
      */
   }
 
   handleTabChange(tab) {
-    this.setState({ tab })
+    const { onSetMode } = this.props;
+    this.setState({ tab }, onSetMode(tab))
   }
 
   toggleHidden() {
@@ -70,7 +71,7 @@ class SideBar extends Component {
           <SelectedPixels
             changes={changes}
             pixels={pixels}
-            onRemoveChange={this.props.onRemoveChange}
+            onRemoveTransaction={this.props.onRemoveTransaction}
           />
           <CoolDown/>
           <TransactionInfo

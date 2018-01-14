@@ -5,14 +5,14 @@ class BigSelected extends Component {
    * proptypes
    * pixel - object
    * color - int? i think
-   * onRemoveChange fn()
+   * onRemoveTransaction fn()
    */
 
   render() {
     const {
       color,
       pixel,
-      onRemoveChange,
+      onRemoveTransaction,
     } = this.props
     return (
       <div className="big-selected">
@@ -21,7 +21,7 @@ class BigSelected extends Component {
         />
         <div className="price-label">{pixel.price} eth</div> {/* showing old price here */}
         <button
-          onClick={onRemoveChange}
+          onClick={onRemoveTransaction}
           className="remove-button"
         >
           Remove
@@ -64,7 +64,7 @@ export default class SelectedPixels extends Component {
      * ---------
      * pixels - array of Pixel objects
      * changes object
-     * onRemoveChange fn ()  (deletes change)
+     * onRemoveTransaction fn ()  (deletes change)
      *
      */
 
@@ -84,7 +84,7 @@ export default class SelectedPixels extends Component {
           pixel={p}
           color={this.getColor(p)}
           key={p.id}
-          onRemoveChange={this.props.onRemoveChange.bind(null, p.id)}
+          onRemoveTransaction={this.props.onRemoveTransaction.bind(null, p.id)}
         />
       )
     }
