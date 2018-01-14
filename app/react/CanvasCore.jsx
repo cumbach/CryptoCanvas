@@ -12,11 +12,9 @@ const TOTAL_PIXEL_COUNT = 10000
 const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
 const COMPANY_ADDRESS = 'company address'
 const COMPANY_OWNED_PIXEL_TEMPLATE = {
-    color: 4,
     link: 'www.cryptocanvas.io',
     comment: 'BUY THIS PIXEL!!!',
     owner: COMPANY_ADDRESS,
-    price: 10,
     coolDownTime: 9999,
 }
 export default class CanvasCore extends Component {
@@ -41,6 +39,7 @@ export default class CanvasCore extends Component {
         this.testRent = this.testRent.bind(this)
 
         this.handleChange = this.handleChange.bind(this)
+        this.handleRemoveChange = this.handleRemoveChange.bind(this)
         this.handleChangePixel = this.handleChangePixel.bind(this)
 
         this.state = {
@@ -300,8 +299,8 @@ export default class CanvasCore extends Component {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
                         id: i,
-                        color: '#a06a42'
-                        // color: Math.floor(Math.random() * 10)
+                        color: Math.random() > 0.5 ? '#9300FF' : '#DDF0EA',
+                        price: 300 * Math.random(),
                     })
             }
         }
@@ -372,6 +371,16 @@ export default class CanvasCore extends Component {
         this.setState({ [e.target.id]: e.target.value })
     }
 
+    handleRemoveChange(id) {
+      const { changes } = this.state
+      const newChanges = { ...changes }
+      delete newChanges[id]
+      this.setState({
+        changes: newChanges
+      })
+    }
+
+
     render() {
         const {
             changes,
@@ -391,12 +400,16 @@ export default class CanvasCore extends Component {
         });
 
         const showIsBuyable = this.state.isBuyable ? 'true' : 'false';
+        console.log(changes)
+
 
         return (
             <div>
                 <App
                   pixels={updatedPixels}
                   onChangePixel={this.handleChangePixel}
+                  changes={changes}
+                  onRemoveChange={this.handleRemoveChange}
                 />
                 <h1 onClick={this.totalPixels}>totalPixels:{this.state.totalPixels}</h1><br/>
                 <h1 onClick={this.defaultPrice}>defaultPrice:{this.state.defaultPrice}</h1><br/>
