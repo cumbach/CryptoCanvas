@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import TestComponent from './TestComponent.jsx'
 import SideBar from './SideBar.jsx'
 import Canvas from './Canvas.jsx'
 import NavBarTop from './NavBarTop.jsx'
@@ -30,6 +31,7 @@ class App extends Component {
     // MAIN below is a placeholder for <Canvas/>
     return (
       <div>
+        <TestComponent/>
         <NavBarTop/>
         <Canvas
           pixels={pixels}
