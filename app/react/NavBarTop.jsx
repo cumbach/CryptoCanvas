@@ -7,8 +7,9 @@ export default class NavBarTop extends Component {
 
   render() {
       return (
-        <div>
-            Hello!  I am the NavBarTop.  I have a logo and a username
+        <div className="nav-bar-top">
+            <div className="nav-bar-title">CryptoCanvas</div>
+            <div className="nav-bar-user">Johnny Canvas</div>
         </div>
       )
     }

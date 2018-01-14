@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 
-import SideBar from './SideBar.jsx'
+import SideBar from './SideBar/SideBar.jsx'
+
+import TestComponent from './TestComponent.jsx'
 import Canvas from './Canvas.jsx'
 import NavBarTop from './NavBarTop.jsx'
 
@@ -30,13 +32,13 @@ class App extends Component {
     return (
       <div>
         <NavBarTop/>
-        <Canvas
+        <SideBar
           pixels={pixels}
           pixelSize={5}
           changes={changes}
           onChangePixel={this.handleChangePixel}
         />
-        <SideBar
+        <Canvas
           pixels={pixels}
           changes={changes}
           onChangePixel={this.handleChangePixel}
