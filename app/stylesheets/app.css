@@ -133,10 +133,17 @@ h3 {
 .expand-button {
   border: none;
   outline: none;
-  float: right;
-  margin-left: 20px;
-  border: 1px solid grey;
+  margin-left: 86px;
+  margin-top: 1px;
   border-radius: 50%;
+  height: 22px;
+  width: 32px;
+}
+
+.expand-button img {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
 }
 
 .selected-pixel-area {

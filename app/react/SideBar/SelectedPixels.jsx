@@ -150,7 +150,7 @@ export default class SelectedPixels extends Component {
             return {expanded: !prevState.expanded}
           })}
             >
-            {this.state.expanded ? '-' : '+'}
+            <img src="./app/react/SideBar/list.png"></img>
           </button>
         </div>
         <div className="selected-pixel-area">
