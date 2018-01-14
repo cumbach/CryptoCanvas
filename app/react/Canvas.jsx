@@ -56,7 +56,8 @@ export default class Canvas extends Component {
         style={{
           'height': this.props.size + 'px',
           'width': this.props.size + 'px',
-          'float': 'left'
+          'float': 'left',
+          'boxShadow': '0px 0px 3px black'
         }}
       >
         { mode===0 && commentPosition ?
