@@ -136,10 +136,10 @@ export default class TransactionInfo extends Component {
               />
             </div>
             {
-              (this.props.pixels.length > 0 && selectedTab <= 2) ? 
-              <div className="form-line"> 
-                <p> 
-                 Rate ({price} ETH) x {total} ..... 
+              (this.props.pixels.length > 0 && selectedTab <= 2) ?
+              <div className="form-line">
+                <p>
+                 Rate ({price} ETH) x {total} .....
                  {price * total} ETH
                 </p>
                 <p>
@@ -150,7 +150,7 @@ export default class TransactionInfo extends Component {
                 </p>
               </div> : null
             }
-            
+
             <div className="button-line">
               <button onClick={this.handleClick} className="action-button">
                 {ACTIONS[this.props.selectedTab]}
@@ -162,5 +162,3 @@ export default class TransactionInfo extends Component {
     }
 
 }
-
-
