@@ -3,11 +3,10 @@ import Pixel from './Pixel.jsx';
 
 export default class Canvas extends Component {
   /**
-  * buyModeEnabled: bool
-  * pixels: array[ pixel: object ]
-  * onChangePixel: func
-  * pixelSize: number
-  * currentColor: string
+    pixels={displayPixels}
+    changes={relevantChanges}
+    currentColor={currentColor}
+    onAddTransaction={relevantAddFunction}
   * mode: int (may be a string in the future) 0:view, 1:buy, 2:rent, 3:manage
   **/
   constructor(props) {
@@ -24,8 +23,8 @@ export default class Canvas extends Component {
   }
 
   selectPixel(id) {
-    const { currentColor, onChangePixel } = this.props;
-    onChangePixel(id, { color: currentColor })
+    const { currentColor, onAddTransaction } = this.props;
+    onAddTransaction(id, { color: currentColor })
   }
 
   handleMouseMove(e) {

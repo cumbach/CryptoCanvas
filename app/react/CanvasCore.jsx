@@ -40,8 +40,11 @@ export default class CanvasCore extends Component {
         this.testRent = this.testRent.bind(this)
 
         this.handleChange = this.handleChange.bind(this)
-        this.handleRemoveChange = this.handleRemoveChange.bind(this)
-        this.handleChangePixel = this.handleChangePixel.bind(this)
+
+        this.handleAddBuy = this.handleAddBuy.bind(this)
+        this.handleRemoveBuy = this.handleRemoveBuy.bind(this)
+        this.handleAddRent = this.handleAddRent.bind(this)
+        this.handleRemoveRent = this.handleRemoveBuy.bind(this)
 
         this.state = {
             status: null,
@@ -57,7 +60,8 @@ export default class CanvasCore extends Component {
             canvas: [],
 
             pixels: [], // array of <Pixels>
-            changes: {}, // eg: {pixelId: { color: <new color> }}
+            buys: {}, // eg: {pixelId: { color: <new color> }}
+            rents: {}
         }
 
         this.startUp()
@@ -351,68 +355,85 @@ export default class CanvasCore extends Component {
         })
     }
 
+    handleChange(e) {
+        e.preventDefault()
+        this.setState({ [e.target.id]: e.target.value })
+    }
 
 
 
 
-    handleChangePixel(id, changes) {
+
+    handleAddBuy(id, buy) {
         this.setState((prevState, props) => {
             return {
-                changes: {
-                    ...prevState.changes,
+                buys: {
+                    ...prevState.buys,
                     [id]: {
-                        ...prevState.changes[id],
-                        ...changes
+                        ...prevState.buys[id],
+                        ...buy
                     }
                 }
             }
         })
     }
 
-    handleChange(e) {
-        e.preventDefault()
-        this.setState({ [e.target.id]: e.target.value })
+    handleRemoveBuy(id) {
+      const { buys } = this.state
+      const newBuys = { ...buys }
+      delete newBuys[id]
+      this.setState({
+        buys: newBuys
+      })
     }
 
-    handleRemoveChange(id) {
-      const { changes } = this.state
-      const newChanges = { ...changes }
-      delete newChanges[id]
+    handleAddRent(id, rent) {
+        this.setState((prevState, props) => {
+            return {
+                rents: {
+                    ...prevState.rent,
+                    [id]: {
+                        ...prevState.rents[id],
+                        ...rent
+                    }
+                }
+            }
+        })
+    }
+
+    handleRemoveRent(id) {
+      const { rents } = this.state
+      const newRents = { ...rents }
+      delete newRents[id]
       this.setState({
-        changes: newChanges
+        buys: newRents
       })
     }
 
 
     render() {
         const {
-            changes,
+            buys,
+            rents,
             pixels,
-
             account,
             amount,
             receiver,
         } = this.state
 
-        const updatedPixels = [ ...pixels ];
-        Object.keys(changes).forEach((id) => {
-          updatedPixels[id] = {
-            ...updatedPixels[id],
-            ...changes[id]
-          }
-        });
-
         const showIsBuyable = this.state.isBuyable ? 'true' : 'false';
-        console.log(changes)
-
+        console.log(buys)
 
         return (
             <div>
                 <App
-                  pixels={updatedPixels}
-                  onChangePixel={this.handleChangePixel}
-                  changes={changes}
-                  onRemoveChange={this.handleRemoveChange}
+                  pixels={pixels}
+                  onAddBuy={this.handleAddBuy}
+                  onRemoveBuy={this.handleRemoveBuy}
+                  onAddRent={this.handleAddRent}
+                  onRemoveRent={this.handleRemoveRent}
+                  buys={buys}
+                  rents={rents}
                 />
                 <h1 onClick={this.totalPixels}>totalPixels:{this.state.totalPixels}</h1><br/>
                 <h1 onClick={this.defaultPrice}>defaultPrice:{this.state.defaultPrice}</h1><br/>

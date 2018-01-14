@@ -11,14 +11,18 @@ import ToggleButton from 'react-toggle-button'
 class App extends Component {
   constructor() {
     super()
-    this.handleChangePixel = this.handleChangePixel.bind(this)
+    this.handleAddBuy = this.handleAddBuy.bind(this)
+    this.handleAddRent = this.handleAddRent.bind(this)
     this.handleChangeCurrentColor = this.handleChangeCurrentColor.bind(this)
     this.handleSetMode = this.handleSetMode.bind(this)
     /**
-     * propTypes:
-     * onChangePixel - fn
-     * pixels - []
-     * changes - {}
+          pixels={pixels}
+          onAddBuy={this.handleAddBuy}
+          onRemoveBuy={this.handleRemoveBuy}
+          onAddRent={this.handleAddRent}
+          onRemoveRent={this.handleRemoveRent}
+          buys={buys}
+          rents={rents}
      * */
 
     this.state = {
@@ -27,8 +31,12 @@ class App extends Component {
     }
   }
 
-  handleChangePixel(id, changes) {
-    this.props.onChangePixel(id, changes)
+  handleAddBuy(id, buy) {
+    this.props.onAddBuy(id, buy)
+  }
+
+  handleAddRent(id, rent) {
+    this.props.onAddRent(id, rent)
   }
 
   handleChangeCurrentColor(color) {
@@ -42,7 +50,8 @@ class App extends Component {
   render() {
     const {
       pixels,
-      changes,
+      buys,
+      rents
     } = this.props
 
     const {
@@ -50,23 +59,34 @@ class App extends Component {
       mode
     } = this.state
 
+    const relevantChanges = mode===1 ? buys : mode===2 ? rents : {};
+    const relevantAddFunction = mode===1 ? this.handleAddBuy : mode===2 ? this.handleAddRent : () => {}
+    const relevantRemoveFunction = mode===1 ? this.props.onRemoveBuy : mode===2 ? this.props.onRemoveRent : () => {};
+
+    const displayPixels = [ ...pixels ];
+    Object.keys(relevantChanges).forEach((id) => {
+      displayPixels[id] = {
+        ...displayPixels[id],
+        ...relevantChanges[id]
+      }
+    });
+
     // MAIN below is a placeholder for <Canvas/>
     return (
       <div>
         <NavBarTop/>
         <SideBar
           pixels={pixels}
-          changes={changes}
-          onChangePixel={this.onChangePixel}
-          onRemoveChange={this.props.onRemoveChange}
+          changes={relevantChanges}
+          onRemoveTransaction={relevantRemoveFunction}
           onSetMode={this.handleSetMode}
         />
         <Canvas
           mode={mode}
-          pixels={pixels}
-          changes={changes}
+          pixels={displayPixels}
+          changes={relevantChanges}
           currentColor={currentColor}
-          onChangePixel={this.handleChangePixel}
+          onAddTransaction={relevantAddFunction}
         />
         <ColorPicker
           currentColor={currentColor}
