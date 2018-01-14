@@ -8,6 +8,7 @@ export default class Canvas extends Component {
   * onChangePixel: func
   * pixelSize: number
   * currentColor: string
+  * mode: int (may be a string in the future) 0:view, 1:buy, 2:rent, 3:manage
   **/
   constructor(props) {
     super(props)
@@ -40,7 +41,7 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const { buyModeEnabled, pixels, pixelSize } = this.props;
+    const { mode, pixels, pixelSize } = this.props;
     const { commentPosition, commentText } = this.state;
     const dimensions = Math.round(Math.sqrt(pixels.length));
 
@@ -52,7 +53,7 @@ export default class Canvas extends Component {
           'height': '500px', 'width': '500px'
         }}
       >
-        {!buyModeEnabled && commentPosition ?
+        { mode===0 && commentPosition ?
           <div
             style={{
               'position': 'fixed',
@@ -75,8 +76,9 @@ export default class Canvas extends Component {
             size={500/dimensions}
             selectPixel={this.selectPixel.bind(this, id)}
             setComment={this.handleSetComment.bind(this, pixel.comment)}
-            buyModeEnabled={buyModeEnabled}
+            mode={mode}
             buyable={pixel.buyable}
+            rentable={pixel.rentable}
           />
         }, this)}
       </div>

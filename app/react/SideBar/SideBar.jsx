@@ -22,12 +22,14 @@ class SideBar extends Component {
      * changes object
      * onChangePixel fn
      * onRemoveChange fn ()  (deletes change)
+     * onSetMode: fn
      *
      */
   }
 
   handleTabChange(tab) {
-    this.setState({ tab })
+    const { onSetMode } = this.props;
+    this.setState({ tab }, onSetMode(tab))
   }
 
   render() {

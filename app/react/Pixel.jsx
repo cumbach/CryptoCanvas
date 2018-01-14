@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import Comment from './Comment.jsx'
 
 export default class Pixel extends Component {
   constructor(props) {
@@ -8,8 +7,9 @@ export default class Pixel extends Component {
     * color: string
     * size: int
     * onClick: func
-    * buyModeEnabled: bool
+    * mode: int
     * buyable: bool
+    * rentable: bool
     * setComment: func
     **/
     super(props)
@@ -32,23 +32,23 @@ export default class Pixel extends Component {
   }
 
   render() {
-    const { buyable, buyModeEnabled, color, selectPixel, size } = this.props;
+    const { buyable, mode, color, rentable, selectPixel, size } = this.props;
     const { hover } = this.state;
-    const isSelectable = buyModeEnabled && buyable;
-    const isDisabled = buyModeEnabled && !buyable;
+    const isSelectable = (mode===1 && buyable) || (mode===2 && rentable);
+    const isDisabled = (mode===1 && !buyable) || (mode===2 && !rentable);
 
     return (
       <div
         onClick={isSelectable ? selectPixel : () => {}}
-        onMouseEnter={!buyModeEnabled ? this.setComment : isSelectable ? this.highlight : () => {}}
-        onMouseLeave={!buyModeEnabled ? this.hideComment : isSelectable ? this.unhighlight : () => {}}
+        onMouseEnter={mode===0 ? this.setComment : isSelectable ? this.highlight : () => {}}
+        onMouseLeave={mode===0 ? this.hideComment : isSelectable ? this.unhighlight : () => {}}
         style={{
           'backgroundColor': color,
           'width': size + 'px',
           'height': size + 'px',
           'float': 'left',
           'outline': hover ? '2px solid black' : 'none',
-          'opacity': isDisabled ? '0.3' : '1',
+          'opacity': isDisabled ? '0.1' : '1',
           'zIndex': isSelectable ? '1' : '0',
           'boxShadow': isSelectable ? '0px 0px 2px black' : 'none',
         }}

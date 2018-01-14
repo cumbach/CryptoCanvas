@@ -13,7 +13,7 @@ class App extends Component {
     super()
     this.handleChangePixel = this.handleChangePixel.bind(this)
     this.handleChangeCurrentColor = this.handleChangeCurrentColor.bind(this)
-    this.handleToggleBuyable = this.handleToggleBuyable.bind(this)
+    this.handleSetMode = this.handleSetMode.bind(this)
     /**
      * propTypes:
      * onChangePixel - fn
@@ -23,7 +23,7 @@ class App extends Component {
 
     this.state = {
       currentColor: '#222222',
-      buyModeEnabled: false
+      mode: 1
     }
   }
 
@@ -35,8 +35,8 @@ class App extends Component {
     this.setState({ currentColor: color });
   }
 
-  handleToggleBuyable() {
-    this.setState((prevState) => ({ buyModeEnabled: !prevState.buyModeEnabled }))
+  handleSetMode(mode) {
+    this.setState({ mode })
   }
 
   render() {
@@ -47,7 +47,7 @@ class App extends Component {
 
     const {
       currentColor,
-      buyModeEnabled
+      mode
     } = this.state
 
     // MAIN below is a placeholder for <Canvas/>
@@ -59,9 +59,10 @@ class App extends Component {
           changes={changes}
           onChangePixel={this.onChangePixel}
           onRemoveChange={this.props.onRemoveChange}
+          onSetMode={this.handleSetMode}
         />
         <Canvas
-          buyModeEnabled={buyModeEnabled}
+          mode={mode}
           pixels={pixels}
           changes={changes}
           currentColor={currentColor}
@@ -70,10 +71,6 @@ class App extends Component {
         <ColorPicker
           currentColor={currentColor}
           onClick={this.handleChangeCurrentColor}
-        />
-        <ToggleButton
-          value={ buyModeEnabled }
-          onToggle={this.handleToggleBuyable}
         />
       </div>
     )
