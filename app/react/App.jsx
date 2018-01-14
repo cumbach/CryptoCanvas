@@ -27,7 +27,7 @@ class App extends Component {
 
     this.state = {
       currentColor: '#222222',
-      mode: 1
+      mode: 0
     }
   }
 
