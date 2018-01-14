@@ -9,8 +9,8 @@ import Colors from './colors.js'
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-const TOTAL_PIXEL_COUNT = 100
-const COMPANY_ADDRESS = 'company address'
+const TOTAL_PIXEL_COUNT = 64;
+const COMPANY_ADDRESS = 'company address';
 
 export default class CanvasCore extends Component {
     constructor(props) {
@@ -227,7 +227,8 @@ export default class CanvasCore extends Component {
     buyPixels(pixelIdsArray, colorsArray, url, comment, priceEther, totalCost) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(totalCost, 'ether'), gas: 300000});
+        console.log(pixelIdsArray, colorsArray, url, comment);
+        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(totalCost, 'ether'), gas: 6385876});
       }).then(transactionId => {
         console.log('buyPixels transaction posted (may take time to verify transaction)');
       });
@@ -236,7 +237,7 @@ export default class CanvasCore extends Component {
     rentPixels(pixelIdsArray, colorsArray, url, comment) {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.rentPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, {from: web3.eth.accounts[0], gas: 300000});
+        return canvas.rentPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, {from: web3.eth.accounts[0], gas: 6385876});
       }).then(transactionId => {
         console.log('rentPixels transaction posted (may take time to verify transaction)');
       });
@@ -278,7 +279,7 @@ export default class CanvasCore extends Component {
           var fetchedPixelRentable = fetchedPixels[4][fetchedPixelIndex];
           pixels.push({
             link: 'https://github.com/cumbach/CryptoCanvas',
-            comment: 'THIS SHOULD BE REPLACED, REFRESH!',
+            comment: 'Block currently being processed',
             id: i,
             color: Colors[fetchedPixelColor],
             price: fetchedPixelPrice,

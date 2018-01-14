@@ -74,7 +74,7 @@ contract CanvasCore is Ownable {
     function setRentCooldownTime(uint _rentCooldownTime) external onlyOwner {
         rentCooldownTime = _rentCooldownTime;
     }
-    
+
     function getURL(uint _pixelId) public view isValidPixelId(_pixelId) returns (string) {
         if (pixels[_pixelId].inMarket) {
             return pixels[_pixelId].url;
@@ -235,7 +235,7 @@ contract CanvasCore is Ownable {
         bool[] memory  _rentable = new bool[](setPixels);
 
         uint counter = 0;
-        for (uint i = 1; i <= totalPixels; i++) {
+        for (uint i = 0; i < totalPixels; i++) {
             if (pixels[i].owner > 0) {
                 _pixelIds[counter] = i;
                 _colors[counter] = pixels[i].color;
