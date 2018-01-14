@@ -31,7 +31,6 @@ export default class CanvasCore extends Component {
         this.buySuccess = this.buySuccess.bind(this)
         this.rentSuccess = this.rentSuccess.bind(this)
         this.drawPixels = this.drawPixels.bind(this)
-        this.givePixelsAttributes = this.givePixelsAttributes.bind(this)
 
         this.testCode = this.testCode.bind(this)
         this.testBuy = this.testBuy.bind(this)
@@ -54,7 +53,7 @@ export default class CanvasCore extends Component {
             isBuyable: false,
             price: 0,
             owners: Array(TOTAL_PIXEL_COUNT),
-            links: Array(TOTAL_PIXEL_COUNT),
+            urls: Array(TOTAL_PIXEL_COUNT),
             comments: Array(TOTAL_PIXEL_COUNT),
             leaser: '',
             canvas: [],
@@ -295,7 +294,7 @@ export default class CanvasCore extends Component {
         pixelIds.push(i);
         colors.push(2);
       }
-      this.buyPixels(pixelIds, colors, "url", "comment", price);
+      this.buyPixels(pixelIds, colors, "url2", "comment2", price);
 
       // BUY SINGLE PIXEL:
       // this.buyPixels([4], [2], "one", "commentone", 0.002);
@@ -318,8 +317,8 @@ export default class CanvasCore extends Component {
           var fetchedPixelBuyable = fetchedPixels[3][fetchedPixelIndex];
           var fetchedPixelRentable = fetchedPixels[4][fetchedPixelIndex];
           pixels.push({
-            link: 'link.com',
-            comment: 'comment',
+            link: 'https://github.com/cumbach/CryptoCanvas',
+            comment: 'THIS SHOULD BE REPLACED, REFRESH!',
             id: i,
             color: Colors[fetchedPixelColor],
             price: fetchedPixelPrice,
@@ -329,7 +328,7 @@ export default class CanvasCore extends Component {
           fetchedPixelIndex++;
         } else {
           pixels.push({
-            link: 'www.cryptocanvas.io',
+            link: 'https://github.com/cumbach/CryptoCanvas',
             comment: 'BUY THIS PIXEL!!!',
             id: i,
             color: "#eaeaea",
@@ -339,17 +338,23 @@ export default class CanvasCore extends Component {
           })
         }
       }
-      this.givePixelsAttributes(fetchedPixels[0]);
-
-      this.setState({ pixels })
-    }
-
-    givePixelsAttributes(pixelIdsArray) {
+      const pixelIdsArray = fetchedPixels[0]
       for (var i = 0; i < pixelIdsArray.length; i++) {
         this.getOwner(pixelIdsArray[i]);
         this.getURL(pixelIdsArray[i]);
         this.getComment(pixelIdsArray[i]);
+        if (this.state.owners[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].owner = this.state.owners[pixelIdsArray[i]];
+        }
+        if (this.state.urls[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].link = this.state.urls[pixelIdsArray[i]];
+        }
+        if (this.state.comments[pixelIdsArray[i]]) {
+          pixels[pixelIdsArray[i]].comment = this.state.comments[pixelIdsArray[i]];
+        }
       }
+
+      this.setState({ pixels })
     }
 
     handleChange(e) {
