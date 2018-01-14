@@ -267,12 +267,16 @@ export default class CanvasCore extends Component {
 
     drawPixels(fetchedPixels) {
       console.log(fetchedPixels)
+      const fetchedSet = {};
+      fetchedPixels[0].forEach(function(pixel){
+        fetchedSet[pixel] = true;
+      })
       const pixels = []
 
       let fetchedPixelIndex = 0
       for (var i = 0; i < TOTAL_PIXEL_COUNT; i++) {
         var fetchedPixelId = fetchedPixels[0][fetchedPixelIndex];
-        if (fetchedPixelId == i) {
+        if (fetchedSet[i]) {
           var fetchedPixelColor = fetchedPixels[1][fetchedPixelIndex];
           var fetchedPixelPrice = fetchedPixels[2][fetchedPixelIndex];
           var fetchedPixelBuyable = fetchedPixels[3][fetchedPixelIndex];
@@ -299,6 +303,7 @@ export default class CanvasCore extends Component {
           })
         }
       }
+
       const pixelIdsArray = fetchedPixels[0]
       for (var i = 0; i < pixelIdsArray.length; i++) {
         this.getOwner(pixelIdsArray[i]);
@@ -314,6 +319,8 @@ export default class CanvasCore extends Component {
           pixels[pixelIdsArray[i]].comment = this.state.comments[pixelIdsArray[i]];
         }
       }
+      console.log(Colors);
+      console.log(pixels);
 
       this.setState({ pixels })
     }
