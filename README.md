@@ -21,7 +21,7 @@ Go to `localhost:8080`
 
 ## Public Variables
 totalPixels: total number of pixels
-
+defaultPrice: price of uninitialized pixels
 
 ## Public Functions
 
@@ -45,9 +45,10 @@ Gets the current leaser of the provided pixelId (defaults to contractOwner)
 ### getOwner(pixelId)
 Returns the current owner of the provided pixelId (defaults to contractOwner)
 
-### buyPixels([pixelIds], [colors], url, comment, price) // (colors: hex string, price in wei)
-Takes in an array of pixelIds to buy. Also accepts payment.
+### buyPixels([pixelIds], [colors], url, comment, totalPriceWei, cooldownTime) // (each color is a number and will need to be converted to hex string, cooldownTime is in seconds)
+Takes in an array of pixelIds to buy. Also accepts payment (triggers Metamask.
 Buys and charges user for all pixels buyable.
 Sets that user as the owner and current leaser for those pixelIds
 Puts the remaining money in a withdrawAmount table which the user
 can get back his excess cash.
+Returns transactionId
