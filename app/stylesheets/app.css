@@ -158,26 +158,27 @@ h3 {
 }
 
 .remove-button {
-  font-size: smaller;
+  font-size: 9px;
   border: 1px solid black;
-  background: white;
   border-radius: 5px;
   outline: none;
   margin: 0.1rem;
   margin-left: 2.5rem;
+  color: white;
+  background-color: #f1534f;
 }
 
 .arrow {
-  font-size: 120px;
-  color: rgba(0,0,0,0.7);
+  font-size: 41px;
+  padding: 50px 9px;
+  color: white;
   position: fixed;
   right: 0;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  padding: 12px;
   cursor: pointer;
   top: 16rem;
-  background: #eaeaea;
+  background: #3c4955;
   box-shadow: black 0px 0px 3px;
 }
 
