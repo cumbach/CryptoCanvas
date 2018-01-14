@@ -292,7 +292,7 @@ export default class CanvasCore extends Component {
             comment: 'BUY THIS PIXEL!!!',
             id: i,
             color: "#eaeaea",
-            price: this.state.defaultPrice,
+            price: 0.1,
             buyable: true,
             rentable: false,
           })
