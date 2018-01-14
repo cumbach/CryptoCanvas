@@ -337,6 +337,10 @@ export default class CanvasCore extends Component {
 
         return (
             <div>
+                <App
+                  pixels={updatedPixels}
+                  onChangePixel={this.handleChangePixel}
+                />
                 <h1 onClick={this.totalPixels}>totalPixels:{this.state.totalPixels}</h1><br/>
                 <h1 onClick={this.defaultPrice}>defaultPrice:{this.state.defaultPrice}</h1><br/>
                 <h1 onClick={this.isBuyable.bind(this, 5)}>isBuyable:{showIsBuyable}</h1><br/>
