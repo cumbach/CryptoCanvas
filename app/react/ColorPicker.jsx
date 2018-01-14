@@ -22,7 +22,7 @@ export default class ColorPicker extends Component {
     return (
       <div
         style={{
-          'boxShadow': '0px 0px 5px black',
+          'boxShadow': '0px 0px 4px black',
           'borderRadius': '3px',
           'marginTop': '10px',
           'position': 'absolute',
