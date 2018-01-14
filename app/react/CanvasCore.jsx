@@ -9,7 +9,7 @@ import Colors from './colors.js'
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-const TOTAL_PIXEL_COUNT = 64;
+const TOTAL_PIXEL_COUNT = 256;
 const COMPANY_ADDRESS = 'company address';
 
 export default class CanvasCore extends Component {
@@ -246,7 +246,7 @@ export default class CanvasCore extends Component {
     getCanvas() {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
-        return canvas.getCanvas({gas: 300000});
+        return canvas.getCanvas({gas: 6385876});
       }).then(canvasStateArray => {
         const idsArray = canvasStateArray[0].map(function(bigNumId){
           return parseInt(bigNumId);
@@ -293,7 +293,7 @@ export default class CanvasCore extends Component {
             comment: 'BUY THIS PIXEL!!!',
             id: i,
             color: "#eaeaea",
-            price: 0.1,
+            price: 0.001,
             buyable: true,
             rentable: false,
           })
