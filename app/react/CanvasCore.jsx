@@ -8,7 +8,7 @@ import App from './App.jsx'
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-const TOTAL_PIXEL_COUNT = 100
+const TOTAL_PIXEL_COUNT = 10000
 const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
 const COMPANY_ADDRESS = 'company address'
 const COMPANY_OWNED_PIXEL_TEMPLATE = {
@@ -22,12 +22,15 @@ const COMPANY_OWNED_PIXEL_TEMPLATE = {
 export default class CanvasCore extends Component {
     constructor(props) {
         super(props)
+
         this.startUp = this.startUp.bind(this)
         this.testCode = this.testCode.bind(this)
         this.getPrice = this.getPrice.bind(this)
         // this.refreshBalance = this.refreshBalance.bind(this)
         // this.sendCoin = this.sendCoin.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleChangePixel = this.handleChangePixel.bind(this)
+
         this.state = {
             status: null,
             amount: '',
@@ -35,6 +38,7 @@ export default class CanvasCore extends Component {
             pixels: [], // array of <Pixels>
             changes: {}, // eg: {pixelId: { color: <new color> }}
         }
+
         this.startUp()
         this.getAllPixels().then(pixels => {
             this.intializePixels(pixels)
@@ -105,7 +109,8 @@ export default class CanvasCore extends Component {
             } else {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
-                    id: i,
+                        id: i,
+                        color: Math.floor(Math.random() * 10)
                     })
             }
         }
@@ -150,10 +155,16 @@ export default class CanvasCore extends Component {
         })
     }
 
-    handleChangePixel({ id, field, newValue }) {
-        this.setState({
-            changes: {
-                [field]: value,
+    handleChangePixel(id, changes) {
+        this.setState((prevState, props) => {
+            return {
+                changes: {
+                    ...prevState.changes,
+                    [id]: {
+                        ...prevState.changes[id],
+                        ...changes
+                    }
+                }
             }
         })
     }
