@@ -374,16 +374,15 @@ export default class CanvasCore extends Component {
     }
 
     setUpCanvas() {
-      let pixelIds = [];
-      let colors = [];
-      const overallPrice = 0.1 // this is in ether
+      let pixelIds = [3,4,5,6,18,19,20,21,22,23,24,25,34,35,36,37,38,49,50,51,51,53,54,65,66,67,68,69,70,71,81,82,83,84,85,86];
+      let colors = [9,9,9,9,9,9,9,9,9,9,9,9,2,2,2,3,3,2,11,2,3,3,3,2,3,2,3,3,3,2,2,3,3,3,3,9];
       let totalCost = 0;
-      for (var i = 33; i < 38; i++) {
-        pixelIds.push(i);
-        colors.push(7);
-        totalCost += 0.1;
+
+      const overallPrice = 0.002 // this is in ether
+      for (var i = 0; i < pixelIds.length; i++) {
+        totalCost += 0.001;
       }
-      this.buyPixels(pixelIds, colors, "urlfromsetupcanvas", "commentfromsetupcanvas", overallPrice, totalCost);
+      this.buyPixels(pixelIds, colors, "www.wcef.co", "World Crypto Economic Forum!", overallPrice, totalCost);
     }
 
 
