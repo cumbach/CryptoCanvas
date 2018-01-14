@@ -54,6 +54,7 @@ export default class SelectedPixels extends Component {
     super(props)
     this.getCell = this.getCell.bind(this)
     this.getColor = this.getColor.bind(this)
+    this.expand = this.expand.bind(this)
     this.state = {
       expanded: false,
     }
@@ -97,6 +98,12 @@ export default class SelectedPixels extends Component {
     )
   }
 
+  expand() {
+    this.setState({
+      expanded: true
+    })
+  }
+
   render() {
     const {
       changes,
@@ -109,22 +116,24 @@ export default class SelectedPixels extends Component {
     return (
       <div className="selected-pixel-section">
         <div className="selected-pixel-header">
-          <span>Selected Pixels</span>
-          <button
-            className="expand-button"
-            onClick={()=>this.setState(prevState => {
+          <div onClick={this.expand}>
+            <span>Selected Pixels</span>
+            <button
+              className="expand-button"
+              onClick={()=> this.setState(prevState => {
               return {expanded: !prevState.expanded}
             })}
-          >
-            {this.state.expanded ? '-' : '+'}
-          </button>
-        </div>
-        <div className="selected-pixel-area">
-          {
-            sorted.map(p => {
-              return this.getCell(p)
-            })
-          }
+              >
+              {this.state.expanded ? '-' : '+'}
+            </button>
+          </div>
+          <div className="selected-pixel-area">
+            {
+              sorted.map(p => {
+                return this.getCell(p)
+              })
+            }
+          </div>
         </div>
       </div>
     )
