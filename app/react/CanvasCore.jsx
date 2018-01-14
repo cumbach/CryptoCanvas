@@ -4,11 +4,12 @@ import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
 import App from './App.jsx'
+import colors from './colors.js'
 
 // Import our contract artifacts and turn them into usable abstractions.
 import canvas_artifacts from './../../build/contracts/CanvasCore.json'
 
-const TOTAL_PIXEL_COUNT = 10000
+const TOTAL_PIXEL_COUNT = 100
 const ASSUMED_INITIALLY_PURCHASED_PIXELS = 3
 const COMPANY_ADDRESS = 'company address'
 const COMPANY_OWNED_PIXEL_TEMPLATE = {
@@ -299,8 +300,9 @@ export default class CanvasCore extends Component {
                 pixels.push({
                     ...COMPANY_OWNED_PIXEL_TEMPLATE,
                         id: i,
-                        color: Math.random() > 0.5 ? '#9300FF' : '#DDF0EA',
-                        price: 300 * Math.random(),
+                        color: colors[Math.floor(Math.random()*16)],
+                        // color: Math.floor(Math.random() * 10),
+                        buyable: Math.random() < .2 ? true : false
                     })
             }
         }

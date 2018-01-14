@@ -15,20 +15,18 @@ const COLOR_MAP = {
 
 export default class Canvas extends Component {
   /**
-  * pixels: array
+  * displayOnlyBuyable: bool
+  * pixels: array[ pixel: object ]
   * onChangePixel: func
   * pixelSize: number
   * currentColor: string
   **/
   constructor(props) {
     super(props)
-    this.state = {
-      pixels: props.pixels
-    }
   }
 
   render() {
-    const { pixels, pixelSize } = this.props;
+    const { displayOnlyBuyable, pixels, pixelSize } = this.props;
     const dimensions = Math.round(Math.sqrt(pixels.length));
 
     return (
@@ -39,6 +37,9 @@ export default class Canvas extends Component {
             color={pixel.color}
             size={500/dimensions}
             onClick={this.handleClick.bind(this, id)}
+            under={displayOnlyBuyable && !pixel.buyable}
+            over={displayOnlyBuyable && pixel.buyable}
+            selectable={!displayOnlyBuyable || pixel.buyable}
           />
         }, this)}
       </div>
