@@ -71,8 +71,8 @@ export default class Canvas extends Component {
               style={{
                 'position': 'fixed',
                 'zIndex': '2',
-                'left': commentPosition[0],
-                'top': commentPosition[1],
+                'left': commentPosition[0]+5,
+                'top': commentPosition[1]+5,
                 'backgroundColor': 'white',
                 'padding': '2px 6px',
                 'border': '1px solid black',
@@ -93,6 +93,7 @@ export default class Canvas extends Component {
             mode={mode}
             buyable={pixel.buyable}
             rentable={pixel.rentable}
+            link={pixel.link}
             setHoverId={setHoverId}
             id={id}
             />
