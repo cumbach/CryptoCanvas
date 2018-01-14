@@ -4,6 +4,7 @@ export default class Pixel extends Component {
   constructor(props) {
     /**
     * key: int
+    * id: int
     * color: string
     * size: int
     * onClick: func
@@ -18,6 +19,9 @@ export default class Pixel extends Component {
     }
 
     this.setComment = this.setComment.bind(this);
+    this.hideComment = this.hideComment.bind(this);
+    this.exitCell = this.exitCell.bind(this);
+    this.enterCell = this.enterCell.bind(this);
     this.highlight = this.highlight.bind(this);
     this.unhighlight = this.unhighlight.bind(this);
 
@@ -31,6 +35,29 @@ export default class Pixel extends Component {
     }
   }
 
+  enterCell(isSelectable, mode) {
+    isSelectable
+    console.log('setting hoverId', this.props.id)
+    this.props.setHoverId(this.props.id)
+    if (mode ==0) {
+      this.setComment()
+    } else if (isSelectable) {
+      this.highlight()
+    }
+  }
+
+  exitCell(isSelectable, mode) {
+    isSelectable
+    console.log('deleting hoverId', )
+    this.props.setHoverId(null)
+    if (mode == 0) {
+      this.hideComment()
+    } else if (isSelectable) {
+      this.unhighlight()
+    }
+
+  }
+
   render() {
     const { buyable, mode, color, rentable, selectPixel, size } = this.props;
     const { hover } = this.state;
@@ -40,8 +67,8 @@ export default class Pixel extends Component {
     return (
       <div
         onClick={isSelectable ? selectPixel : () => {}}
-        onMouseEnter={mode===0 ? this.setComment : isSelectable ? this.highlight : () => {}}
-        onMouseLeave={mode===0 ? this.hideComment : isSelectable ? this.unhighlight : () => {}}
+        onMouseEnter={()=>this.enterCell(isSelectable, mode)}
+        onMouseLeave={()=>this.exitCell(isSelectable, mode)}
         style={{
           'backgroundColor': color,
           'width': size + 'px',
@@ -58,6 +85,10 @@ export default class Pixel extends Component {
 
   setComment() {
     this.props.setComment()
+  }
+
+  hideComment() {
+    this.props.setComment('off')
   }
 
   highlight() {

@@ -196,6 +196,11 @@ h3 {
   margin: 0.5rem;
 }
 
+.highlighted-pixel {
+  border: 10px solid yellow;
+  color: white;
+}
+
 .form-line {
   display: flex;
   margin-bottom: 1rem;

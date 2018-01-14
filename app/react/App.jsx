@@ -16,6 +16,7 @@ class App extends Component {
     this.handleChangeCurrentColor = this.handleChangeCurrentColor.bind(this)
     this.handleSetMode = this.handleSetMode.bind(this)
     this.setUpCanvas = this.setUpCanvas.bind(this)
+    this.setHoverId = this.setHoverId.bind(this)
     /**
           pixels={pixels}
           onAddBuy={this.handleAddBuy}
@@ -29,6 +30,7 @@ class App extends Component {
     this.state = {
       currentColor: '#222222',
       mode: 0,
+      hoverId: null,
       documentWidth:  800,
       documentHeight: 182,
       test: '',
@@ -71,6 +73,14 @@ class App extends Component {
     this.setState({ mode })
   }
 
+  setHoverId(pixelId) {
+    if (!pixelId && pixelId !== 0) {
+      this.setState({hoverId: null})
+    } else {
+      this.setState({hoverId: pixelId})
+    }
+  }
+
   render() {
     const {
       pixels,
@@ -85,6 +95,7 @@ class App extends Component {
     const {
       currentColor,
       mode,
+      hoverId,
       documentHeight,
       documentWidth
     } = this.state
@@ -132,6 +143,7 @@ class App extends Component {
               changes={relevantChanges}
               currentColor={currentColor}
               onAddTransaction={relevantAddFunction}
+              setHoverId={this.setHoverId}
               size={mode !==0 ? containerHeight * .85 : containerHeight}
             />
             {mode !== 0 ? <ColorPicker
@@ -141,6 +153,8 @@ class App extends Component {
           </div>
           <SideBar
             pixels={pixels}
+            buyPixels={buyPixels}
+            rentPixels={rentPixels}
             changes={relevantChanges}
             onRemoveTransaction={relevantRemoveFunction}
             onSetMode={this.handleSetMode}
@@ -148,6 +162,8 @@ class App extends Component {
             closeMenu={() => this.setState({ sideBarOpen: false })}
             openMenu={() => this.setState({ sideBarOpen: true })}
             isOpen={this.state.sideBarOpen}
+            hoverId={hoverId}
+            setHoverId={this.setHoverId}
           />
         </div>
       </div>
