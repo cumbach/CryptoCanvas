@@ -4,6 +4,9 @@ import "./Ownable.sol";
 
 contract CanvasCore is Ownable {
 
+    event Buy();
+    event Rent();
+
     struct Pixel {
         address owner;
         // Leaser for each pixelId. If the pixel is not stale, the leaser
@@ -16,6 +19,7 @@ contract CanvasCore is Ownable {
         uint32 color;
         // Time at which the pixel becomes available for renting
         uint64 staleTime;
+        uint64 rentedTime;
         // True if the pixel has been bought by someone else and is not owned
         // by the default contract owner anymore.
         bool inMarket;
@@ -87,7 +91,9 @@ contract CanvasCore is Ownable {
     // If it has an owner, its in the market and it became stale before the
     // current time, then it is marked as rentable.
     function isRentable(uint _pixelId) public view isValidPixelId(_pixelId) returns (bool) {
-        return (pixels[_pixelId].owner > 0 && pixels[_pixelId].staleTime <= now);
+        return (pixels[_pixelId].owner > 0 &&
+                pixels[_pixelId].staleTime <= now &&
+                pixels[_pixelId].rentedTime <= now);
     }
 
     /// Returns the price of any pixelId
@@ -161,6 +167,7 @@ contract CanvasCore is Ownable {
                 pixel.color = _colors[i];
                 pixel.price = _price;
                 pixel.staleTime = _staleTime;
+                pixel.rentedTime = 0;
                 pixel.url = _url;
                 pixel.comment = _comment;
                 if (pixel.inMarket == false)
@@ -168,7 +175,59 @@ contract CanvasCore is Ownable {
                 pixel.inMarket = true;
             }
         }
+        Buy();
     }
+
+    /// Takes in an array of pixelIds to rent. Also accepts payment.
+    /// Rents and charges user for all pixels buyable.
+    /// Sets that user as the current leaser for those pixelIds
+    /// Puts the remaining money in a amountToWithdraw table which the user
+    /// can get back his excess cash.
+    function rentPixels(
+        uint[] _pixelIds,
+        uint32[] _colors,
+        string _url,
+        string _comment)
+        public
+        payable
+    {
+        // This block checks if the sender provided enough capital for the purchase.
+        uint totalCost = 0;
+        uint i;
+        uint pixId;
+        for (i = 0; i < _pixelIds.length; i++) {
+            pixId = _pixelIds[i];
+            if (isRentable(pixId)) {
+                totalCost += getPrice(pixId);
+            }
+        }
+        uint amount = msg.value;
+        require(amount >= totalCost);
+
+        // Sets the excess funds in a withdrawAmount mapping.
+        amountToWithdraw[msg.sender] += (amount - totalCost);
+        // Sets the staleTime, which is the time when the pixel is up for renting
+        uint64 _rentedTime = uint64(rentCooldownTime + now);
+
+        // Updates the owner and metadata.
+        for (i = 0; i < _pixelIds.length; i++) {
+            Pixel storage pixel = pixels[_pixelIds[i]];
+            if (isRentable(pixId)) {
+                // Splits the price 50-50 between the current owner and
+                // contract creator
+                amountToWithdraw[getOwner(pixId)] += getPrice(pixId) / 2;
+                amountToWithdraw[creator] += (getPrice(pixId) + 1) / 2;
+
+                pixel.leaser = msg.sender;
+                pixel.color = _colors[i];
+                pixel.rentedTime = _rentedTime;
+                pixel.url = _url;
+                pixel.comment = _comment;
+            }
+        }
+        Rent();
+    }
+
 
     /// Takes in an array of pixelIds to rent. Also accepts payment.
     /// Rents and charges user for all pixels buyable.
