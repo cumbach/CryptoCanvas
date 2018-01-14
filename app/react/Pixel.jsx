@@ -57,7 +57,11 @@ export default class Pixel extends Component {
   }
 
   visitLink() {
-    window.open(this.props.link, '_blank');
+    const link = this.props.link.slice(0, 8) !== 'https://' && this.props.link.slice(0, 7) !== 'http://'
+      ? `http://${this.props.link}`
+      : this.props.link;
+
+    window.open(link, '_blank');
   }
 
   render() {
@@ -76,10 +80,11 @@ export default class Pixel extends Component {
           'width': size + 'px',
           'height': size + 'px',
           'float': 'left',
-          'outline': hover ? '2px solid black' : 'none',
           'opacity': isDisabled ? '0.1' : '1',
           'zIndex': isSelectable ? '1' : '0',
-          'boxShadow': isSelectable ? '0px 0px 2px black' : 'none',
+          'boxShadow': `0px 0px ${hover ? 5 : isSelectable ? 2 : 0}px black`,
+          'borderRadius': isSelectable ? '1px' : '0px',
+          'outline': hover ? '1px black' : '0px black',
           'cursor': 'pointer'
         }}
       />
