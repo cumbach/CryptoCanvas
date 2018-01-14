@@ -33,6 +33,8 @@ export default class CanvasCore extends Component {
         this.getLeaser = this.getLeaser.bind(this)
         this.buyPixels = this.buyPixels.bind(this)
         this.getCanvas = this.getCanvas.bind(this)
+        this.buySuccess = this.buySuccess.bind(this)
+        this.rentSuccess = this.rentSuccess.bind(this)
 
         this.handleChange = this.handleChange.bind(this)
         this.handleChangePixel = this.handleChangePixel.bind(this)
@@ -85,6 +87,23 @@ export default class CanvasCore extends Component {
         // Bootstrap the CanvasCore abstraction for Use.
         this.CanvasCore.setProvider(web3.currentProvider);
 
+        this.CanvasCore.deployed().then(instance => {
+          instance.BuyEvent(function(error, result){
+            if (error) {
+              console.log(error);
+            } else {
+              self.buySuccess();
+            }
+          });
+          instance.RentEvent(function(error, result){
+            if (error) {
+              console.log(error);
+            } else {
+              self.rentSuccess();
+            }
+          });
+        });
+
         // Get the initial account balance so it can be displayed.
         web3.eth.getAccounts(function (err, accs) {
             if (err != null) {
@@ -103,6 +122,15 @@ export default class CanvasCore extends Component {
         })
     }
 
+    buySuccess() {
+      console.log('buy complete');
+      // this.getCanvas()?
+    }
+
+    rentSuccess() {
+      console.log('rent complete');
+      // this.getCanvas()?
+    }
 
 
     totalPixels() {
@@ -177,6 +205,15 @@ export default class CanvasCore extends Component {
       this.CanvasCore.deployed().then(instance => {
         const canvas = instance;
         return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, web3.toWei(priceEther, 'ether'), {from: web3.eth.accounts[0], value: web3.toWei(priceEther, 'ether')});
+      }).then(transactionId => {
+        console.log('buyPixels transaction posted (may take time to verify transaction)');
+      });
+    }
+
+    rentPixels(pixelIdsArray, colorsArray, url, comment) {
+      this.CanvasCore.deployed().then(instance => {
+        const canvas = instance;
+        return canvas.buyPixels.sendTransaction(pixelIdsArray, colorsArray, url, comment, {from: web3.eth.accounts[0], value: web3.toWei(priceEther, 'ether')});
       }).then(transactionId => {
         console.log('buyPixels transaction posted (may take time to verify transaction)');
       });
