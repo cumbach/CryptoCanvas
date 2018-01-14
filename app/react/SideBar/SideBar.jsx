@@ -10,9 +10,11 @@ class SideBar extends Component {
   constructor(props) {
     super(props)
     this.handleTabChange = this.handleTabChange.bind(this)
+    this.toggleHidden = this.toggleHidden.bind(this)
 
     this.state = {
-      tab: 1
+      tab: 1,
+      hidden: true,
     }
 
     /**
@@ -31,22 +33,53 @@ class SideBar extends Component {
     this.setState({ tab }, onSetMode(tab))
   }
 
+  toggleHidden() {
+    this.setState(prevState => { hidden: !prevState.hidden })
+  }
+
   render() {
     const {
       changes,
       pixels,
     } = this.props
 
-    if (this.state.tab !== 1) {
+    const actions = {
+      1: () => console.log('buy'),
+      2: () => console.log('rent'),
+      3: () => console.log('update')
+    }
+
+    if (this.state.hidden) {
       return (
+        <div className="arrow" onClick={()=>this.setState({hidden: false})}>
+          {`<`}
+        </div>
+      )
+    }
+
+    return (
+      <div>
+        <div className="arrow" onClick={() => this.setState({ hidden: true })}>
+          {`>`}
+        </div>
         <div className="side-bar">
           <SideBarTabs
             selectedTab={this.state.tab}
             onTabChange={this.handleTabChange}
           />
-          <br/>
-          <br/>
-          <span style={{paddingLeft: '2rem'}}>Coming soon!!!</span>
+          <PriceSlider/>
+          <SelectedPixels
+            changes={changes}
+            pixels={pixels}
+            onRemoveChange={this.props.onRemoveChange}
+          />
+          <CoolDown/>
+          <TransactionInfo
+            selectedTab={this.state.tab}
+            pixels={pixels}
+            changes={changes}
+            actions={actions}
+          />
         </div>
       )
 

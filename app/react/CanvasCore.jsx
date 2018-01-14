@@ -308,6 +308,7 @@ export default class CanvasCore extends Component {
                         // color: Math.floor(Math.random() * 10),
                         buyable: Math.random() < .2 ? true : false,
                         rentable: Math.random() < .2 ? true : false
+                        price: Math.floor(300 * Math.random()),
                     })
             }
         }
