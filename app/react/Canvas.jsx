@@ -45,7 +45,7 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const { documentHeight, documentWidth, mode, pixels, pixelSize, setHoverId } = this.props;
+    const { documentHeight, documentWidth, mode, pixels, pixelSize, setSpecialHoverId } = this.props;
     const { commentPosition, commentText } = this.state;
     const pixelDimension = Math.round(Math.sqrt(pixels.length));
 
@@ -54,8 +54,10 @@ export default class Canvas extends Component {
 
     return (
       <div>
-        <div className="plus-sign">+</div>
-        <div className="minus-sign">-</div>
+        <div className="zoom-buttons">
+          <div className="plus-sign">+</div>
+          <div className="minus-sign">-</div>
+        </div>
         <div
           onMouseLeave={this.handleMouseLeave}
           onMouseMove={this.handleMouseMove}
@@ -94,8 +96,9 @@ export default class Canvas extends Component {
             buyable={pixel.buyable}
             rentable={pixel.rentable}
             link={pixel.link}
-            setHoverId={setHoverId}
+            setSpecialHoverId={setSpecialHoverId}
             id={id}
+            specialHoverId={this.props.specialHoverId}
             />
           }, this)}
         </div>

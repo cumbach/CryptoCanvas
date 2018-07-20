@@ -13,15 +13,18 @@ class BigSelected extends Component {
       color,
       pixel,
       onRemoveTransaction,
-      setHoverId,
-      removeHoverId,
+      setSpecialHoverId,
+      specialHoverId,
+      removeSpecialHoverId,
     } = this.props
     return (
       <div className="big-selected">
         <SmallSelected
-          setHoverId={setHoverId}
-          removeHoverId={removeHoverId}
+          setSpecialHoverId={setSpecialHoverId}
+          removeSpecialHoverId={removeSpecialHoverId}
           color={color}
+          specialHoverId={specialHoverId}
+          pixelId={pixel.id}
         />
         <div className="price-label">{pixel.price} eth</div> {/* showing old price here */}
         <button
@@ -46,17 +49,22 @@ class SmallSelected extends Component {
     const {
       expand,
       color,
-      setHoverId,
-      removeHoverId,
+      setSpecialHoverId,
+      removeSpecialHoverId,
+      specialHoverId,
+      pixelId,
     } = this.props
 
     return (
       <div
         onClick={expand}
         className="selected-pixel"
-        style={{ backgroundColor: color }}
-        onMouseEnter={setHoverId}
-        onMouseLeave={removeHoverId}
+        style={{
+          backgroundColor: color,
+          boxShadow: pixelId === specialHoverId ? "0px 0px 3px red" : "0px 0px 0px"
+        }}
+        onMouseEnter={setSpecialHoverId}
+        onMouseLeave={removeSpecialHoverId}
       />
     )
   }
@@ -90,34 +98,37 @@ export default class SelectedPixels extends Component {
   }
 
   getCell(p) {
-    const { hoverId, setHoverId } = this.props
-    const highlighted = hoverId === p.id
-    const setHoverIdFn = setHoverId && setHoverId.bind(null, p.id)
-    const removeHoverId = setHoverId && setHoverId.bind(null, null)
+    const { specialHoverId, setSpecialHoverId } = this.props
+    const highlighted = specialHoverId === p.id
+    const setSpecialHoverIdFn = setSpecialHoverId && setSpecialHoverId.bind(null, p.id)
+    const removeSpecialHoverId = setSpecialHoverId && setSpecialHoverId.bind(null, null)
     const className = highlighted ? 'highlighted-pixel' : ''
     if (this.state.expanded) {
       return (
         <BigSelected
-          setHoverId={setHoverIdFn}
-          removeHoverId={removeHoverId}
+          setSpecialHoverId={setSpecialHoverIdFn}
+          removeSpecialHoverId={removeSpecialHoverId}
           pixel={p}
           color={this.getColor(p)}
           key={p.id}
           onRemoveTransaction={this.props.onRemoveTransaction.bind(null, p.id)}
           className={className}
+          specialHoverId={specialHoverId}
           />
         )
       }
 
       return (
         <SmallSelected
-          setHoverId={setHoverIdFn}
-          removeHoverId={removeHoverId}
+          setSpecialHoverId={setSpecialHoverIdFn}
+          removeSpecialHoverId={removeSpecialHoverId}
           pixel={p}
           color={this.getColor(p)}
           key={p.id}
           expand={this.expand}
           className={className}
+          specialHoverId={specialHoverId}
+          pixelId={p.id}
         />
     )
   }
@@ -132,7 +143,7 @@ export default class SelectedPixels extends Component {
     const {
       changes,
       pixels,
-      hoverId,
+      specialHoverId,
     } = this.props
 
     const sorted = (changes && pixels && pixels.length) ? Object.keys(changes).sort((a, b) => pixels[a].sortIndex - pixels[b].sortIndex).map(p => pixels[p]) : []

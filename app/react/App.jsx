@@ -16,7 +16,7 @@ class App extends Component {
     this.handleChangeCurrentColor = this.handleChangeCurrentColor.bind(this)
     this.handleSetMode = this.handleSetMode.bind(this)
     this.setUpCanvas = this.setUpCanvas.bind(this)
-    this.setHoverId = this.setHoverId.bind(this)
+    this.setSpecialHoverId = this.setSpecialHoverId.bind(this)
     /**
           pixels={pixels}
           onAddBuy={this.handleAddBuy}
@@ -30,7 +30,7 @@ class App extends Component {
     this.state = {
       currentColor: '#222222',
       mode: 0,
-      hoverId: null,
+      specialHoverId: null,
       documentWidth:  800,
       documentHeight: 182,
       test: '',
@@ -73,11 +73,11 @@ class App extends Component {
     this.setState({ mode })
   }
 
-  setHoverId(pixelId) {
+  setSpecialHoverId(pixelId) {
     if (!pixelId && pixelId !== 0) {
-      this.setState({hoverId: null})
+      this.setState({specialHoverId: null})
     } else {
-      this.setState({hoverId: pixelId})
+      this.setState({specialHoverId: pixelId})
     }
   }
 
@@ -95,7 +95,7 @@ class App extends Component {
     const {
       currentColor,
       mode,
-      hoverId,
+      specialHoverId,
       documentHeight,
       documentWidth
     } = this.state
@@ -143,8 +143,10 @@ class App extends Component {
               changes={relevantChanges}
               currentColor={currentColor}
               onAddTransaction={relevantAddFunction}
-              setHoverId={this.setHoverId}
+              setSpecialHoverId={this.setSpecialHoverId}
               size={mode !==0 ? containerHeight * .85 : containerHeight}
+              specialHoverId={specialHoverId}
+              setSpecialHoverId={this.setSpecialHoverId}
             />
             {mode !== 0 ? <ColorPicker
               currentColor={currentColor}
@@ -162,8 +164,8 @@ class App extends Component {
             closeMenu={() => this.setState({ sideBarOpen: false })}
             openMenu={() => this.setState({ sideBarOpen: true })}
             isOpen={this.state.sideBarOpen}
-            hoverId={hoverId}
-            setHoverId={this.setHoverId}
+            specialHoverId={specialHoverId}
+            setSpecialHoverId={this.setSpecialHoverId}
           />
         </div>
       </div>
